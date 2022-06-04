@@ -1,10 +1,8 @@
 package kr.ac.kumoh.backend.repository;
 
-import kr.ac.kumoh.backend.dto.MovieDTO;
+import kr.ac.kumoh.backend.domain.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 
-@Repository
-public interface MovieRepository extends JpaRepository<MovieDTO, Long> {
+public interface MovieRepository extends JpaRepository<Movie, Long> {
 }
