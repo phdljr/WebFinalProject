@@ -19,6 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private myPathResourceResolver myPathResourceResolver;
 
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -33,6 +34,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/")
                 .resourceChain(true)
                 .addResolver(myPathResourceResolver);
+
+        registry.addResourceHandler("/movies/**")
+                .addResourceLocations("classpath:/movies/")
+                .setCachePeriod(20);
     }
 
     @Component
