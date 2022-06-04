@@ -1,4 +1,4 @@
 # WebFinalProject  
   
-프론트 빌드해서 백앤드에 합치는 방법  
-- frontend로 이동 -> npm run build  
+- 프론트 빌드하기 : npm run build  
+- 프론트만 실행시키기 : npm run serve  
