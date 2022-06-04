@@ -13,6 +13,6 @@ import lombok.Setter;
 public class MovieDTO {
 
     private String MovieName;
-    private String rank;
+    private int rank;
     private byte[] image;
 }

@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class VariableConfig {
 
-    private static final String imagePath = ".//backend/src//main//resources//static//movies";
-    private static final int[] ranks = {5, 10, 4, 7, 8, 2, 3, 6, 1, 9};
+    public static final String imagePath = ".//backend/src//main//resources//static//movies";
+    public static final int[] ranks = {5, 10, 4, 7, 6, 2, 3, 8, 1, 9};
 }

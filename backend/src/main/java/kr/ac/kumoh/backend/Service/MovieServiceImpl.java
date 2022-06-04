@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.Service;
 
+import kr.ac.kumoh.backend.config.VariableConfig;
 import kr.ac.kumoh.backend.domain.Movie;
 import kr.ac.kumoh.backend.dto.MovieDTO;
 import kr.ac.kumoh.backend.repository.MovieRepository;
@@ -23,18 +24,20 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
-    private final String imagePath = ".//backend/src//main//resources//static//movies";
+    private final String imagePath = VariableConfig.imagePath;
     private final List<String> fileNames = getFileNames();
     private final MovieRepository movieRepository;
 
     @PostConstruct
     void Init() {
-        Movie movie;
+        int[] ranks = VariableConfig.ranks;
+        int index = 0;
 
         for (String fileName : fileNames) {
             String path = imagePath + "//" + fileName;
-            movie = new Movie(fileName, 1, path);
-            movieRepository.save(movie);
+            String MovieName = fileName.replace(".jpg", "");
+            Movie movie = new Movie(MovieName, ranks[index++], path);
+            addMovie(movie);
         }
     }
 
@@ -46,14 +49,13 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieDTO> getTop10Movies() {
         List<MovieDTO> movieDTOS = new ArrayList<>();
-        byte[] image;
+        List<Movie> movies = movieRepository.findAll();
 
-        for (String fileName : fileNames) {
-            image = getImage(imagePath + "//" + fileName);
+        for (Movie movie : movies) {
             MovieDTO movieDTO = MovieDTO.builder()
-                    .MovieName(fileName)
-                    .rank("1")
-                    .image(image)
+                    .MovieName(movie.getMovieName())
+                    .rank(movie.getRank())
+                    .image(getImage(movie.getImagePath()))
                     .build();
             movieDTOS.add(movieDTO);
         }
