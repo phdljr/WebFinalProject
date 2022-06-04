@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Movie {
+public class MovieDTO {
 
     private String MovieName;
     private String rank;

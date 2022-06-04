@@ -1,6 +1,6 @@
 package kr.ac.kumoh.backend.Service;
 
-import kr.ac.kumoh.backend.dto.Movie;
+import kr.ac.kumoh.backend.dto.MovieDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,10 @@ public class ImageServiceImpl implements ImageService {
     private final String imagePath = ".//backend/src//main//resources//static//movies";
 
     @Override
-    public List<Movie> loadMovieImages() {
+    public List<MovieDTO> loadMovieImages() {
 
         List<String> fileNames = getFileNames();
-        List<Movie> movies = new ArrayList<>();
+        List<MovieDTO> movieDTOS = new ArrayList<>();
         byte[] image;
 
         try {
@@ -33,12 +33,12 @@ public class ImageServiceImpl implements ImageService {
                 InputStream inputStream = new FileInputStream(imagePath + "//" + fileName);
                 image = IOUtils.toByteArray(inputStream);
 
-                Movie movie = Movie.builder()
+                MovieDTO movieDTO = MovieDTO.builder()
                         .MovieName(fileName)
                         .rank("1")
                         .image(image)
                         .build();
-                movies.add(movie);
+                movieDTOS.add(movieDTO);
             }
         } catch (IOException e) {
             log.warn("IOException");
@@ -46,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
             log.warn("그런 폴더가 없습니다!");
         }
 
-        return movies;
+        return movieDTOS;
     }
 
     public List<String> getFileNames() {
