@@ -5,9 +5,10 @@ import kr.ac.kumoh.backend.dto.MovieDTO;
 
 import java.util.List;
 
+
 public interface MovieService {
 
-    List<String> getFileNames();
-    void saveMovie(Movie movie);
-    List<MovieDTO> loadMovieImages();
+    void addMovie(Movie movie);
+
+    List<MovieDTO> getTop10Movies();
 }

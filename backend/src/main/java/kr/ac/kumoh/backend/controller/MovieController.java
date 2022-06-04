@@ -20,8 +20,6 @@ public class MovieController {
     @GetMapping(value = "/movies")
     public List<MovieDTO> getMovieImages() {
 
-        List<MovieDTO> movieDTOS = movieService.loadMovieImages();
-
-        return movieDTOS;
+        return movieService.getTop10Movies();
     }
 }

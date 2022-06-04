@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,12 +24,13 @@ import java.util.stream.Stream;
 public class MovieServiceImpl implements MovieService {
 
     private final String imagePath = ".//backend/src//main//resources//static//movies";
+    private final List<String> fileNames = getFileNames();
     private final MovieRepository movieRepository;
 
     @PostConstruct
     void Init() {
         Movie movie;
-        List<String> fileNames = getFileNames();
+
         for (String fileName : fileNames) {
             String path = imagePath + "//" + fileName;
             movie = new Movie(fileName, 1, path);
@@ -41,40 +39,45 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void saveMovie(Movie movie) {
+    public void addMovie(Movie movie) {
         movieRepository.save(movie);
     }
 
     @Override
-    public List<MovieDTO> loadMovieImages() {
-
-        List<String> fileNames = getFileNames();
+    public List<MovieDTO> getTop10Movies() {
         List<MovieDTO> movieDTOS = new ArrayList<>();
         byte[] image;
 
-        try {
-            for (String fileName : fileNames) {
-                InputStream inputStream = new FileInputStream(imagePath + "//" + fileName);
-                image = IOUtils.toByteArray(inputStream);
-
-                MovieDTO movieDTO = MovieDTO.builder()
-                        .MovieName(fileName)
-                        .rank("1")
-                        .image(image)
-                        .build();
-                movieDTOS.add(movieDTO);
-            }
-        } catch (IOException e) {
-            log.warn("IOException");
-        } catch (NullPointerException e) {
-            log.warn("그런 폴더가 없습니다!");
+        for (String fileName : fileNames) {
+            image = getImage(imagePath + "//" + fileName);
+            MovieDTO movieDTO = MovieDTO.builder()
+                    .MovieName(fileName)
+                    .rank("1")
+                    .image(image)
+                    .build();
+            movieDTOS.add(movieDTO);
         }
 
         return movieDTOS;
     }
 
-    @Override
-    public List<String> getFileNames() {
+    private byte[] getImage(String imagePath) {
+
+        byte[] image = null;
+
+        try {
+            InputStream inputStream = new FileInputStream(imagePath);
+            image = IOUtils.toByteArray(inputStream);
+        } catch (FileNotFoundException e) {
+            log.warn("그런 파일이 없습니다!");
+        } catch (IOException e) {
+            log.warn("IOException");
+        }
+
+        return image;
+    }
+
+    private List<String> getFileNames() {
 
         List<String> fileNames = null;
         try {
