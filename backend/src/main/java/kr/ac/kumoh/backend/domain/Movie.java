@@ -21,11 +21,9 @@ public class Movie {
 
     private String movieName;
     private int rank;
-    private String imagePath;
 
-    public Movie(String movieName, int rank, String imagePath) {
+    public Movie(String movieName, int rank) {
         this.movieName = movieName;
         this.rank = rank;
-        this.imagePath = imagePath;
     }
 }

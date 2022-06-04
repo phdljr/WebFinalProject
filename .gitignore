@@ -24,6 +24,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+# npm run build 결과물 삭제
+backend/src/main/resources/static/*
 
 ########Back end#########
 
