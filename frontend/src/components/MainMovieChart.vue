@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   name: 'HomeView',
@@ -101,6 +102,12 @@ export default {
     onHidden() {
       // Focus the show button when the overlay is removed
       this.$refs.show.focus()
+    },
+    getMovieChart(){
+      const key = "consumer_key="+"09cd8b73e1e74ba39b80"+"&consumer_secret="+"c36d02cd136f451c9a55"
+      axios.get("https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?" + key).then(res=>{
+        console.log(res)
+      })
     }
   },
   computed:{
@@ -110,6 +117,9 @@ export default {
     maxPage(){
         return Math.ceil(this.movieChart.length/5)-1
     }
+  },
+  mounted(){
+    //this.getMovieChart()
   }
 }
 </script>
