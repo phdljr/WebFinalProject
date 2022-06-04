@@ -1,34 +1,29 @@
 package kr.ac.kumoh.backend.controller;
 
+import kr.ac.kumoh.backend.Service.ImageService;
+import kr.ac.kumoh.backend.dto.Movie;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 
 
+
+@RequiredArgsConstructor
 @RestController
 @Slf4j
 public class MovieController {
 
-    @GetMapping(value = "/movies", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] getMovieImages() {
+    private final ImageService imageService;
 
-        byte[] images = null;
-        String imagePath = ".//backend/src//main//resources//static//movies//1쥬라기월드.jpg";
+    @GetMapping(value = "/movies")
+    public List<Movie> getMovieImages() {
 
-        try {
-            InputStream inputStream = new FileInputStream(imagePath);
-            images = IOUtils.toByteArray(inputStream);
-        } catch (IOException e) {
-            log.warn("IOException");
-        } catch (NullPointerException e) {
-            log.warn("Null Pointer Exception");
-        }
-        return images;
+        List<Movie> movies = imageService.loadMovieImages();
+
+        return movies;
     }
 }
