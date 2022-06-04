@@ -1,10 +1,9 @@
 package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.ImageService;
-import kr.ac.kumoh.backend.dto.Movie;
+import kr.ac.kumoh.backend.dto.MovieDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +19,10 @@ public class MovieController {
     private final ImageService imageService;
 
     @GetMapping(value = "/movies")
-    public List<Movie> getMovieImages() {
+    public List<MovieDTO> getMovieImages() {
 
-        List<Movie> movies = imageService.loadMovieImages();
+        List<MovieDTO> movieDTOS = imageService.loadMovieImages();
 
-        return movies;
+        return movieDTOS;
     }
 }
