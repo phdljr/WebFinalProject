@@ -1,5 +1,9 @@
-# WebFinalProject  
+# 고급 웹 프로그래밍 수업 프로젝트 
 
-- vue-cil 설치 : npm install -g @vue/cli
-- 프론트 빌드하기 : npm run build  
-- 프론트만 실행시키기 : npm run serve  
+### 🎥영화관 예매 홈페이지 만들기
+
+### Vue 빌드 방법
+- vue 설치 : ```npm install -g vue```
+- vue-cil 설치 : ```npm install -g @vue/cli```
+- vue 빌드 : ```npm run build```
+- vue만 실행 : ```npm run serve```
