@@ -12,7 +12,7 @@ const routes = [
     path: '/movie',
     name: 'movie',
     component: MovieView
-  }
+  },
 ]
 
 const router = createRouter({
