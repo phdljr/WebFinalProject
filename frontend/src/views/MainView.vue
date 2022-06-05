@@ -5,16 +5,14 @@
 </template>
 
 <script>
-import MainMovieChartVue from '@/components/MainMovieChart.vue'
+import MainMovieChartVue from "@/components/MainMovieChart.vue";
 
 export default {
-  name: 'HomeView',
+  name: "MainView",
   components: {
-    MainMovieChartVue
+    MainMovieChartVue,
   },
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
