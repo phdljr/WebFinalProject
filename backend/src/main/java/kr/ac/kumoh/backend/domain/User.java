@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -21,6 +19,14 @@ public class User {
     @GeneratedValue
     @Column(name = "USERS_ID")
     private Long id;
+
+    @ManyToMany
+    @JoinTable(
+            name = "USER_BOOK",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "BOOK_ID")
+    )
+    private List<Book> book;
 
     private String userId;
     private String userPw;
