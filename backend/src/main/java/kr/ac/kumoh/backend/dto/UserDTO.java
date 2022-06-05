@@ -1,16 +1,14 @@
 package kr.ac.kumoh.backend.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-@Setter
-@Builder
-public class MovieDTO {
+public class UserDTO {
 
-    private String MovieName;
+    private String id;
+    private String pw;
 }

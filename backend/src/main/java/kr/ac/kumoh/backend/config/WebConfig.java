@@ -19,7 +19,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private myPathResourceResolver myPathResourceResolver;
 
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

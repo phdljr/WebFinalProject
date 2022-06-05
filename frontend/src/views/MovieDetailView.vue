@@ -1,22 +1,23 @@
 <template>
-  {{$route.params.movie}}
+  <!-- {{$route.params.movie}} -->
   <div class="MovieDetail">
-    <img :src="movieDetail.img">
+    <img :src="movieDetail.img" />
     <div class="movieContent">
-      <h1>{{movieDetail.name}}</h1>
-      <h7>{{movieDetail.nameEng}}</h7>
+      <h1>{{ movieDetail.name }}</h1>
+      <h7>{{ movieDetail.nameEng }}</h7>
       <div class="score">예매율: 모름</div>
+
       <h7>감독 : {{movieDetail.director}} / 배우 : {{movieDetail.actors}}</h7><br>
       <h7>장르 : {{movieDetail.genre}}</h7><br>
       <h7>개봉일: {{movieDetail.openingDate}}</h7><br>
       <b-button
-          ref="cancel"
-          variant="outline-danger"
-          size="sm"
-          aria-describedby="cancel-label"
-          @click="$router.push('#')"
+        ref="cancel"
+        variant="outline-danger"
+        size="sm"
+        aria-describedby="cancel-label"
+        @click="$router.push('#')"
       >
-          예매하기
+        예매하기
       </b-button>
     </div>
   </div>
@@ -40,6 +41,7 @@
       </b-col>
     </b-row>
   </div>
+  <div class="comment"></div>
 </template>
 
 <script>
@@ -86,27 +88,27 @@ export default {
 </script>
 
 <style>
-.MovieDetail{
+.MovieDetail {
   width: 100%;
   height: max-content;
   text-align: left;
   clear: both;
   overflow: hidden;
 }
-.MovieDetail img{
+.MovieDetail img {
   width: 180px;
   float: left;
   margin-right: 20px;
 }
-.MovieDetail h5{
+.MovieDetail h5 {
   margin-bottom: 1em;
 }
-.score{
+.score {
   width: 780px;
   border-bottom: 1px solid #333333;
   margin-bottom: 1em;
 }
-.movieContent{
+.movieContent {
   float: left;
   width: 780px;
 }
