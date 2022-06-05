@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,17 +19,18 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "USER_ID")
-    private Long user_id;
+    @Column(name = "USERS_ID")
+    private Long id;
 
-    private String id;
-    private String pw;
+    private String userId;
+    private String userPw;
     private String gender;
     private int age;
 
-    public User(Long user_id, String pw, String gender, int age) {
-        this.user_id = user_id;
-        this.pw = pw;
+    @Builder
+    public User(String userId, String userPw, String gender, int age) {
+        this.userId = userId;
+        this.userPw = userPw;
         this.gender = gender;
         this.age = age;
     }

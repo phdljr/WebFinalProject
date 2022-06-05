@@ -1,7 +1,8 @@
 package kr.ac.kumoh.backend.Service;
 
-import kr.ac.kumoh.backend.domain.LoginStatus;
+import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.domain.User;
+import kr.ac.kumoh.backend.dto.RegisterDTO;
 import kr.ac.kumoh.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,17 +15,54 @@ import static java.util.Objects.isNull;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    
+
     private final UserRepository userRepository;
 
-    public LoginStatus login(String id, String pw) {
-        LoginStatus result;
-        User loginUser = userRepository.findByIdAndPw(id, pw);
+    @Override
+    public StatusOfUser login(String userId, String userPw) {
 
+        User loginUser = userRepository.findByUserIdAndUserPw(userId, userPw);
+
+        StatusOfUser result;
         if (isNull(loginUser))
-            result = LoginStatus.Fail;
+            result = StatusOfUser.Fail;
         else
-            result = LoginStatus.Success;
+            result = StatusOfUser.Success;
+
+        return result;
+    }
+
+    @Override
+    public StatusOfUser register(RegisterDTO registerDTO) {
+
+        StatusOfUser result;
+        try {
+            User user = User.builder()
+                    .userId(registerDTO.getId())
+                    .userPw(registerDTO.getPw())
+                    .age(registerDTO.getAge())
+                    .gender(registerDTO.getGender())
+                    .build();
+
+            userRepository.save(user);
+            result = StatusOfUser.Success;
+        } catch (Exception e) {
+            result = StatusOfUser.Fail;
+        }
+
+        return result;
+    }
+
+    @Override
+    public StatusOfUser checkIfIdDuplicated(String userId) {
+
+        User duplicatedIdUser = userRepository.findByUserId(userId);
+
+        StatusOfUser result;
+        if (isNull(duplicatedIdUser))
+            result = StatusOfUser.Success;
+        else
+            result = StatusOfUser.Duplicated;
 
         return result;
     }
