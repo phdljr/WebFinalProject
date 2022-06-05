@@ -6,7 +6,7 @@
           <h3 style="text-align: left">무비차트</h3>
         </b-col>
         <b-col>
-          <a style="float: right" href="/movie">전체보기</a>
+          <router-link to="/movie" style="float: right">전체보기</router-link>
         </b-col>
       </b-row>
       <b-list-group horizontal id="movieChart">
@@ -50,7 +50,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('#')"
+                  @click="$router.push('/movie/'+movie.title)"
                 >
                   상세보기
                 </b-button>
