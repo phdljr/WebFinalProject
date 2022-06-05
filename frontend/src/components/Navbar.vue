@@ -2,7 +2,7 @@
   <div class="navbar">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">CGV</a>
+        <a class="navbar-brand" @click="$router.push('/')">CGV</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -17,10 +17,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">영화</a>
+              <a class="nav-link" @click="$router.push('movie')">영화</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">극장</a>
+              <a class="nav-link" @click="$router.push('register')">극장</a>
             </li>
           </ul>
         </div>
@@ -30,7 +30,7 @@
               <a class="nav-link" @click="$router.push('register')">회원가입</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">로그인</a>
+              <a class="nav-link" @click="$router.push('login')">로그인</a>
             </li>
           </ul>
         </div>
