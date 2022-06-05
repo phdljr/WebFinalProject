@@ -20,13 +20,13 @@ public class User {
     @Column(name = "USERS_ID")
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "USER_BOOK",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "BOOK_ID")
-    )
-    private List<Book> book;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "USER_BOOK",
+//            joinColumns = @JoinColumn(name = "USER_ID"),
+//            inverseJoinColumns = @JoinColumn(name = "BOOK_ID")
+//    )
+//    private List<Book> book;
 
     private String userId;
     private String userPw;

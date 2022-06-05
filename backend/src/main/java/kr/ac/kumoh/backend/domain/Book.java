@@ -1,17 +1,17 @@
 package kr.ac.kumoh.backend.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
 
     @Id
@@ -19,15 +19,22 @@ public class Book {
     @Column(name = "BOOK_ID")
     private Long id;
 
-    private int NumOfPeople;
+    private int numOfPeople;
     private int price;
 
-    @ManyToMany
-    private List<User> users;
+    public Book(int numOfPeople, int price) {
+        this.numOfPeople = numOfPeople;
+        this.price = price;
+    }
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @MapKeyColumn(name = "ROWS")
-    @Column(name = "COLUMNS")
-    @CollectionTable(name = "SEATS", joinColumns = @JoinColumn(name = "BOOK_ID"))
-    private Map<String, Integer> seats = new HashMap<>();
+//    @ManyToMany
+//    private List<User> users;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Seat> seats = new ArrayList<>();
+
+    public void addSeat(Seat seat) {
+        seats.add(seat);
+        seat.setBook(this);
+    }
 }
