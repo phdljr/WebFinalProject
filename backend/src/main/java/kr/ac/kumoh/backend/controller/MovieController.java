@@ -17,8 +17,16 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @GetMapping(value = "/movies")
-    public List<MovieDTO> getMovieImages() {
+    // 예매율순
+    @GetMapping(value = "/movies/sales")
+    public List<MovieDTO> getMoviesBySales() {
+
+        return movieService.getTop10Movies();
+    }
+
+    // 평점순
+    @GetMapping(value = "/movies/rates")
+    public List<MovieDTO> getMoviesByRates() {
 
         return movieService.getTop10Movies();
     }
