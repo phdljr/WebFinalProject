@@ -31,5 +31,6 @@ export default {
 .content{
   margin-top: 7em;
   width: 980px;
+  padding-bottom: 100px;
 }
 </style>
