@@ -14,7 +14,7 @@
           <div class="movieListDetail">
             <p>{{movie.title}}</p>
             <p>예매율 ??%</p>
-            <b-button variant="outline-danger" @click="$router.push('/')">예매하기</b-button>
+            <b-button variant="outline-danger" @click="$router.push('/ticket?movie='+movie.title)">예매하기</b-button>
           </div>
         </b-col>
       </b-row>
@@ -35,7 +35,7 @@ export default {
       movies:[
         {
           rank:1,
-          title:"몰루"
+          title:"title"
         },
         {
           rank:2,

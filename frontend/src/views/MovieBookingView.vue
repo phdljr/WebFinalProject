@@ -44,8 +44,8 @@ export default {
     name: "movieBookingView",
     data() {
         return {
-            selectMovie:null,
-            selectTime:{ theater:"", time:""},
+            selectMovie:this.$route.query.movie,
+            selectTime:{ theater:this.$route.query.theater, time:this.$route.query.time},
             movie:[
                 { value: "title", text: "영화 제목임" }
             ],

@@ -23,7 +23,12 @@
             <div style="float:left;margin-left:1em;color: #a0a0a0;">{{movieDetail.genre}} / {{movieDetail.openingDate}}</div>
             <div class="timeSelect" v-for="(theater, index) in movieDetail.theater" :key="index">
                 <div>▶ 2D | {{theater.name}} | 총 {{theater.totalSeat}}석</div>
-                <b-button class="timeButton" variant="outline-secondary" v-for="(time, index) in theater.time" :key="index">
+                <b-button
+                    class="timeButton"
+                    variant="outline-secondary"
+                    v-for="(time, index) in theater.time"
+                    :key="index"
+                    @click="$router.push('/ticket?movie='+movieDetail.title+'&theater=' + theater.name + '&time=' + time.time)">
                     {{time.time}}<br>
                     {{time.seat}}석
                 </b-button>
@@ -37,17 +42,17 @@ export default {
     data() {
         return {
             movieDetail: {
-                title: "영화 제목",
+                title: "title",
                 genre: "범죄, 액션",
                 age: "15세 이상",
                 openingDate: "2022.05.18",
                 theater:[
                     {
-                        name:"1관 2층",
+                        name:"1관",
                         totalSeat:80,
                         time:[
                             {
-                                time:"17:30",
+                                time:"12:00",
                                 seat:30
                             },
                             {
@@ -57,7 +62,7 @@ export default {
                         ]
                     },
                     {
-                        name:"2관 3층",
+                        name:"2관",
                         totalSeat:80,
                         time:[
                             {

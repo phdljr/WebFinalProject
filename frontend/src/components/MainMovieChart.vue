@@ -55,7 +55,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('#')"
+                  @click="$router.push('/ticket?movie='+movie.title)"
                 >
                   예매하기
                 </b-button>
@@ -92,7 +92,7 @@ export default {
       page: 0,
       show: false,
       movieChart: [
-        { title: "1" },
+        { title: "title" },
         { title: "2" },
         { title: "3" },
         { title: "4" },
