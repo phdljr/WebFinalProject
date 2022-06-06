@@ -7,6 +7,29 @@ import lombok.Setter;
 import javax.persistence.*;
 
 
+@NamedEntityGraph(
+        name = "User.BookingDetails",
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode(value = "movieSchedule",subgraph = "get.Theater.Movie"),
+                @NamedAttributeNode(value = "book", subgraph = "get.SeatInfo")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "get.SeatInfo",
+                        attributeNodes = {
+                            @NamedAttributeNode("seats")
+                        }
+                ),
+                @NamedSubgraph(
+                        name = "get.Theater.Movie",
+                        attributeNodes = {
+                                @NamedAttributeNode("theater"),
+                                @NamedAttributeNode("movie")
+                        }
+                )
+        }
+)
 @Entity
 @Table(name = "BOOKING_DETAILS")
 @Setter @Getter
@@ -25,4 +48,8 @@ public class BookDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private Book book;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MS_ID")
+    private MovieSchedule movieSchedule;
 }
