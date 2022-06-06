@@ -27,9 +27,6 @@ public class Book {
         this.price = price;
     }
 
-//    @ManyToMany
-//    private List<User> users;
-
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Seat> seats = new ArrayList<>();
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,13 +21,8 @@ public class User {
     @Column(name = "USERS_ID")
     private Long id;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "USER_BOOK",
-//            joinColumns = @JoinColumn(name = "USER_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "BOOK_ID")
-//    )
-//    private List<Book> book;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BookDetails> bookDetails = new ArrayList<>();
 
     private String userId;
     private String userPw;
