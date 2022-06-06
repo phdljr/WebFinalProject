@@ -67,7 +67,7 @@ export default {
     },
     computed:{
         isTimeSelected(){
-            if(this.selectTime.theater!=''){
+            if(this.selectTime.theater!=null && this.selectTime.time!=null){
                 return true
             }
             else{
