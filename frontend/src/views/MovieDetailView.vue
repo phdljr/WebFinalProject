@@ -3,8 +3,8 @@
   <div class="MovieDetail">
     <img :src="movieDetail.img" />
     <div class="movieContent">
-      <h1>{{ movieDetail.name }}</h1>
-      <h7>{{ movieDetail.nameEng }}</h7>
+      <h1>{{ movieDetail.title }}</h1>
+      <h7>{{ movieDetail.titleEng }}</h7>
       <div class="score">예매율: 모름</div>
 
       <h7
@@ -24,10 +24,6 @@
         예매하기
       </b-button>
     </div>
-    <div class="movieGraph">
-      <div></div>
-    </div>
-    <div class="comment"></div>
   </div>
   <div class="movieGraph">
     <movie-detail-chart-vue
@@ -67,8 +63,8 @@ export default {
   data() {
     return {
       movieDetail: {
-        name: "영화 제목",
-        nameEng: "name",
+        title: "영화 제목",
+        titleEng: "title",
         img: "https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85813/85813_320.jpg",
         director: "감독님",
         actors: ["배우1", "배우2"],

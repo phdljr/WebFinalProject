@@ -20,7 +20,7 @@
               <a class="nav-link" @click="$router.push('movie')">영화</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="$router.push('register')">극장</a>
+              <a class="nav-link" @click="$router.push('theater')">극장</a>
             </li>
           </ul>
         </div>
