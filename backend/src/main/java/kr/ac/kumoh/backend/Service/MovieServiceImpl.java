@@ -53,16 +53,17 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDTO> getTop10Movies() {
-        List<MovieDTO> movieDTOS = new ArrayList<>();
-        List<Movie> movies = movieRepository.findAllByOrderByRankAsc();
-
-        for (Movie movie : movies) {
-            MovieDTO movieDTO = MovieDTO.builder()
-                    .MovieName(movie.getMovieName())
-                    .build();
-            movieDTOS.add(movieDTO);
-        }
-
-        return movieDTOS;
+//        List<MovieDTO> movieDTOS = new ArrayList<>();
+//        List<Movie> movies = movieRepository.findAllByOrderByRankAsc();
+//
+//        for (Movie movie : movies) {
+//            MovieDTO movieDTO = MovieDTO.builder()
+//                    .MovieName(movie.getTitle())
+//                    .build();
+//            movieDTOS.add(movieDTO);
+//        }
+//
+//        return movieDTOS;
+        return new ArrayList<MovieDTO>();
     }
 }
