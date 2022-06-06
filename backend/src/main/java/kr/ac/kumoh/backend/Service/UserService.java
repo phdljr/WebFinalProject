@@ -2,6 +2,7 @@ package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.dto.RegisterDTO;
+import kr.ac.kumoh.backend.dto.UserInfoDTO;
 
 public interface UserService {
 
@@ -10,4 +11,6 @@ public interface UserService {
     StatusOfUser register(RegisterDTO registerDTO);
 
     StatusOfUser checkIfIdDuplicated(String id);
+
+    UserInfoDTO getUserInfo(String userId);
 }

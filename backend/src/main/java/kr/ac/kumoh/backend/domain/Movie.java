@@ -19,11 +19,16 @@ public class Movie {
     @Column(name = "MOVIE_ID")
     private Long id;
 
-    private String movieName;
-    private int rank;
+    private String title;
+    // 영상물 등급
+    private String mediaRating;
+    private String releaseDate;
+    private String runtime;
 
-    public Movie(String movieName, int rank) {
-        this.movieName = movieName;
-        this.rank = rank;
+    public Movie(String title, String mediaRating, String releaseDate, String runtime) {
+        this.title = title;
+        this.mediaRating = mediaRating;
+        this.releaseDate = releaseDate;
+        this.runtime = runtime;
     }
 }
