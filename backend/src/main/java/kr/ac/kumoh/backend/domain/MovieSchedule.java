@@ -36,6 +36,6 @@ public class MovieSchedule {
     // 상영 시작 시각
     private String screenTime;
 
-    // 가격(추후에 할인 정책 세우기)
+    // 가격 (추후에 할인 정책 세우기)
     private int price;
 }

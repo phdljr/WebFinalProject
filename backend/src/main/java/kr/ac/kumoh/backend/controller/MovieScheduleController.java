@@ -6,6 +6,7 @@ import kr.ac.kumoh.backend.dto.MovieScheduleDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -19,10 +20,9 @@ public class MovieScheduleController {
 
     private final MovieScheduleRepository scheduleRepository;
 
-    @GetMapping("/MovieSchedules")
-    public List<MovieScheduleDTO> getMovieSchedule() {
-
-        List<MovieSchedule> movieSchedules = scheduleRepository.getAllMovieSchedules();
+    @GetMapping("/schedules/{movieName}")
+    public List<MovieScheduleDTO> getMovieSchedule(@PathVariable(name = "movieName") String movieName) {
+        List<MovieSchedule> movieSchedules = scheduleRepository.getAllMovieSchedules(movieName);
 
         List<MovieScheduleDTO> movieScheduleDTOS = new ArrayList<>();
         movieSchedules.forEach(ms -> {
