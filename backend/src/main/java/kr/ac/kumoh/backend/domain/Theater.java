@@ -23,6 +23,10 @@ public class Theater {
     private int floor;
     // 몇 관
     private String screen;
-
-    // 좌석 클래스
+    // 행
+    private int numOfRows;
+    // 열
+    private int numOfColumns;
+    // 총 좌석 수
+    private int numOfSeats;
 }
