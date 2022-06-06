@@ -1,9 +1,19 @@
 package kr.ac.kumoh.backend.domain;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 
+@NamedEntityGraph (
+        name = "MovieSchedule.Movie.Theater.graph",
+        attributeNodes = {
+                @NamedAttributeNode("movie"),
+                @NamedAttributeNode("theater")
+        }
+)
 @Entity
+@Getter
 @Table(name = "MOVIE_SCHEDULE")
 public class MovieSchedule {
 
