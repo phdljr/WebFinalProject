@@ -7,6 +7,7 @@ import RegisterView from "../views/RegisterView.vue";
 import TheaterView from "../views/TheaterView.vue";
 import MyPageView from "../views/MyPageView.vue";
 import MovieBookingView from "../views/MovieBookingView.vue";
+import SeatSelectView from "../views/SeatSelectView.vue";
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: "/ticket",
     name: "MovieBookingView",
     component: MovieBookingView,
+  },
+  {
+    path: "/seatSelect",
+    name: "SeatSelectView",
+    component: SeatSelectView,
   }
 ];
 
