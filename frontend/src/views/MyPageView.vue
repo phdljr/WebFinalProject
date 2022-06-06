@@ -27,10 +27,7 @@
           <b-tbody>
             <b-tr>
               <b-th rowspan="4">
-                <img
-                  src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85689/85689_320.jpg"
-                  style="width: 100px"
-                />
+                <img :src="book.imgUrl" style="width: 100px" />
               </b-th>
             </b-tr>
             <b-tr>
@@ -46,9 +43,9 @@
               <b-td colspan="3" class="text-left">{{ book.date }}</b-td>
               <b-td>관람좌석</b-td>
               <b-td colspan="3" class="text-left"
-                ><span v-for="(seat, index) in book.seats" :key="index">{{
-                  seat
-                }}</span></b-td
+                ><span v-for="(seat, index) in book.seats" :key="index"
+                  >{{ seat }}
+                </span></b-td
               >
             </b-tr>
             <b-tr>
@@ -86,10 +83,22 @@ export default {
           theater: "CGV 구미",
           numOfPeople: "3",
           date: "2022.05.08(일) 14:20",
-          seats: ["I 23", "I 10"], // 이건 따로 수정
+          seats: ["I23", "I10"], // 이건 따로 수정
           floorOfTheater: "1층 1관",
           numOfTicket: "2",
           totalPrice: "24,000",
+        },
+        {
+          title: "극장판 포캣몬스터",
+          imgUrl:
+            "https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85833/85833_320.jpg",
+          theater: "CGV 구미",
+          numOfPeople: "4",
+          date: "2022.05.08(일) 14:20",
+          seats: ["A3", "A4"], // 이건 따로 수정
+          floorOfTheater: "2층 2관",
+          numOfTicket: "2",
+          totalPrice: "22,000",
         },
       ],
     };

@@ -15,7 +15,6 @@
       </div>
       <b-button id="loginButton" type="submit"> 로그인 </b-button>
     </b-form>
-
     <div class="signIn">
       계정이 없으신가요?
       <a @click="$router.push('register')">회원가입</a>
