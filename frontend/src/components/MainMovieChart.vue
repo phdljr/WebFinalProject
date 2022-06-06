@@ -27,8 +27,6 @@
           <b-overlay
             :show="showOverlayList[key]"
             rounded="sm"
-            @shown="onShown"
-            @hidden="onHidden"
           >
             <b-card
               :title="movie.title"
@@ -46,7 +44,6 @@
             <template #overlay>
               <div class="text-center" @mouseout="showOverlayList[key] = false">
                 <b-button
-                  ref="cancel"
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
@@ -55,7 +52,6 @@
                   상세보기
                 </b-button>
                 <b-button
-                  ref="cancel"
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
@@ -112,14 +108,6 @@ export default {
     };
   },
   methods: {
-    onShown() {
-      // Focus the cancel button when the overlay is showing
-      this.$refs.cancel.focus();
-    },
-    onHidden() {
-      // Focus the show button when the overlay is removed
-      this.$refs.show.focus();
-    },
     getMovieChart() {
       const key =
         "consumer_key=" +

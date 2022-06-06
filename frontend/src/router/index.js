@@ -6,6 +6,7 @@ import LoginView from "../views/LoginView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import TheaterView from "../views/TheaterView.vue";
 import MyPageView from "../views/MyPageView.vue";
+import MovieBookingView from "../views/MovieBookingView.vue";
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: "myPage",
     component: MyPageView,
   },
+  {
+    path: "/ticket",
+    name: "MovieBookingView",
+    component: MovieBookingView,
+  }
 ];
 
 const router = createRouter({
