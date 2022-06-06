@@ -5,7 +5,7 @@ export default createStore({
   state: {
     login: false,
     userData: {
-      userId: null,
+      userId: "test",
       userGender: null,
       userAge: null,
       bookingMovie: [],
