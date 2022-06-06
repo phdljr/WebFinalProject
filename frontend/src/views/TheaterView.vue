@@ -103,7 +103,6 @@ export default {
 .movieSelect{
     width: 100%;
     text-align: left;
-    border-bottom: 1px solid #333333;
 }
 .timeSelect{
     width: 100%;
@@ -114,5 +113,9 @@ export default {
     float: left;
     margin-top: 10px;
     margin-right: 1em;
+}
+.movieTitle{
+    padding-top: 20px;
+    border-bottom: none;
 }
 </style>

@@ -24,10 +24,6 @@
         예매하기
       </b-button>
     </div>
-    <div class="movieGraph">
-      <div></div>
-    </div>
-    <div class="comment"></div>
   </div>
   <div class="movieGraph">
     <movie-detail-chart-vue
