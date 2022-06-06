@@ -10,7 +10,7 @@
           <div class="movieListRank">
             No. {{movie.rank}}
           </div>
-          <a href="#"><img src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85833/85833_320.jpg"></a>
+          <router-link :to="'/movie/'+movie.title"><img src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85833/85833_320.jpg"></router-link>
           <div class="movieListDetail">
             <p>{{movie.title}}</p>
             <p>예매율 ??%</p>

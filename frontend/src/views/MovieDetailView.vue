@@ -6,10 +6,14 @@
       <h1>{{ movieDetail.name }}</h1>
       <h7>{{ movieDetail.nameEng }}</h7>
       <div class="score">예매율: 모름</div>
-      <h7>감독:{{ movieDetail.director }} / 배우:{{ movieDetail.actors }}</h7
+
+      <h7
+        >감독 : {{ movieDetail.director }} / 배우 : {{ movieDetail.actors }}</h7
       ><br />
-      <h7>asdf</h7><br />
-      <h7>asdf</h7><br />
+      <h7>장르 : {{ movieDetail.genre }}</h7
+      ><br />
+      <h7>개봉일: {{ movieDetail.openingDate }}</h7
+      ><br />
       <b-button
         ref="cancel"
         variant="outline-danger"
@@ -20,15 +24,46 @@
         예매하기
       </b-button>
     </div>
+    <div class="movieGraph">
+      <div></div>
+    </div>
+    <div class="comment"></div>
   </div>
   <div class="movieGraph">
-    <div></div>
+    <movie-detail-chart-vue
+      :ageData="movieDetail.ageChart"
+      :sexData="movieDetail.sexChart"
+    ></movie-detail-chart-vue>
+  </div>
+  <div class="commentTable">
+    <h3 style="margin-top: 80px">댓글</h3>
+    <b-row v-for="(row, index) in commentTable" :key="index">
+      <b-col v-for="(comment, index) in row" :key="index">
+        <div class="commentBox">
+          <p>{{ comment.user }}</p>
+          <div class="comment">
+            {{ comment.comment }}
+          </div>
+          <b-button>
+            <b-icon icon="heart-fill"></b-icon>
+            {{ comment.like }}
+          </b-button>
+        </div>
+      </b-col>
+    </b-row>
   </div>
   <div class="comment"></div>
 </template>
 
 <script>
+import chunk from "chunk";
+import MovieDetailChartVue from "@/components/MovieDetailChart.vue";
+
 export default {
+  components: {
+    MovieDetailChartVue,
+  },
+
   data() {
     return {
       movieDetail: {
@@ -40,8 +75,25 @@ export default {
         genre: "범죄, 액션",
         age: "15세 이상",
         openingDate: "2022.05.18",
+        comment: [
+          { user: "유저1", comment: "댓글임", like: 2 },
+          { user: "유저2", comment: "댓글임", like: 3 },
+          { user: "유저3", comment: "댓글임", like: 2 },
+          { user: "유저4", comment: "댓글임", like: 2 },
+          { user: "유저5", comment: "댓글임", like: 2 },
+          { user: "유저6", comment: "댓글임", like: 27 },
+          { user: "유저7", comment: "댓글임", like: 1 },
+          { user: "유저8", comment: "댓글임", like: 5 },
+        ],
+        sexChart: [34, 27],
+        ageChart: [21, 27, 18, 16, 12],
       },
     };
+  },
+  computed: {
+    commentTable() {
+      return chunk(this.movieDetail.comment, 2);
+    },
   },
 };
 </script>
@@ -49,7 +101,10 @@ export default {
 <style>
 .MovieDetail {
   width: 100%;
+  height: max-content;
   text-align: left;
+  clear: both;
+  overflow: hidden;
 }
 .MovieDetail img {
   width: 180px;
@@ -67,5 +122,21 @@ export default {
 .movieContent {
   float: left;
   width: 780px;
+}
+.movieGraph {
+  width: 100%;
+  clear: both;
+  overflow: hidden;
+  margin-top: 70px;
+}
+.commentTable {
+  text-align: left;
+}
+.comment {
+  height: 200px;
+}
+.commentBox {
+  border-bottom: 1px solid #333333;
+  padding: 20px;
 }
 </style>
