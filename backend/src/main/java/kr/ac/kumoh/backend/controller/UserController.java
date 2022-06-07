@@ -6,6 +6,7 @@ import kr.ac.kumoh.backend.dto.OneParamDTO;
 import kr.ac.kumoh.backend.dto.RegisterDTO;
 import kr.ac.kumoh.backend.dto.UserDTO;
 import kr.ac.kumoh.backend.dto.UserInfoDTO;
+import kr.ac.kumoh.backend.repository.BookDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

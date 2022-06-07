@@ -1,19 +1,16 @@
 package kr.ac.kumoh.backend.Service;
 
-import kr.ac.kumoh.backend.domain.Book;
-import kr.ac.kumoh.backend.domain.BookDetails;
-import kr.ac.kumoh.backend.domain.Seat;
-import kr.ac.kumoh.backend.domain.User;
+import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.ReserveMovieDTO;
-import kr.ac.kumoh.backend.repository.BookDetailsRepository;
-import kr.ac.kumoh.backend.repository.BookRepository;
-import kr.ac.kumoh.backend.repository.SeatRepository;
-import kr.ac.kumoh.backend.repository.UserRepository;
+import kr.ac.kumoh.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static java.util.Objects.isNull;
+import static kr.ac.kumoh.backend.domain.StatusOfUser.*;
 
 
 @Slf4j
@@ -25,12 +22,15 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final SeatRepository seatRepository;
     private final BookDetailsRepository bookDetailsRepository;
+    private final MovieScheduleRepository movieScheduleRepository;
 
     @Override
-    public void saveUserMovieReservation(ReserveMovieDTO reserveMovieDTO) {
+    public StatusOfUser saveUserMovieReservation(ReserveMovieDTO reserveMovieDTO) {
 
         // Get Values from DTO
         String userId = reserveMovieDTO.getUserId();
+        String movieName = reserveMovieDTO.getMovieName();
+        String screenTime = reserveMovieDTO.getScreenTime();
         int numOfPeople = reserveMovieDTO.getNumOfPeople();
         int price = reserveMovieDTO.getPrice();
         List<String> rows = reserveMovieDTO.getRows();
@@ -38,6 +38,13 @@ public class BookServiceImpl implements BookService {
 
         // find User by UserId
         User findUser = userRepository.findByUserId(userId);
+        if (isNull(findUser))
+            return NonExistUser;
+
+        // find MovieSchedule
+        MovieSchedule movieSchedule = movieScheduleRepository.getMovieScheduleEntity(movieName, screenTime);
+        if (isNull(movieSchedule))
+            return NonExistMovie;
 
         // Save Book Info
         Book book = new Book(numOfPeople, price);
@@ -50,11 +57,15 @@ public class BookServiceImpl implements BookService {
 
             seatRepository.save(seat);
         }
+        movieSchedule.subRemainingSeat(numOfPeople);
 
         // Save BookDetails Info
         BookDetails bookDetails = new BookDetails();
         bookDetails.setBook(book);
         bookDetails.setUser(findUser);
+        bookDetails.setMovieSchedule(movieSchedule);
         bookDetailsRepository.save(bookDetails);
+
+        return Success;
     }
 }

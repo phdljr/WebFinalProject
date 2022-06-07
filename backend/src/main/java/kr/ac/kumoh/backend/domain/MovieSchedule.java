@@ -38,4 +38,10 @@ public class MovieSchedule {
 
     // 가격 (추후에 할인 정책 세우기)
     private int price;
+
+    private int remainingSeat;
+
+    public void subRemainingSeat(int numOfPeople) {
+        this.remainingSeat -= numOfPeople;
+    }
 }
