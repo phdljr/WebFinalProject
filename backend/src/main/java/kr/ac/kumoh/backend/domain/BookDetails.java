@@ -11,14 +11,14 @@ import javax.persistence.*;
         name = "User.BookingDetails",
         attributeNodes = {
                 @NamedAttributeNode("user"),
-                @NamedAttributeNode(value = "movieSchedule",subgraph = "get.Theater.Movie"),
+                @NamedAttributeNode(value = "movieSchedule", subgraph = "get.Theater.Movie"),
                 @NamedAttributeNode(value = "book", subgraph = "get.SeatInfo")
         },
         subgraphs = {
                 @NamedSubgraph(
                         name = "get.SeatInfo",
                         attributeNodes = {
-                            @NamedAttributeNode("seats")
+                                @NamedAttributeNode("seats")
                         }
                 ),
                 @NamedSubgraph(
@@ -32,7 +32,8 @@ import javax.persistence.*;
 )
 @Entity
 @Table(name = "BOOKING_DETAILS")
-@Setter @Getter
+@Setter
+@Getter
 @NoArgsConstructor
 public class BookDetails {
 
