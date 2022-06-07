@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         UserInfoDTO userInfoDTO = UserInfoDTO.builder()
                 .age(findUser.getAge())
                 .gender(findUser.getGender())
-                .userBookDetailsDTOS(userBookDetailsDTOS)
+                .reservations(userBookDetailsDTOS)
                 .build();
 
         return userInfoDTO;

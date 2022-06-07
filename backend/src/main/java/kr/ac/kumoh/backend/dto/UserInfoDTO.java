@@ -15,11 +15,11 @@ public class UserInfoDTO {
     // 예매 내역은 나중에 추가
     private String gender;
     private int age;
-    List<UserBookDetailsDTO> userBookDetailsDTOS = new ArrayList<>();
+    List<UserBookDetailsDTO> reservations = new ArrayList<>();
 
     public UserInfoDTO(String gender, int age, List<UserBookDetailsDTO> userBookDetailsDTOS) {
         this.gender = gender;
         this.age = age;
-        this.userBookDetailsDTOS = userBookDetailsDTOS;
+        this.reservations = userBookDetailsDTOS;
     }
 }
