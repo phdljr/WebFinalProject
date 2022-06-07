@@ -27,7 +27,7 @@
           <b-tbody>
             <b-tr>
               <b-th rowspan="4">
-                <img :src="'../images/' + book.movieName + '.jpg'" style="width: 100px" />
+                <img :src="'../movies/' + book.movieName + '.jpg'" style="width: 100px" />
               </b-th>
             </b-tr>
             <b-tr>
