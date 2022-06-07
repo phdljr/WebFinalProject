@@ -34,9 +34,15 @@
                     v-for="(seat, colNum) in row"
                     :key="colNum"
                     @click="chooseSeat(rowNum, colNum)"
-                >{{seat}}
+                    :variant="seat==1?'danger':'outline-secondary'"
+                >
                 </b-button>
             </div>
+        </b-row>
+        <b-row>
+            <b-col>
+                <b-button id="bookButton">예매하기</b-button>
+            </b-col>
         </b-row>
     </div>
 </template>
@@ -114,5 +120,14 @@ export default {
     padding: 0.3em;
     color: #cecece;
     margin-bottom: 20px;
+}
+.seatTableRow button{
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+}
+#bookButton{
+    margin-top: 50px;
+    float: right;
 }
 </style>

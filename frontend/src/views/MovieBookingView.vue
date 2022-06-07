@@ -30,7 +30,7 @@
             <b-col>영화 제목:{{selectMovie}}</b-col>
             <b-col>상영관:{{selectTime.theater}} {{selectTime.time}}</b-col>
             <b-col cols="5" md="auto">
-                <router-link to="/" v-if="isTimeSelected">
+                <router-link to="/seatSelect" v-if="isTimeSelected">
                     <b-icon icon="arrow-right-square-fill" size="5x"></b-icon>
                     <br>예매하기
                 </router-link>
