@@ -13,6 +13,11 @@ spring:
       hibernate:
         format_sql: true
 
+  # Spring Swagger
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
