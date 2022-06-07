@@ -14,4 +14,8 @@ public interface MovieScheduleRepository extends JpaRepository<MovieSchedule, Lo
     @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName")
     List<MovieSchedule> getAllMovieSchedules(@Param("movieName") String movieName);
+
+    @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName and ms.screenTime = :screenTime")
+    MovieSchedule getMovieScheduleEntity(@Param("movieName") String movieName, @Param("screenTime") String screenTime);
 }
