@@ -104,6 +104,11 @@ export default {
             }
             return table
         },
+    },
+    watch:{
+        personNum:function(){
+            this.selectSeat=[]
+        }
     }
     
 }
