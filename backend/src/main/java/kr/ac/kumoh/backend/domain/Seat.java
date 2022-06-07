@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @Table(name = "SEATS")
 public class Seat {

@@ -18,12 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final BookDetailsRepository repository;
-
-    @GetMapping("/test")
-    public void test() {
-        repository.getUserMovieSchedule("id1");
-    }
 
     /**
      * Success: 로그인 성공
