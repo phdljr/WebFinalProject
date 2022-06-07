@@ -15,5 +15,5 @@ app.use(router);
 app.use(BootstrapVue3);
 app.mount("#app");
 
-app.config.globalProperties.HOST = "http://117.20.209.64:8080"; // 종렬 테스트
-// app.config.globalProperties.HOST = "http://202.31.200.215:8080"; // 민수 테스트
+// app.config.globalProperties.HOST = "http://117.20.209.64:8080"; // 종렬 테스트
+app.config.globalProperties.HOST = "http://202.31.200.215:8080"; // 민수 테스트
