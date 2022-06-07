@@ -1,37 +1,39 @@
 <template>
-    <div class="dateSelect">
-        <b-button variant="outline-secondary" class="date">
-            <div class="month">
-                06월<br>월
-            </div>
-            <div class="day">
-                13
-            </div>
-        </b-button>
-        <b-button variant="outline-secondary" class="date">
-            <div class="month">
-                06월<br>화
-            </div>
-            <div class="day">
-                14
-            </div>
-        </b-button>
-    </div>
-    <div class="movieSelect">
-        <div class="movieTitle">
-            <div style="float:left">({{movieDetail.age}}) {{movieDetail.title}}</div>
-            <div style="float:left;margin-left:1em;color: #a0a0a0;">{{movieDetail.genre}} / {{movieDetail.openingDate}}</div>
-            <div class="timeSelect" v-for="(theater, index) in movieDetail.theater" :key="index">
-                <div>▶ 2D | {{theater.name}} | 총 {{theater.totalSeat}}석</div>
-                <b-button
-                    class="timeButton"
-                    variant="outline-secondary"
-                    v-for="(time, index) in theater.time"
-                    :key="index"
-                    @click="$router.push('/ticket?movie='+movieDetail.title+'&theater=' + theater.name + '&time=' + time.time)">
-                    {{time.time}}<br>
-                    {{time.seat}}석
-                </b-button>
+    <div>
+        <div class="dateSelect">
+            <b-button variant="outline-secondary" class="date">
+                <div class="month">
+                    06월<br>월
+                </div>
+                <div class="day">
+                    13
+                </div>
+            </b-button>
+            <b-button variant="outline-secondary" class="date">
+                <div class="month">
+                    06월<br>화
+                </div>
+                <div class="day">
+                    14
+                </div>
+            </b-button>
+        </div>
+        <div class="movieSelect">
+            <div class="movieTitle">
+                <div style="float:left">({{movieDetail.age}}) {{movieDetail.title}}</div>
+                <div style="float:left;margin-left:1em;color: #a0a0a0;">{{movieDetail.genre}} / {{movieDetail.openingDate}}</div>
+                <div class="timeSelect" v-for="(theater, index) in movieDetail.theater" :key="index">
+                    <div>▶ 2D | {{theater.name}} | 총 {{theater.totalSeat}}석</div>
+                    <b-button
+                        class="timeButton"
+                        variant="outline-secondary"
+                        v-for="(time, index) in theater.time"
+                        :key="index"
+                        @click="$router.push('/ticket?movie='+movieDetail.title+'&theater=' + theater.name + '&time=' + time.time)">
+                        {{time.time}}<br>
+                        {{time.seat}}석
+                    </b-button>
+                </div>
             </div>
         </div>
     </div>
@@ -42,7 +44,7 @@ export default {
     data() {
         return {
             movieDetail: {
-                title: "title",
+                title: "쥬라기 월드-도미니언",
                 genre: "범죄, 액션",
                 age: "15세 이상",
                 openingDate: "2022.05.18",

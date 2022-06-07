@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <h1>좌석 선택하셈</h1>
     </div>
 </template>
 
