@@ -57,6 +57,7 @@ public class BookServiceImpl implements BookService {
 
             seatRepository.save(seat);
         }
+        movieSchedule.subRemainingSeat(numOfPeople);
 
         // Save BookDetails Info
         BookDetails bookDetails = new BookDetails();
