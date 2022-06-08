@@ -10,7 +10,7 @@
       </div>
       <b-row :key="key" v-for="(movieRow, key) in chunkMovies" cols="4">
         <b-col :key="index" v-for="(movie, index) in movieRow">
-          <div class="movieListRank">No. {{ index+1 }}</div>
+          <div class="movieListRank">No. {{ index+1 + key*4 }}</div>
           <router-link :to="'/movie/' + movie.title"
             ><img :src="'../movies/' + movie.title + '.jpg'"
           /></router-link>
