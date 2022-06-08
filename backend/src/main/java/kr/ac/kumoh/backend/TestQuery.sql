@@ -20,16 +20,16 @@ insert into theater(THEATER_ID, FLOOR, SCREEN, NUM_OF_COLUMNS, NUM_OF_ROWS, NUM_
 
 -- 상영 시간표 데이터 넣기
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(200, 9000, '2021년 6월 8일', '10시', 102, 98, 96);
+values(200, 9000, '2021년 6월 8일', '10:00', 102, 98, 96);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(201, 12000, '2021년 6월 8일', '14시', 101, 99, 35);
+values(201, 12000, '2021년 6월 8일', '14:00', 101, 99, 35);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(203, 12000, '2021년 6월 8일', '15시', 101, 99, 35);
+values(203, 12000, '2021년 6월 8일', '15:00', 101, 99, 35);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(204, 12000, '2021년 6월 8일', '16시', 101, 99, 35);
+values(204, 12000, '2021년 6월 8일', '16:00', 101, 99, 35);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(205, 12000, '2021년 6월 8일', '17시', 101, 98, 96);
+values(205, 12000, '2021년 6월 8일', '17:00', 101, 98, 96);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(206, 12000, '2021년 6월 8일', '18시', 101, 98, 96);
+values(206, 12000, '2021년 6월 8일', '18:00', 101, 98, 96);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
-values(202, 12000, '2021년 6월 10일', '16시', 103, 99, 35);
+values(202, 12000, '2021년 6월 10일', '16:00', 103, 99, 35);
