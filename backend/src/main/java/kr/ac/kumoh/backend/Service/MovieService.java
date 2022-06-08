@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.Service;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,5 +13,5 @@ public interface MovieService {
 
     double getGenderReservationDistribution(String movieName);
 
-    List<Double> getAgeReservationDistribution(String movieName);
+    List<Integer> getAgeReservationDistribution(String movieName);
 }

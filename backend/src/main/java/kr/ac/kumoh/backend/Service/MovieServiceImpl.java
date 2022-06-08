@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.Service;
 
+import io.swagger.models.auth.In;
 import kr.ac.kumoh.backend.domain.BookDetails;
 import kr.ac.kumoh.backend.domain.MovieSchedule;
 import kr.ac.kumoh.backend.domain.User;
@@ -51,7 +52,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Double> getAgeReservationDistribution(String movieName) {
+    public List<Integer> getAgeReservationDistribution(String movieName) {
 
         List<BookDetails> numOfAgeMovieTickets = bookDetailsRepository.getNumOfAgeMovieTickets(movieName);
 
@@ -76,14 +77,15 @@ public class MovieServiceImpl implements MovieService {
                     etc += 1;
             }
         }
-        System.out.println("total = " + total);
-        List<Double> rates = new ArrayList<>();
-        rates.add(Math.round(teenage/total * 100) / 100.0);
-        rates.add(Math.round(twenties/total * 100) / 100.0);
-        rates.add(Math.round(thirties/total * 100) / 100.0);
-        rates.add(Math.round(forties/total * 100) / 100.0);
-        rates.add(Math.round(fifties/total * 100) / 100.0);
-        rates.add(Math.round(etc/total * 100) / 100.0);
+
+        List<Integer> rates = new ArrayList<>();
+        rates.add(teenage);
+        rates.add(twenties);
+        rates.add(thirties);
+        rates.add(forties);
+        rates.add(fifties);
+        rates.add(etc);
+
         return rates;
     }
 
