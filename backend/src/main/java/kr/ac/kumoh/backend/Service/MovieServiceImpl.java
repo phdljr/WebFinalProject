@@ -2,6 +2,7 @@ package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.domain.BookDetails;
 import kr.ac.kumoh.backend.domain.MovieSchedule;
+import kr.ac.kumoh.backend.domain.User;
 import kr.ac.kumoh.backend.repository.BookDetailsRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
@@ -51,7 +52,39 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Double> getAgeReservationDistribution(String movieName) {
-        return null;
+
+        List<BookDetails> numOfAgeMovieTickets = bookDetailsRepository.getNumOfAgeMovieTickets(movieName);
+
+        int teenage = 0; int twenties = 0; int thirties = 0; int forties = 0; int fifties = 0; int etc = 0;
+        double total = numOfAgeMovieTickets.size();
+        System.out.println("total = " + total);
+        for (BookDetails numOfAgeMovieTicket : numOfAgeMovieTickets) {
+            int age = numOfAgeMovieTicket.getUser().getAge();
+
+            switch (age/10) {
+                case 1:
+                    teenage += 1; break;
+                case 2:
+                    twenties += 1; break;
+                case 3:
+                    thirties += 1; break;
+                case 4:
+                    forties += 1; break;
+                case 5:
+                    fifties += 1; break;
+                default:
+                    etc += 1;
+            }
+        }
+        System.out.println("total = " + total);
+        List<Double> rates = new ArrayList<>();
+        rates.add(Math.round(teenage/total * 100) / 100.0);
+        rates.add(Math.round(twenties/total * 100) / 100.0);
+        rates.add(Math.round(thirties/total * 100) / 100.0);
+        rates.add(Math.round(forties/total * 100) / 100.0);
+        rates.add(Math.round(fifties/total * 100) / 100.0);
+        rates.add(Math.round(etc/total * 100) / 100.0);
+        return rates;
     }
 
     @Override

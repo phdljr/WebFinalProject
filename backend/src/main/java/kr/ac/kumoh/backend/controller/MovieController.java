@@ -5,6 +5,7 @@ import kr.ac.kumoh.backend.dto.MovieDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,8 +36,14 @@ public class MovieController {
         return null;
     }
 
-    @GetMapping("/{movieName}/distribution")
-    public double getGenderReservationDistribution(String movieName) {
+    @GetMapping("/{movieName}/age")
+    public List<Double> getAgeReservationDistribution(@PathVariable("movieName") String movieName) {
+
+        return movieService.getAgeReservationDistribution(movieName);
+    }
+
+    @GetMapping("/{movieName}/gender")
+    public double getGenderReservationDistribution(@PathVariable("movieName") String movieName) {
         return movieService.getGenderReservationDistribution(movieName);
     }
 }
