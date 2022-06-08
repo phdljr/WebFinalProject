@@ -13,7 +13,7 @@
         <b-table-simple
           small
           responsive
-          v-for="(book, index) in this.$store.state.userData.reservations"
+          v-for="(book, index) in this.reservations"
           :key="index"
         >
           <b-thead>
@@ -70,6 +70,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "MyPageView",
   components: {},
@@ -79,6 +80,13 @@ export default {
     };
   },
   methods: {},
+  created(){
+    axios.post(this.HOST+"/reservations", {param: this.$store.state.userData.id}).then(res=>{
+      this.reservations = res.data
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
 };
 </script>
 <style>

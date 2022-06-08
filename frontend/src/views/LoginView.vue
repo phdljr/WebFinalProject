@@ -63,7 +63,6 @@ export default {
                   id: this.id,
                   age: res.data.age,
                   gender: res.data.gender,
-                  reservations: res.data.reservations,
                 });
 
                 // 이전 페이지로 이동시키게 설정해두기 //

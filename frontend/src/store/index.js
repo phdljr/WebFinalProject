@@ -7,8 +7,7 @@ export default createStore({
     userData: {
       id: null,
       age: null,
-      gender: null,
-      reservations: [],
+      gender: null
     },
   },
   getters: {},
@@ -22,8 +21,7 @@ export default createStore({
       state.userData = {
         id: null,
         age: null,
-        gender: null,
-        reservations: [],
+        gender: null
       };
     },
   },
