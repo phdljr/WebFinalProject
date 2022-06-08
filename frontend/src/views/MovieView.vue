@@ -12,7 +12,7 @@
         <b-col :key="index" v-for="(movie, index) in movieRow">
           <div class="movieListRank">No. {{ index+1 }}</div>
           <router-link :to="'/movie/' + movie.title"
-            ><img :src="'../movies/' + movie.title"
+            ><img :src="'../movies/' + movie.title + '.jpg'"
           /></router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
