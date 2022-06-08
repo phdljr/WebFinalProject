@@ -1,8 +1,10 @@
 package kr.ac.kumoh.backend.controller;
 
+import kr.ac.kumoh.backend.domain.MovieSchedule;
 import kr.ac.kumoh.backend.domain.Seat;
 import kr.ac.kumoh.backend.dto.GetReservedSeatDTO;
 import kr.ac.kumoh.backend.dto.ReservedSeatDTO;
+import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
 import kr.ac.kumoh.backend.repository.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +19,7 @@ import java.util.List;
 public class SeatController {
 
     private final SeatRepository seatRepository;
+    private final MovieScheduleRepository movieScheduleRepository;
 
     @PostMapping("/reservedSeats")
     public ReservedSeatDTO getReservedSeats(@RequestBody GetReservedSeatDTO getReservedSeatDTO) {
@@ -24,9 +27,18 @@ public class SeatController {
         String screenName = getReservedSeatDTO.getScreenName();
         String screenTime = getReservedSeatDTO.getScreenTime();
 
-        List<Seat> reservedSeats = seatRepository.test(screenName, screenTime);
+        List<Seat> reservedSeats = seatRepository.getReservedSeats(screenName, screenTime);
+        MovieSchedule theater = movieScheduleRepository.getTheater(screenName, screenTime);
+
+
+        int numOfRows = theater.getTheater().getNumOfRows();
+        int numOfColumns = theater.getTheater().getNumOfColumns();
+        int price = theater.getPrice();
 
         ReservedSeatDTO reservedSeatDTO = new ReservedSeatDTO();
+        reservedSeatDTO.setNumOfColumns(numOfColumns);
+        reservedSeatDTO.setNumOfRows(numOfRows);
+        reservedSeatDTO.setPrice(price);
         reservedSeats.forEach(seat -> {
             reservedSeatDTO.getRows().add(seat.getSeatRow());
             reservedSeatDTO.getColumns().add(seat.getSeatColumn());
