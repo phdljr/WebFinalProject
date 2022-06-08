@@ -30,7 +30,9 @@ public class MovieScheduleController {
                     ms.getTheater().getScreen(),
                     ms.getScreenDate(),
                     ms.getScreenTime(),
-                    ms.getPrice()
+                    ms.getPrice(),
+                    ms.getRemainingSeat(),
+                    ms.getTheater().getNumOfSeats()
             );
             movieScheduleDTOS.add(movieScheduleDTO);
         });

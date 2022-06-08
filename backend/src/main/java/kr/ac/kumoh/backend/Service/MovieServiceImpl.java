@@ -1,16 +1,17 @@
 package kr.ac.kumoh.backend.Service;
 
-import kr.ac.kumoh.backend.domain.Movie;
-import kr.ac.kumoh.backend.dto.MovieDTO;
+import kr.ac.kumoh.backend.domain.BookDetails;
+import kr.ac.kumoh.backend.domain.MovieSchedule;
+import kr.ac.kumoh.backend.domain.User;
+import kr.ac.kumoh.backend.repository.BookDetailsRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
+import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -20,50 +21,94 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
+    private final MovieScheduleRepository movieScheduleRepository;
+    private final BookDetailsRepository bookDetailsRepository;
 
-    @PostConstruct
-    void Init() {
-//        Movie movieA = new Movie("(라이브뷰잉)Ensemble Stars!! DREAM LIVE -6th Tour “Synchronic Spheres”- Live Viewing", 5);
-//        Movie movieB = new Movie("그대가 조국", 10);
-//        Movie movieC = new Movie("극장판 포켓몬스터DP-기라티나와 하늘의 꽃다발 쉐이미", 4);
-//        Movie movieD = new Movie("닥터 스트레인지-대혼돈의 멀티버스", 7);
-//        Movie movieE = new Movie("마녀(魔女) Part2. The Other One", 6);
-//        Movie movieF = new Movie("범죄도시 2", 2);
-//        Movie movieG = new Movie("브로커", 3);
-//        Movie movieH = new Movie("애프터 양", 8);
-//        Movie movieI = new Movie("쥬라기 월드-도미니언", 1);
-//        Movie movieJ = new Movie("카시오페아", 9);
-//
-//        addMovie(movieA);
-//        addMovie(movieB);
-//        addMovie(movieC);
-//        addMovie(movieD);
-//        addMovie(movieE);
-//        addMovie(movieF);
-//        addMovie(movieG);
-//        addMovie(movieH);
-//        addMovie(movieI);
-//        addMovie(movieJ);
+    @Override
+    public Map<String, Double> getTop10TicketSales() {
+
+        Map<String, Double> moviesSaleTickets = new HashMap<>();
+        List<String> allMovieName = movieRepository.findAllMovieName();
+
+        for (String movieName : allMovieName) {
+            double ticketSales = getMovieTicketSales(movieName);
+            moviesSaleTickets.put(movieName, ticketSales);
+        }
+
+        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
+        moviesSaleTickets.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
+                .forEachOrdered(x -> sortMoviesSaleTicketsByDesc.put(x.getKey(), x.getValue()));
+
+        return sortMoviesSaleTicketsByDesc;
     }
 
     @Override
-    public void addMovie(Movie movie) {
-        movieRepository.save(movie);
+    public double getGenderReservationDistribution(String movieName) {
+        List<BookDetails> numOfMovieTickets = bookDetailsRepository.getNumOfMovieTickets(movieName);
+        List<BookDetails> numOfManMovieTickets = bookDetailsRepository.getNumOfManMovieTickets(movieName);
+        return (double) numOfManMovieTickets.size() / numOfMovieTickets.size();
     }
 
     @Override
-    public List<MovieDTO> getTop10Movies() {
-//        List<MovieDTO> movieDTOS = new ArrayList<>();
-//        List<Movie> movies = movieRepository.findAllByOrderByRankAsc();
-//
-//        for (Movie movie : movies) {
-//            MovieDTO movieDTO = MovieDTO.builder()
-//                    .MovieName(movie.getTitle())
-//                    .build();
-//            movieDTOS.add(movieDTO);
-//        }
-//
-//        return movieDTOS;
-        return new ArrayList<MovieDTO>();
+    public List<Double> getAgeReservationDistribution(String movieName) {
+
+        List<BookDetails> numOfAgeMovieTickets = bookDetailsRepository.getNumOfAgeMovieTickets(movieName);
+
+        int teenage = 0; int twenties = 0; int thirties = 0; int forties = 0; int fifties = 0; int etc = 0;
+        double total = numOfAgeMovieTickets.size();
+        System.out.println("total = " + total);
+        for (BookDetails numOfAgeMovieTicket : numOfAgeMovieTickets) {
+            int age = numOfAgeMovieTicket.getUser().getAge();
+
+            switch (age/10) {
+                case 1:
+                    teenage += 1; break;
+                case 2:
+                    twenties += 1; break;
+                case 3:
+                    thirties += 1; break;
+                case 4:
+                    forties += 1; break;
+                case 5:
+                    fifties += 1; break;
+                default:
+                    etc += 1;
+            }
+        }
+        System.out.println("total = " + total);
+        List<Double> rates = new ArrayList<>();
+        rates.add(Math.round(teenage/total * 100) / 100.0);
+        rates.add(Math.round(twenties/total * 100) / 100.0);
+        rates.add(Math.round(thirties/total * 100) / 100.0);
+        rates.add(Math.round(forties/total * 100) / 100.0);
+        rates.add(Math.round(fifties/total * 100) / 100.0);
+        rates.add(Math.round(etc/total * 100) / 100.0);
+        return rates;
+    }
+
+    @Override
+    public double getMovieTicketSales(String movieName) {
+
+        int totalNumOfReservedSeat = 0;
+        int totalNumOfTotalSeat = 0;
+        double ticketSales;
+
+        List<MovieSchedule> movieSchedules = movieScheduleRepository.getAllMovieSchedules(movieName);
+        if (movieSchedules.size() > 0) {
+            for (MovieSchedule movieSchedule : movieSchedules) {
+                int numOfSeats = movieSchedule.getTheater().getNumOfSeats();
+                int remainingSeat = movieSchedule.getRemainingSeat();
+                totalNumOfReservedSeat += (numOfSeats - remainingSeat);     // 예약된 좌석수 계산
+                totalNumOfTotalSeat += numOfSeats;
+            }
+
+            ticketSales = (double) totalNumOfReservedSeat / totalNumOfTotalSeat;
+            ticketSales = Math.round(ticketSales * 100) / 100.0;
+        } else {
+            ticketSales = -1;
+        }
+
+        return ticketSales;
     }
 }

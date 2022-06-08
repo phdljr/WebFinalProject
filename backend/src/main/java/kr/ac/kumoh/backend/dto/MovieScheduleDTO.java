@@ -21,4 +21,8 @@ public class MovieScheduleDTO {
     private String screenTime;
     // 가격
     private int price;
+
+    private int getRemainingSeat;
+
+    private int numOfTheaterSeats;
 }
