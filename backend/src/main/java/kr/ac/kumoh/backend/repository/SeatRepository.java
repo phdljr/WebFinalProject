@@ -15,5 +15,5 @@ public interface SeatRepository extends JpaRepository<Seat, Long> {
             "bd.movieSchedule.id = ms.id and " +
             "ms.theater.id = t.id and " +
             "t.screen = :screenName and ms.screenTime = :screenTime")
-    List<Seat> test(@Param("screenName") String screenName, @Param("screenTime") String screenTime);
+    List<Seat> getReservedSeats(@Param("screenName") String screenName, @Param("screenTime") String screenTime);
 }
