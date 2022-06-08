@@ -75,32 +75,7 @@ export default {
   components: {},
   data() {
     return {
-      reservations: [
-        // {
-        //   title: "범죄도시 2",
-        //   imgUrl:
-        //     "https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85689/85689_320.jpg",
-        //   theater: "CGV 구미",
-        //   numOfPeople: "3",
-        //   date: "2022.05.08(일) 14:20",
-        //   seats: ["I23", "I10"], // 이건 따로 수정
-        //   floorOfTheater: "1층 1관",
-        //   numOfTicket: "2",
-        //   totalPrice: "24,000",
-        // },
-        // {
-        //   title: "극장판 포캣몬스터",
-        //   imgUrl:
-        //     "https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85833/85833_320.jpg",
-        //   theater: "CGV 구미",
-        //   numOfPeople: "4",
-        //   date: "2022.05.08(일) 14:20",
-        //   seats: ["A3", "A4"], // 이건 따로 수정
-        //   floorOfTheater: "2층 2관",
-        //   numOfTicket: "2",
-        //   totalPrice: "22,000",
-        // },
-      ],
+      reservations: [],
     };
   },
   methods: {},

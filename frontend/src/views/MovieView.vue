@@ -9,15 +9,14 @@
         ></b-form-select>
       </div>
       <b-row :key="key" v-for="(movieRow, key) in chunkMovies" cols="4">
-        <b-col :key="key" v-for="(movie, key) in movieRow">
-          <div class="movieListRank">No. {{ movie.rank }}</div>
+        <b-col :key="index" v-for="(movie, index) in movieRow">
+          <div class="movieListRank">No. {{ index+1 }}</div>
           <router-link :to="'/movie/' + movie.title"
-            ><img
-              src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85833/85833_320.jpg"
+            ><img :src="'../movies/' + movie.title"
           /></router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
-            <p>예매율 ??%</p>
+            <p>{{ movie.rate >= 0 ? "예매율 " + Math.ceil(movie.rate * 100) + "%" : "상영 예정" }}</p>
             <b-button
               variant="outline-danger"
               @click="$router.push('/ticket?movie=' + movie.title)"
@@ -40,34 +39,11 @@ export default {
   data() {
     return {
       movies: [
-        {
-          rank: 1,
-          title: "쥬라기 월드-도미니언",
-        },
-        {
-          rank: 2,
-          title: "몰루",
-        },
-        {
-          rank: 3,
-          title: "몰루",
-        },
-        {
-          rank: 4,
-          title: "몰루",
-        },
-        {
-          rank: 5,
-          title: "몰루",
-        },
-        {
-          rank: 6,
-          title: "몰루",
-        },
-        {
-          rank: 7,
-          title: "몰루",
-        },
+        // {
+        //   title: "",
+        //   rate: "",
+        //   grade: "",
+        // },
       ],
       sortSelected: "book",
       sortOptions: [
@@ -77,7 +53,11 @@ export default {
     };
   },
   created() {
-    axios.get("/movies/sales").then((res) => {});
+    // 해당 페이지가 출력되면 영화 데이터를 받아옴
+    axios.get(this.HOST+"/movies/sales").then((res) => {
+      console.log(res.data)
+      this.movies = res.data
+    });
   },
   computed: {
     chunkMovies() {

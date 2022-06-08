@@ -108,7 +108,7 @@ export default {
                 }
             }
             else{
-                this.$router.push('/seatSelect')
+                this.$router.push({name: 'SeatSelectView', params: {title: this.selectMovie, screenName: this.selectTime.theater, screenTime: this.selectTime.time}})
             }
         }
     },

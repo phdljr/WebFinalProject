@@ -27,6 +27,7 @@
   </div>
   <div class="movieGraph">
     <movie-detail-chart-vue
+      ref="movieGraph"
       :ageData="movieDetail.ageChart"
       :sexData="movieDetail.sexChart"
     ></movie-detail-chart-vue>
@@ -52,6 +53,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import chunk from "chunk";
 import MovieDetailChartVue from "@/components/MovieDetailChart.vue";
 
@@ -63,7 +65,7 @@ export default {
   data() {
     return {
       movieDetail: {
-        title: "영화 제목",
+        title: "쥬라기 월드-도미니언",
         titleEng: "title",
         img: "https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85813/85813_320.jpg",
         director: "감독님",
@@ -81,11 +83,25 @@ export default {
           { user: "유저7", comment: "댓글임", like: 1 },
           { user: "유저8", comment: "댓글임", like: 5 },
         ],
-        sexChart: [34, 27],
-        ageChart: [21, 27, 18, 16, 12],
+        // sexChart: [34, 27],
+        // ageChart: [21, 27, 18, 16, 12],
+        sexChart: [],
+        ageChart: [],
       },
     };
   },
+  created(){
+    axios.get(this.HOST+"/movie/"+this.movieDetail.title+"/gender").then((res) => {
+      console.log(res.data)
+      this.movieDetail.sexChart = [res.data * 100, (1-res.data) * 100]
+    });
+
+    axios.get(this.HOST+"/movie/"+this.movieDetail.title+"/age").then((res) => {
+      console.log(res.data)
+      this.movieDetail.ageChart = res.data
+    });
+  }
+  ,
   computed: {
     commentTable() {
       return chunk(this.movieDetail.comment, 2);

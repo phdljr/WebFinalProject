@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name:"SeatSelectView",
     data() {
@@ -60,8 +62,8 @@ export default {
                 { text:'4', value:4 }
             ],
             seatData:{
-                title:"영화이름임",
-                theater:"1관",
+                title: this.$route.params.title,
+                theater: this.$route.params.screenName,
                 maxcol:8,
                 maxrow:10,
                 selectedRow:['A','C','E'],
@@ -92,6 +94,14 @@ export default {
                 this.selectSeat.push({row,col})
             }
         }
+    },
+    created(){
+        axios.post(this.HOST+"/reservedSeats", {
+            screenName: this.$route.params.screenName,
+            screenTime: this.$route.params.screenTime
+        }).then(res=>{
+            console.log(res)
+        })
     },
     computed:{
         seatTable(){
