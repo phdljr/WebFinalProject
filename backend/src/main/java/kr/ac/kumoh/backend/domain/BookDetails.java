@@ -8,6 +8,21 @@ import javax.persistence.*;
 
 
 @NamedEntityGraph(
+        name = "Man.BookingDetails.Movie",
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode(value = "movieSchedule", subgraph = "get.Movie")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "get.Movie",
+                        attributeNodes = {
+                                @NamedAttributeNode("movie")
+                        }
+                )
+        }
+)
+@NamedEntityGraph(
         name = "User.BookingDetails",
         attributeNodes = {
                 @NamedAttributeNode("user"),

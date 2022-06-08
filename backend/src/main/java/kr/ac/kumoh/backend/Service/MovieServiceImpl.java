@@ -1,6 +1,8 @@
 package kr.ac.kumoh.backend.Service;
 
+import kr.ac.kumoh.backend.domain.BookDetails;
 import kr.ac.kumoh.backend.domain.MovieSchedule;
+import kr.ac.kumoh.backend.repository.BookDetailsRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +19,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
-    private final MovieScheduleRepository movieScheduleRepository;
     private final MovieRepository movieRepository;
+    private final MovieScheduleRepository movieScheduleRepository;
+    private final BookDetailsRepository bookDetailsRepository;
 
     @Override
     public Map<String, Double> getTop10TicketSales() {
@@ -37,6 +40,18 @@ public class MovieServiceImpl implements MovieService {
                 .forEachOrdered(x -> sortMoviesSaleTicketsByDesc.put(x.getKey(), x.getValue()));
 
         return sortMoviesSaleTicketsByDesc;
+    }
+
+    @Override
+    public double getGenderReservationDistribution(String movieName) {
+        List<BookDetails> numOfMovieTickets = bookDetailsRepository.getNumOfMovieTickets(movieName);
+        List<BookDetails> numOfManMovieTickets = bookDetailsRepository.getNumOfManMovieTickets(movieName);
+        return (double) numOfManMovieTickets.size() / numOfMovieTickets.size();
+    }
+
+    @Override
+    public List<Double> getAgeReservationDistribution(String movieName) {
+        return null;
     }
 
     @Override
