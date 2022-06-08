@@ -44,6 +44,8 @@
                 <b-button id="bookButton">예매하기</b-button>
             </b-col>
         </b-row>
+    <div>
+        <h1>좌석 선택하셈</h1>
     </div>
 </template>
 

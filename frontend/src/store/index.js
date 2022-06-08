@@ -5,10 +5,10 @@ export default createStore({
   state: {
     login: false,
     userData: {
-      userId: "test",
-      userGender: null,
-      userAge: null,
-      bookingMovie: [],
+      id: null,
+      age: null,
+      gender: null,
+      reservations: [],
     },
   },
   getters: {},
@@ -20,10 +20,10 @@ export default createStore({
     logout(state) {
       state.login = false;
       state.userData = {
-        userId: null,
-        userGender: null,
-        userAge: null,
-        bookingMovie: [],
+        id: null,
+        age: null,
+        gender: null,
+        reservations: [],
       };
     },
   },

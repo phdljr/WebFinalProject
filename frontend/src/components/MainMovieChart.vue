@@ -92,7 +92,7 @@ export default {
       page: 0,
       show: false,
       movieChart: [
-        { title: "title" },
+        { title: "쥬라기 월드-도미니언" },
         { title: "2" },
         { title: "3" },
         { title: "4" },

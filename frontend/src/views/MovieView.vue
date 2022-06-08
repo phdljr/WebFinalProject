@@ -35,7 +35,7 @@ export default {
       movies:[
         {
           rank:1,
-          title:"title"
+          title:"쥬라기 월드-도미니언"
         },
         {
           rank:2,

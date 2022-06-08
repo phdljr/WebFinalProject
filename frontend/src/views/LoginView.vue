@@ -15,7 +15,6 @@
       </div>
       <b-button id="loginButton" type="submit"> 로그인 </b-button>
     </b-form>
-
     <div class="signIn">
       계정이 없으신가요?
       <a @click="$router.push('register')">회원가입</a>
@@ -44,20 +43,21 @@ export default {
       axios
         .post(this.HOST + "/login", data)
         .then((res) => {
-          if (res.data == "WrongPassword" || res.data == "InvalidId") {
+          if (res.data == "Fail") {
             alert("다시 입력하세요.");
           }
           // Success가 온다면
           else if (res.data == "Success") {
             console.log("success가 왔음");
             axios
-              .post(this.HOST + "/loginSuccess", { id: this.id })
+              .post(this.HOST + "/loginSuccess", { param: this.id })
               .then((res) => {
+                console.log(res)
                 this.$store.commit("login", {
-                  userId: this.id,
-                  userGender: res.data.gender,
-                  userAge: res.data.age,
-                  bookingMovie: res.data.bookingMovie,
+                  id: this.id,
+                  age: res.data.age,
+                  gender: res.data.gender,
+                  reservations: res.data.reservations,
                 });
 
                 // 이전 페이지로 이동시키게 설정해두기 //
