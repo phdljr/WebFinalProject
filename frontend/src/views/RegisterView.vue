@@ -9,12 +9,12 @@
           v-model="registerData.id"
           placeholder="아이디를 입력해 주세요."
           required
-          :state="vailidId"
+          :state="validId"
         />
-        <b-form-invalid-feedback :state="vailidId" v-if="idChecked">
+        <b-form-invalid-feedback :state="validId" v-if="idChecked">
           이미 사용중인 아이디 입니다.
         </b-form-invalid-feedback>
-        <b-form-valid-feedback :state="vailidId">
+        <b-form-valid-feedback :state="validId">
           사용 가능한 아이디 입니다.
         </b-form-valid-feedback>
       </div>
@@ -103,7 +103,7 @@ export default {
         { text: "여", value: "여" },
       ],
       passwordCheck: "",
-      vailidId: null,
+      validId: null,
       checkAccept: null,
       idChecked: null,
     };
@@ -118,6 +118,7 @@ export default {
           console.log(res);
           if (res.data == "Success") {
             this.vailidId = true;
+            this.tempId = this.registerData.id;
           } else {
             // 중복이라면 "Duplicated"
             this.vailidId = false;

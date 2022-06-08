@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import createPersistedState from "vuex-persistedstate";
+// import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   state: {
@@ -27,5 +27,5 @@ export default createStore({
   },
   actions: {},
   modules: {},
-  plugins: [createPersistedState()], //vuex 데이터 지속
+  // plugins: [createPersistedState()], //vuex 데이터 지속
 });
