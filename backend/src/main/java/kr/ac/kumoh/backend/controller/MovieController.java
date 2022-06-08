@@ -36,13 +36,12 @@ public class MovieController {
         return null;
     }
 
-    @GetMapping("/{movieName}/age")
+    @GetMapping("/movie/{movieName}/age")
     public List<Double> getAgeReservationDistribution(@PathVariable("movieName") String movieName) {
-
         return movieService.getAgeReservationDistribution(movieName);
     }
 
-    @GetMapping("/{movieName}/gender")
+    @GetMapping("/movie/{movieName}/gender")
     public double getGenderReservationDistribution(@PathVariable("movieName") String movieName) {
         return movieService.getGenderReservationDistribution(movieName);
     }
