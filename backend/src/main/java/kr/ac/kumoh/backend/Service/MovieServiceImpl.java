@@ -4,6 +4,7 @@ import io.swagger.models.auth.In;
 import kr.ac.kumoh.backend.domain.BookDetails;
 import kr.ac.kumoh.backend.domain.MovieSchedule;
 import kr.ac.kumoh.backend.domain.User;
+import kr.ac.kumoh.backend.dto.Top10MovieDTO;
 import kr.ac.kumoh.backend.repository.BookDetailsRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
@@ -26,7 +27,7 @@ public class MovieServiceImpl implements MovieService {
     private final BookDetailsRepository bookDetailsRepository;
 
     @Override
-    public Map<String, Double> getTop10TicketSales() {
+    public List<Top10MovieDTO> getTop10TicketSales() {
 
         Map<String, Double> moviesSaleTickets = new HashMap<>();
         List<String> allMovieName = movieRepository.findAllMovieName();
@@ -36,12 +37,20 @@ public class MovieServiceImpl implements MovieService {
             moviesSaleTickets.put(movieName, ticketSales);
         }
 
+        List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
         Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
         moviesSaleTickets.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
-                .forEachOrdered(x -> sortMoviesSaleTicketsByDesc.put(x.getKey(), x.getValue()));
+                .forEachOrdered(x -> {
+                    Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
+                            .title(x.getKey())
+                            .grade(12)
+                            .rate(x.getValue()).build();
 
-        return sortMoviesSaleTicketsByDesc;
+                    top10MovieDTOS.add(top10MovieDTO);
+                });
+
+        return top10MovieDTOS;
     }
 
     @Override

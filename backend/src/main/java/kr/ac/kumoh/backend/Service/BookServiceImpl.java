@@ -37,6 +37,7 @@ public class BookServiceImpl implements BookService {
         List<Integer> columns = reserveMovieDTO.getColumns();
 
         // find User by UserId
+        System.out.println("userId = " + userId);
         User findUser = userRepository.findByUserId(userId);
         if (isNull(findUser))
             return NonExistUser;
@@ -52,9 +53,14 @@ public class BookServiceImpl implements BookService {
 
         // Save Seat Info
         for (int i = 0; i < numOfPeople; i++) {
-            Seat seat = new Seat(rows.get(i), columns.get(i));
-            book.addSeat(seat);
+            Seat seat;
+            try {
+                seat = new Seat(rows.get(i), columns.get(i));
+            } catch (NullPointerException e) {
+                return CantSaveSeat;
+            }
 
+            book.addSeat(seat);
             seatRepository.save(seat);
         }
         movieSchedule.subRemainingSeat(numOfPeople);
