@@ -36,7 +36,7 @@
                         <b-icon icon="arrow-right-square-fill" size="5x"></b-icon>
                         <br>예매하기
                     </router-link> -->
-                    <b-button @click=makeReserve v-if="isTimeSelected">
+                    <b-button @click=getSeats v-if="isTimeSelected">
                         <b-icon icon="arrow-right-square-fill" size="5x"></b-icon>
                         <br>예매하기
                     </b-button>
@@ -99,7 +99,7 @@ export default {
         // 예매하기 버튼을 눌렀을 때, 실행되는 함수
         // 로그인이 됐을 땐 진행, 로그인이 안돼있으면 로그인 화면으로 이동하라는 alert가 뜸
         // alert에서 '확인'버튼을 눌러야만 login창으로 이동.
-        makeReserve(){
+        getSeats(){
             // 로그인이 안됐을 때
             if(this.$store.state.login == false){
                 let result = confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?');
