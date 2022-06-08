@@ -24,10 +24,7 @@
           </div>
         </b-list-group-item>
         <b-list-group-item :key="key" v-for="(movie, key) in listMovieChart">
-          <b-overlay
-            :show="showOverlayList[key]"
-            rounded="sm"
-          >
+          <b-overlay :show="showOverlayList[key]" rounded="sm">
             <b-card
               :title="movie.title"
               img-src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85689/85689_320.jpg"
@@ -47,7 +44,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('/movie/'+movie.title)"
+                  @click="$router.push('/movie/' + movie.title)"
                 >
                   상세보기
                 </b-button>
@@ -55,7 +52,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('/ticket?movie='+movie.title)"
+                  @click="$router.push('/ticket?movie=' + movie.title)"
                 >
                   예매하기
                 </b-button>
