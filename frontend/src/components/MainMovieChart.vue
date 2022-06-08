@@ -24,13 +24,10 @@
           </div>
         </b-list-group-item>
         <b-list-group-item :key="key" v-for="(movie, key) in listMovieChart">
-          <b-overlay
-            :show="showOverlayList[key]"
-            rounded="sm"
-          >
+          <b-overlay :show="showOverlayList[key]" rounded="sm">
             <b-card
               :title="movie.title"
-              img-src="https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85689/85689_320.jpg"
+              :img-src="'../movies/' + movie.title + '.jpg'"
               img-alt="Image"
               img-top
               tag="article"
@@ -39,7 +36,7 @@
               :aria-hidden="showOverlayList[key] ? 'true' : null"
               @mouseover="showOverlayList[key] = true"
             >
-              <p>예매율 XX%</p>
+              <p>{{movie.rate >= 0 ? "예매율 " + Math.ceil(movie.rate * 100) + "%" : "상영 예정"}}</p>
             </b-card>
             <template #overlay>
               <div class="text-center" @mouseout="showOverlayList[key] = false">
@@ -47,7 +44,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('/movie/'+movie.title)"
+                  @click="$router.push('/movie/' + movie.title)"
                 >
                   상세보기
                 </b-button>
@@ -55,7 +52,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('/ticket?movie='+movie.title)"
+                  @click="$router.push('/ticket?movie=' + movie.title)"
                 >
                   예매하기
                 </b-button>
@@ -92,37 +89,16 @@ export default {
       page: 0,
       show: false,
       movieChart: [
-        { title: "쥬라기 월드-도미니언" },
-        { title: "2" },
-        { title: "3" },
-        { title: "4" },
-        { title: "5" },
-        { title: "6" },
-        { title: "7" },
-        { title: "8" },
-        { title: "9" },
-        { title: "10" },
-        { title: "11" },
+        // {
+        //   title: "",
+        //   rate: "",
+        //   grade: "",
+        // },
       ],
       showOverlayList: [false, false, false, false, false],
     };
   },
   methods: {
-    getMovieChart() {
-      const key =
-        "consumer_key=" +
-        "09cd8b73e1e74ba39b80" +
-        "&consumer_secret=" +
-        "c36d02cd136f451c9a55";
-      axios
-        .get(
-          "https://sgisapi.kostat.go.kr/OpenAPI3/auth/authentication.json?" +
-            key
-        )
-        .then((res) => {
-          console.log(res);
-        });
-    },
   },
   computed: {
     listMovieChart() {
@@ -133,7 +109,10 @@ export default {
     },
   },
   mounted() {
-    //this.getMovieChart()
+    axios.get(this.HOST+"/movies/sales").then((res) => {
+      console.log(res.data)
+      this.movieChart = res.data
+    });
   },
 };
 </script>

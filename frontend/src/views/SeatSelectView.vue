@@ -41,13 +41,15 @@
         </b-row>
         <b-row>
             <b-col>
-                <b-button id="bookButton">예매하기</b-button>
+                <b-button id="bookButton" @click="makeReserve">예매하기</b-button>
             </b-col>
         </b-row>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name:"SeatSelectView",
     data() {
@@ -59,15 +61,24 @@ export default {
                 { text:'3', value:3 },
                 { text:'4', value:4 }
             ],
+            price: 0, // 한 자리에 필요한 금액
             seatData:{
-                title:"영화이름임",
-                theater:"1관",
-                maxcol:8,
-                maxrow:10,
-                selectedRow:['A','C','E'],
-                selectedCol:[3,7,5]
+                // title: "",
+                // theater: "",
+                // maxcol:8,
+                // maxrow:10,
+                // selectedRow:['A','C','E'],
+                // selectedCol:[3,7,5]
+                title: "",
+                theater: "",
+                maxcol: 0,
+                maxrow: 0,
+                selectedRow:[],
+                selectedCol:[]
             },
-            selectSeat:[]
+            selectSeat:[
+                // {'A', 0}
+            ]
         }
     },
     methods:{
@@ -89,9 +100,56 @@ export default {
                 alert("선택할 수 있는 좌석 수를 초과하였습니다.")
             }
             else{
-                this.selectSeat.push({row,col})
+                this.selectSeat.push({ row, col })
             }
-        }
+
+            console.log(this.selectSeat)
+        },
+        // 만드는 중...
+        makeReserve() {
+            let row_arr = [];
+            let col_arr = [];
+            for(let index = 0; index < this.selectSeat.length; index++){
+                row_arr.push(String.fromCharCode(this.selectSeat[index]['row'] + 65));
+                col_arr.push(this.selectSeat[index]['col']);
+            }
+
+            let data = {
+                userId: this.$store.state.userData.id,
+                numOfPeople: this.selectSeat.length,
+                price: this.selectSeat.length * this.price,
+                rows: row_arr,
+                columns: col_arr,
+                screenTime: this.$route.params.screenTime,
+                movieName: this.seatData.title,
+            };
+            console.log(data)
+            axios.post(this.HOST + "/reserve", data).then(res=>{
+                console.log(res.data)
+                if(res.data === "Success"){
+                    alert("정상적으로 예매됐습니다!")
+                    this.$router.push("/")
+                }
+            })
+        },
+    },
+    created(){
+        console.log(this.$route.params.screenName)
+        axios.post(this.HOST+"/reservedSeats", {
+            screenName: this.$route.params.screenName,
+            screenTime: this.$route.params.screenTime
+        }).then(res=>{
+            console.log(res)
+            this.price = res.data.price,
+            this.seatData = {
+                title: this.$route.params.title,
+                theater: this.$route.params.screenName,
+                maxcol: res.data.numOfColumns,
+                maxrow: res.data.numOfRows,
+                selectedRow: res.data.rows,
+                selectedCol: res.data.columns
+            }
+        })
     },
     computed:{
         seatTable(){

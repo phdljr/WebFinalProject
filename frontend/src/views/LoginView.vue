@@ -39,6 +39,12 @@ export default {
         id: this.id,
         pw: this.pw,
       };
+
+      if (data.id === "" || data.pw === "") {
+        alert("정보를 입력해 주세요.");
+        return;
+      }
+
       console.log("로그인 시도");
       axios
         .post(this.HOST + "/login", data)
@@ -52,7 +58,7 @@ export default {
             axios
               .post(this.HOST + "/loginSuccess", { param: this.id })
               .then((res) => {
-                console.log(res)
+                console.log(res);
                 this.$store.commit("login", {
                   id: this.id,
                   age: res.data.age,

@@ -30,7 +30,7 @@ export default {
                     datasets: [{
                         label: "Population (millions)",
                         backgroundColor: ["#8e8e8e ", "#c6567c"],
-                        data: this.sexData
+                        data: this.sexData,
                     }]
                 },
                 options: {
@@ -42,8 +42,14 @@ export default {
                         title: {
                             display: true,
                             text: '성별 예매 분포'
-                        }
-                    }
+                        },
+                        // 이거 왜 안됨? %표시하는건데////////////////////////////////////////////////////
+                        datalabels: {
+                            formatter: (value) => {
+                                return value + '%';
+                            }
+                        },
+                    },
                 }
             })
             sex
@@ -72,10 +78,14 @@ export default {
             sex
         }
     },
-    mounted() {
-        this.sexChart()
-        this.ageChart()
-    },
+    watch:{
+        sexData:function(){
+            this.sexChart()
+        },
+        ageData:function(){
+            this.ageChart()
+        }
+    }
 }
 </script>
 
