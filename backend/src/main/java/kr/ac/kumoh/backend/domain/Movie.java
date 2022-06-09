@@ -24,6 +24,7 @@ public class Movie {
     private String mediaRating;
     private String releaseDate;
     private String runtime;
+    private String genre;
 
     public Movie(String title, String mediaRating, String releaseDate, String runtime) {
         this.title = title;
