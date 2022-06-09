@@ -32,17 +32,17 @@
             </b-tr>
             <b-tr>
               <b-td>관람극장</b-td>
-              <b-td colspan="3" class="text-left">구미 CGV</b-td>
+              <b-td colspan="2" class="text-left">구미 CGV</b-td>
               <b-td>관람인원</b-td>
-              <b-td colspan="3" class="text-left"
+              <b-td colspan="4" class="text-left"
                 >일반 {{ book.numOfPeople }}</b-td
               >
             </b-tr>
             <b-tr>
               <b-td>관람일시</b-td>
-              <b-td colspan="3" class="text-left">{{ book.screenDate + " " + book.screenTime }}</b-td>
+              <b-td colspan="2" class="text-left">{{ book.screenDate + " " + book.screenTime }}</b-td>
               <b-td>관람좌석</b-td>
-              <b-td colspan="3" class="text-left"
+              <b-td colspan="4" class="text-left"
                 ><span v-for="(temp, index) in book.numOfPeople" :key="index"
                   >{{ book.rows[index] + book.columns[index] + " " }}
                 </span></b-td
@@ -50,11 +50,11 @@
             </b-tr>
             <b-tr>
               <b-td>상영관</b-td>
-              <b-td colspan="3" class="text-left">{{
+              <b-td colspan="2" class="text-left">{{
                 book.floor + "층" + book.screen
               }}</b-td>
               <b-td>매수</b-td>
-              <b-td colspan="3" class="text-left">{{ book.numOfPeople }}매</b-td>
+              <b-td colspan="4" class="text-left">{{ book.numOfPeople }}매</b-td>
             </b-tr>
           </b-tbody>
           <b-tfoot>
@@ -76,7 +76,23 @@ export default {
   components: {},
   data() {
     return {
-      reservations: [],
+      reservations: [
+        // {
+        //   "columns": [
+        //     0
+        //   ],
+        //   "floor": 0,
+        //   "movieName": "string",
+        //   "numOfPeople": 0,
+        //   "price": 0,
+        //   "rows": [
+        //     "string"
+        //   ],
+        //   "screen": "string",
+        //   "screenDate": "string",
+        //   "screenTime": "string"
+        // }
+      ],
     };
   },
   methods: {},

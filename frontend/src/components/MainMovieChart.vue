@@ -6,7 +6,7 @@
           <h3 style="text-align: left">무비차트</h3>
         </b-col>
         <b-col>
-          <router-link to="/movie" style="float: right">전체보기</router-link>
+          <router-link to="/movie?sort=book" style="float: right">전체보기</router-link>
         </b-col>
       </b-row>
       <b-list-group horizontal id="movieChart">
@@ -31,7 +31,7 @@
               img-alt="Image"
               img-top
               tag="article"
-              style="width: 200px"
+              style="width: 200px;height: 450px;"
               class="mb-2"
               :aria-hidden="showOverlayList[key] ? 'true' : null"
               @mouseover="showOverlayList[key] = true"

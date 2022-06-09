@@ -4,22 +4,22 @@
     <img :src="movieDetail.img" />
     <div class="movieContent">
       <h1>{{ movieDetail.title }}</h1>
-      <h7>{{ movieDetail.titleEng }}</h7>
-      <div class="score">예매율: 모름</div>
+      <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
+      <div class="score">예매율: {{Math.ceil(movieDetail.ticketSales * 100)}}%</div>
 
       <h7
-        >감독 : {{ movieDetail.director }} / 배우 : {{ movieDetail.actors }}</h7
+        >감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h7
       ><br />
-      <h7>장르 : {{ movieDetail.genre }}</h7
+      <h7>장르 : {{ movieDetail.genre }} / 기본: {{movieDetail.mediaRate=="전체" ? movieDetail.mediaRate : movieDetail.mediaRate+" 이상"}}, {{movieDetail.runtime}}</h7
       ><br />
-      <h7>개봉일: {{ movieDetail.openingDate }}</h7
+      <h7>개봉일: {{ movieDetail.releaseDate }}</h7
       ><br />
       <b-button
         ref="cancel"
         variant="outline-danger"
         size="sm"
         aria-describedby="cancel-label"
-        @click="$router.push('#')"
+        @click="$router.push('/ticket?movie=' + movieDetail.title)"
       >
         예매하기
       </b-button>
@@ -28,23 +28,26 @@
   <div class="movieGraph">
     <movie-detail-chart-vue
       ref="movieGraph"
-      :ageData="movieDetail.ageChart"
-      :sexData="movieDetail.sexChart"
+      :ageData="movieDetail.ageDistribution"
+      :sexData="movieDetail.genderDistribution"
     ></movie-detail-chart-vue>
   </div>
   <div class="commentTable">
     <h3 style="margin-top: 80px">댓글</h3>
+    <b-button variant="danger" @click="$router.push('/review?title='+movieDetail.title)">평점작성</b-button>
+    <b-button>내 평점</b-button>
     <b-row v-for="(row, index) in commentTable" :key="index">
       <b-col v-for="(comment, index) in row" :key="index">
         <div class="commentBox">
-          <p>{{ comment.user }}</p>
+          <p>{{ comment.userId }}</p>
           <div class="comment">
             {{ comment.comment }}
           </div>
           <b-button>
-            <b-icon icon="heart-fill"></b-icon>
+            <b-icon icon="heart-fill" @click="addLike(comment)"></b-icon>
             {{ comment.like }}
           </b-button>
+          <span style="margin-left: 10px;">{{comment.commentDate}}</span>
         </div>
       </b-col>
     </b-row>
@@ -65,47 +68,71 @@ export default {
   data() {
     return {
       movieDetail: {
-        title: "쥬라기 월드-도미니언",
-        titleEng: "title",
-        img: "https://img.cgv.co.kr/Movie/Thumbnail/Poster/000085/85813/85813_320.jpg",
-        director: "감독님",
-        actors: ["배우1", "배우2"],
-        genre: "범죄, 액션",
-        age: "15세 이상",
-        openingDate: "2022.05.18",
-        comment: [
-          { user: "유저1", comment: "댓글임", like: 2 },
-          { user: "유저2", comment: "댓글임", like: 3 },
-          { user: "유저3", comment: "댓글임", like: 2 },
-          { user: "유저4", comment: "댓글임", like: 2 },
-          { user: "유저5", comment: "댓글임", like: 2 },
-          { user: "유저6", comment: "댓글임", like: 27 },
-          { user: "유저7", comment: "댓글임", like: 1 },
-          { user: "유저8", comment: "댓글임", like: 5 },
-        ],
-        // sexChart: [34, 27],
-        // ageChart: [21, 27, 18, 16, 12],
-        sexChart: [],
-        ageChart: [],
+        title: this.$route.params.movie,
+        // titleEng: "",
+        img: "../movies/" + this.$route.params.movie + ".jpg",
+        // persons: [],
+        director: "",
+        actors: [],
+        genre: "",
+        releaseDate: "",
+        mediaRate: "",
+        runtime: "",
+        ticketSales: "",
+        genderDistribution: [],
+        ageDistribution: [],
+        comments:[{
+          userId: "",
+          comment: "",
+          like: "",
+          commentDate: ""
+        }]
       },
     };
   },
-  created(){
-    axios.get(this.HOST+"/movie/"+this.movieDetail.title+"/gender").then((res) => {
-      console.log(res.data)
-      this.movieDetail.sexChart = [res.data * 100, (1-res.data) * 100]
-    });
-
-    axios.get(this.HOST+"/movie/"+this.movieDetail.title+"/age").then((res) => {
-      console.log(res.data)
-      this.movieDetail.ageChart = res.data
-    });
-  }
-  ,
+  methods:{
+    addLike(comment){
+      // 로그인이 안됐을 때
+      console.log(comment)
+      if(this.$store.state.login == false){
+        let result = confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?');
+        if(result == true){
+            this.$router.push('/login')
+        }
+      }
+      else{
+        axios.post(this.HOST+"/addLike", {
+          comment: this.movieDetail.comments.comment,
+          commentDate: this.movieDetail.comments.commentDate
+        }).then(res=>{
+          if(res.data == "Success"){
+            comment.like++;
+          }
+        }).catch(err=>{
+          console.log(err)
+        })
+      }
+    }
+  },
+created(){
+  console.log("접속 시: " + this.$route.params.movie)
+  // 영화 상세 데이터 받아오기
+  axios.get(this.HOST+"/movie/"+this.$route.params.movie).then(res=>{
+      console.log(res)
+      this.movieDetail = res.data
+      this.movieDetail.title = this.$route.params.movie
+      this.movieDetail.titleEng = "영어"
+      this.movieDetail.img = "../movies/" + this.$route.params.movie + ".jpg"
+      this.movieDetail.genderDistribution = [res.data.genderDistribution, 1-res.data.genderDistribution]
+    })
+  },
   computed: {
     commentTable() {
-      return chunk(this.movieDetail.comment, 2);
+      return chunk(this.movieDetail.comments, 2);
     },
+    actorsPrint(){
+      return this.movieDetail.actors.join(', ')
+    }
   },
 };
 </script>

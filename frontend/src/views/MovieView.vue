@@ -45,19 +45,29 @@ export default {
         //   grade: "",
         // },
       ],
-      sortSelected: "book",
       sortOptions: [
         { value: "book", text: "예매율" },
         { value: "rate", text: "평점" },
       ],
     };
   },
+  methods:{
+    sortBySale(){
+      axios.get(this.HOST+"/movies/sales").then((res) => {
+        console.log(res.data)
+        this.movies = res.data
+      });
+    },
+    sortByGrade(){
+      axios.get(this.HOST+"/movies/grade").then((res) => {
+        console.log(res.data)
+        this.movies = res.data
+      });
+    }
+  },
   created() {
-    // 해당 페이지가 출력되면 영화 데이터를 받아옴
-    axios.get(this.HOST+"/movies/sales").then((res) => {
-      console.log(res.data)
-      this.movies = res.data
-    });
+    // 해당 페이지가 출력되면 영화 데이터를 받아옴(예매율순)
+    this.sortBySale()
   },
   computed: {
     chunkMovies() {

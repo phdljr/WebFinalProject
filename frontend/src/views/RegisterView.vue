@@ -99,8 +99,8 @@ export default {
         age: "",
       },
       genderOptions: [
-        { text: "남", value: "남" },
-        { text: "여", value: "여" },
+        { text: "남자", value: "남자" },
+        { text: "여자", value: "여자" },
       ],
       passwordCheck: "",
       validId: null,
@@ -117,11 +117,11 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data == "Success") {
-            this.vailidId = true;
+            this.validId = true;
             this.tempId = this.registerData.id;
           } else {
             // 중복이라면 "Duplicated"
-            this.vailidId = false;
+            this.validId = false;
           }
         })
         .catch((err) => {
@@ -130,7 +130,7 @@ export default {
     },
     submitForm() {
       // 아이디 중복 체크
-      if (this.vailidId == false) {
+      if (this.validId == false) {
         alert("아이디를 다시 확인해주세요.");
         return;
       }
