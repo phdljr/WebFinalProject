@@ -1,14 +1,15 @@
 package kr.ac.kumoh.backend.Service;
 
 
+import kr.ac.kumoh.backend.dto.MovieDetailInfo;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
 
 import java.util.List;
-import java.util.Map;
 
 
 public interface MovieService {
 
+    MovieDetailInfo getMovieDetailInfo(String movieName);
     List<Top10MovieDTO> getTop10TicketSales();
 
     double getMovieTicketSales(String movieName);

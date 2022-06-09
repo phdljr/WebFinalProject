@@ -21,11 +21,11 @@
                     </b-form-group>
             </b-col>
             <b-col>
-                CGV 구미 | {{seatData.theater}} | 남은좌석 {{seatData.maxcol*seatData.maxrow - seatData.selectedCol.length}} / {{seatData.maxcol*seatData.maxrow}}
+                <p>CGV 구미 | {{seatData.theater}} | 남은좌석 {{seatData.maxcol*seatData.maxrow - seatData.selectedCol.length}} / {{seatData.maxcol*seatData.maxrow}}</p>
+                <h3>2022.06.14 (화) {{this.$route.params.screenTime}} ~ {{calcTime(this.$route.params.screenTime)}}</h3>
             </b-col>
         </b-row>
         <b-row>
-            
             <div class="seatTableRow" v-for="(row, rowNum) in seatTable" :key="rowNum">
                 {{String.fromCharCode(65+rowNum)}}열
                 <b-button
@@ -41,6 +41,8 @@
         </b-row>
         <b-row>
             <b-col>
+                <h5 style="text-align: right;" v-if="selectSeat.length!=0">일반 : {{price}}원 X {{selectSeat.length}}</h5>
+                <h5 style="text-align: right;" v-if="selectSeat.length!=0">총 금액 : {{price * selectSeat.length}}원</h5>
                 <b-button id="bookButton" @click="makeReserve">예매하기</b-button>
             </b-col>
         </b-row>
@@ -62,6 +64,7 @@ export default {
                 { text:'4', value:4 }
             ],
             price: 0, // 한 자리에 필요한 금액
+            runtime: "", // 영화 상영 시간
             seatData:{
                 // title: "",
                 // theater: "",
@@ -102,8 +105,6 @@ export default {
             else{
                 this.selectSeat.push({ row, col })
             }
-
-            console.log(this.selectSeat)
         },
         // 만드는 중...
         makeReserve() {
@@ -123,7 +124,7 @@ export default {
                 screenTime: this.$route.params.screenTime,
                 movieName: this.seatData.title,
             };
-            console.log(data)
+
             axios.post(this.HOST + "/reserve", data).then(res=>{
                 console.log(res.data)
                 if(res.data === "Success"){
@@ -132,15 +133,25 @@ export default {
                 }
             })
         },
+        calcTime(screenTime){
+            let date = screenTime.split(':')
+            let hour = parseInt(date[0])
+            let min = parseInt(date[1])
+
+            let temp = Number(this.runtime.replace('분', ''))
+            hour += parseInt(temp/60)
+            min += temp%60
+
+            return hour + ":" + min;
+        }
     },
     created(){
-        console.log(this.$route.params.screenName)
         axios.post(this.HOST+"/reservedSeats", {
             screenName: this.$route.params.screenName,
             screenTime: this.$route.params.screenTime
         }).then(res=>{
-            console.log(res)
             this.price = res.data.price,
+            this.runtime = res.data.runtime,
             this.seatData = {
                 title: this.$route.params.title,
                 theater: this.$route.params.screenName,

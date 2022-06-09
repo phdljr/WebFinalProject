@@ -11,4 +11,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("select m.title from Movie m")
     List<String> findAllMovieName();
+
+    Movie findByTitle(String title);
 }

@@ -42,6 +42,18 @@ public class UserServiceImpl implements UserService {
     public UserInfoDTO getUserInfo(String userId) {
 
         User findUser = userRepository.findByUserId(userId);
+
+        UserInfoDTO userInfoDTO = UserInfoDTO.builder()
+                .age(findUser.getAge())
+                .gender(findUser.getGender())
+                .build();
+
+        return userInfoDTO;
+    }
+
+    @Override
+    public List<UserBookDetailsDTO> getUserMovieReservations(String userId) {
+        User findUser = userRepository.findByUserId(userId);
         List<BookDetails> userMovieSchedules = bookDetailsRepository.getUserMovieSchedule(findUser.getUserId());
 
         List<UserBookDetailsDTO> userBookDetailsDTOS = new ArrayList<>();
@@ -76,13 +88,7 @@ public class UserServiceImpl implements UserService {
             log.info("User가 예매한 내역이 없습니다!");
         }
 
-        UserInfoDTO userInfoDTO = UserInfoDTO.builder()
-                .age(findUser.getAge())
-                .gender(findUser.getGender())
-                .reservations(userBookDetailsDTOS)
-                .build();
-
-        return userInfoDTO;
+        return userBookDetailsDTOS;
     }
 
     @Override

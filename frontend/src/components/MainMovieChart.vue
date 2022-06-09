@@ -31,7 +31,7 @@
               img-alt="Image"
               img-top
               tag="article"
-              style="width: 200px"
+              style="width: 200px;height: 450px;"
               class="mb-2"
               :aria-hidden="showOverlayList[key] ? 'true' : null"
               @mouseover="showOverlayList[key] = true"
