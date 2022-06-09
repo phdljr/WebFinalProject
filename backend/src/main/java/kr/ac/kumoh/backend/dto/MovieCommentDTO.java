@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MovieCommentDTO {
 
-    private String userName;
+    private String userId;
     private String commentDate;
     private String comment;
     private int like;
 
     @Builder
     public MovieCommentDTO(String userName, String commentDate, String comment, int like) {
-        this.userName = userName;
+        this.userId = userName;
         this.commentDate = commentDate;
         this.comment = comment;
         this.like = like;

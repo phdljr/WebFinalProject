@@ -1,13 +1,13 @@
 package kr.ac.kumoh.backend.Service;
 
-import io.swagger.models.auth.In;
-import kr.ac.kumoh.backend.domain.BookDetails;
-import kr.ac.kumoh.backend.domain.MovieSchedule;
-import kr.ac.kumoh.backend.domain.User;
+import kr.ac.kumoh.backend.domain.*;
+import kr.ac.kumoh.backend.dto.MovieCommentDTO;
+import kr.ac.kumoh.backend.dto.MovieDetailInfo;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
 import kr.ac.kumoh.backend.repository.BookDetailsRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
+import kr.ac.kumoh.backend.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,47 @@ import java.util.*;
 public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
+    private final PersonRepository personRepository;
     private final MovieScheduleRepository movieScheduleRepository;
     private final BookDetailsRepository bookDetailsRepository;
+    private final CommentService commentService;
+
+    @Override
+    public MovieDetailInfo getMovieDetailInfo(String movieName) {
+
+        List<Person> moviePersons = personRepository.getAllPerson(movieName);                   // 배우 & 감독
+        Movie movie = movieRepository.findByTitle(movieName);                                   // 영화 정보
+        double ticketSales = getMovieTicketSales(movieName);                                    // 예매율
+        double genderReservationDistribution = getGenderReservationDistribution(movieName);     // 성별 예매 분포
+        List<Integer> ageReservationDistribution = getAgeReservationDistribution(movieName);    // 나이별 예매 분포
+        List<MovieCommentDTO> movieComments = commentService.getMovieComments(movieName);       // 댓글
+
+        // 배우 & 감독 데이터
+        String director = null;
+        List<String> person = new ArrayList<>();
+        for (Person moviePerson : moviePersons) {
+            if (moviePerson.getOccupation().equals("감독"))
+                director = moviePerson.getName();
+            else
+                person.add(moviePerson.getName());
+        }
+
+        // 나머지 데이터
+        // 예매율 / 장르 / 개봉일 / 등급 / 런타임 / 성별 예매 분포 / 나이별 예매 분포 / 댓글
+        MovieDetailInfo movieDetailInfo = MovieDetailInfo.builder()
+                .director(director)
+                .actors(person)
+                .ticketSales(ticketSales)
+                .genre(movie.getGenre())
+                .releaseDate(movie.getReleaseDate())
+                .mediaRate(movie.getMediaRating())
+                .runtime(movie.getRuntime())
+                .genderDistribution(genderReservationDistribution)
+                .ageDistribution(ageReservationDistribution)
+                .comments(movieComments).build();
+
+        return movieDetailInfo;
+    }
 
     @Override
     public List<Top10MovieDTO> getTop10TicketSales() {
@@ -38,7 +77,7 @@ public class MovieServiceImpl implements MovieService {
         }
 
         List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
-        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
+//        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
         moviesSaleTickets.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
                 .forEachOrdered(x -> {
@@ -65,23 +104,32 @@ public class MovieServiceImpl implements MovieService {
 
         List<BookDetails> numOfAgeMovieTickets = bookDetailsRepository.getNumOfAgeMovieTickets(movieName);
 
-        int teenage = 0; int twenties = 0; int thirties = 0; int forties = 0; int fifties = 0; int etc = 0;
+        int teenage = 0;
+        int twenties = 0;
+        int thirties = 0;
+        int forties = 0;
+        int fifties = 0;
+        int etc = 0;
         double total = numOfAgeMovieTickets.size();
-        System.out.println("total = " + total);
         for (BookDetails numOfAgeMovieTicket : numOfAgeMovieTickets) {
             int age = numOfAgeMovieTicket.getUser().getAge();
 
-            switch (age/10) {
+            switch (age / 10) {
                 case 1:
-                    teenage += 1; break;
+                    teenage += 1;
+                    break;
                 case 2:
-                    twenties += 1; break;
+                    twenties += 1;
+                    break;
                 case 3:
-                    thirties += 1; break;
+                    thirties += 1;
+                    break;
                 case 4:
-                    forties += 1; break;
+                    forties += 1;
+                    break;
                 case 5:
-                    fifties += 1; break;
+                    fifties += 1;
+                    break;
                 default:
                     etc += 1;
             }
