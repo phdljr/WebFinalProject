@@ -6,6 +6,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 
+@NamedEntityGraph(
+        name = "Comment.User.Movie",
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("movie")
+        }
+)
 @Entity
 @Getter
 @Table(name = "COMMENTS")

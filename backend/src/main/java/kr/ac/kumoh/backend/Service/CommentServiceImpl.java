@@ -6,6 +6,7 @@ import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.domain.User;
 import kr.ac.kumoh.backend.dto.CommentDTO;
 import kr.ac.kumoh.backend.dto.AddLikeDTO;
+import kr.ac.kumoh.backend.dto.MovieCommentDTO;
 import kr.ac.kumoh.backend.repository.CommentRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 import static java.util.Objects.isNull;
@@ -70,5 +73,23 @@ public class CommentServiceImpl implements CommentService {
         }
 
         return status;
+    }
+
+    @Override
+    public List<MovieCommentDTO> getMovieComments(String movieName) {
+        List<Comment> movieComments = commentRepository.getMovieComments(movieName);
+
+        List<MovieCommentDTO> movieCommentDTOS = new ArrayList<>();
+        for (Comment movieComment : movieComments) {
+            MovieCommentDTO commentDTO = MovieCommentDTO.builder()
+                    .userName(movieComment.getUser().getUserId())
+                    .commentDate(movieComment.getCommentDate())
+                    .comment(movieComment.getComment())
+                    .like(movieComment.getNumOfLike()).build();
+
+            movieCommentDTOS.add(commentDTO);
+        }
+
+        return movieCommentDTOS;
     }
 }
