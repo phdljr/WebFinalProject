@@ -29,9 +29,4 @@ public class CommentController {
     public StatusOfUser addLike(@RequestBody AddLikeDTO addLikeDTO) {
         return commentService.addLike(addLikeDTO);
     }
-
-    @GetMapping("/test")
-    public List<MovieCommentDTO> test() {
-        return commentService.getMovieComments("범죄도시 2");
-    }
 }
