@@ -5,19 +5,24 @@ import kr.ac.kumoh.backend.domain.Movie;
 import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.domain.User;
 import kr.ac.kumoh.backend.dto.CommentDTO;
+import kr.ac.kumoh.backend.dto.AddLikeDTO;
 import kr.ac.kumoh.backend.repository.CommentRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
+import static java.util.Objects.isNull;
+import static kr.ac.kumoh.backend.domain.StatusOfUser.Fail;
 import static kr.ac.kumoh.backend.domain.StatusOfUser.Success;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
@@ -39,14 +44,31 @@ public class CommentServiceImpl implements CommentService {
         User findUser = userRepository.findByUserId(userId);
         Movie findMovie = movieRepository.findByTitle(movieName);
 
-        Comment newComment = new Comment();
-        newComment.setCommentDate(currDateTime);
-        newComment.setUser(findUser);
-        newComment.setMovie(findMovie);
-        newComment.setComment(comment);
-
+        Comment newComment = new Comment(findMovie, findUser, comment, currDateTime);
         commentRepository.save(newComment);
 
         return Success;
+    }
+
+    @Override
+    public StatusOfUser addLike(AddLikeDTO addLikeDTO) {
+        StatusOfUser status = Fail;
+        Comment findComment = null;
+
+        try {
+            findComment = commentRepository.findByCommentAndCommentDate(
+                    addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+        } catch (Exception ignored) {
+            log.warn("Doesn't match LocalDateTime Format");
+        }
+
+        if (!isNull(findComment)) {
+            log.info("좋아요 +1");
+            findComment.addLike();
+            commentRepository.save(findComment);
+            status = Success;
+        }
+
+        return status;
     }
 }
