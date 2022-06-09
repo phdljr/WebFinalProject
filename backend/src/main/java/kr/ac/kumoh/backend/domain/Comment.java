@@ -1,6 +1,7 @@
 package kr.ac.kumoh.backend.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 @Table(name = "COMMENTS")
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -26,5 +28,5 @@ public class Comment {
 
     private String comment;
 
-    private int numOfLike;
+    private int numOfLike = 0;
 }

@@ -6,6 +6,7 @@ SELECT * FROM BOOKING_DETAILS;
 SELECT * FROM USER;
 SELECT * FROM BOOK;
 SELECT * FROM SEATS;
+SELECT * FROM COMMENTS;
 
 -- 영화 데이터 넣기
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE ) values(100, '15세', '2021년 6월 6일', '150분',  '태극기 휘날리며');
@@ -16,8 +17,8 @@ insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE ) values(
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE ) values(105, '15세', '2022년 5월 4일', '126분',  '닥터 스트레인지-대혼돈의 멀티버스');
 
 -- 영화관 데이터 넣기
-insert into theater(THEATER_ID, FLOOR, SCREEN, NUM_OF_COLUMNS, NUM_OF_ROWS, NUM_OF_SEATS) values(98, 1, '1관', 13, 13, 96);
-insert into theater(THEATER_ID, FLOOR, SCREEN, NUM_OF_COLUMNS, NUM_OF_ROWS, NUM_OF_SEATS) values(99, 2, '2관', 8, 8, 35);
+insert into theater(THEATER_ID, FLOOR, SCREEN, NUM_OF_COLUMNS, NUM_OF_ROWS, NUM_OF_SEATS) values(98, 1, '1관', 13, 13, 169);
+insert into theater(THEATER_ID, FLOOR, SCREEN, NUM_OF_COLUMNS, NUM_OF_ROWS, NUM_OF_SEATS) values(99, 2, '2관', 8, 8, 64);
 
 -- 상영 시간표 데이터 넣기
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
