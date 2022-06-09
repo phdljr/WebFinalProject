@@ -45,7 +45,6 @@ export default {
         return;
       }
 
-      console.log("로그인 시도");
       axios
         .post(this.HOST + "/login", data)
         .then((res) => {
@@ -54,7 +53,6 @@ export default {
           }
           // Success가 온다면
           else if (res.data == "Success") {
-            console.log("success가 왔음");
             axios
               .post(this.HOST + "/loginSuccess", { param: this.id })
               .then((res) => {
@@ -65,8 +63,13 @@ export default {
                   gender: res.data.gender,
                 });
 
-                // 이전 페이지로 이동시키게 설정해두기 //
-                this.$router.push("/");
+                // 이전 페이지로 이동시키게 설정
+                if(this.$route.params.state == "wasBooking"){
+                  this.$router.push('/ticket?movie='+this.$route.params.title+'&theater=' + this.$route.params.theater + '&time=' + this.$route.params.time)
+                }
+                else{
+                  this.$router.push("/");
+                }
               })
               .catch((err) => {
                 console.log(err);
