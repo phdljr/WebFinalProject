@@ -1,4 +1,5 @@
 <template>
+<div>
   <!-- {{$route.params.movie}} -->
   <div class="MovieDetail">
     <img :src="movieDetail.img" />
@@ -39,8 +40,6 @@
       <textarea v-model="comment"></textarea>
       <b-button variant="success">저장</b-button>
     </div>
-    <b-button variant="danger" @click="$router.push('/review?title='+movieDetail.title)">평점작성</b-button>
-    <b-button>내 평점</b-button>
     <b-row v-for="(row, index) in commentTable" :key="index">
       <b-col v-for="(comment, index) in row" :key="index">
         <div class="commentBox">
@@ -56,6 +55,7 @@
         </div>
       </b-col>
     </b-row>
+  </div>
   </div>
 </template>
 
@@ -93,7 +93,7 @@ export default {
         }]
       },
       comment:'',
-      rating:0,
+      rating:0, // 0~5
     };
   },
   methods:{
