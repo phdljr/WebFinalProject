@@ -30,15 +30,16 @@ public class SeatController {
         List<Seat> reservedSeats = seatRepository.getReservedSeats(screenName, screenTime);
         MovieSchedule theater = movieScheduleRepository.getTheater(screenName, screenTime);
 
-
         int numOfRows = theater.getTheater().getNumOfRows();
         int numOfColumns = theater.getTheater().getNumOfColumns();
         int price = theater.getPrice();
+        String runtime = theater.getMovie().getRuntime();
 
         ReservedSeatDTO reservedSeatDTO = new ReservedSeatDTO();
         reservedSeatDTO.setNumOfColumns(numOfColumns);
         reservedSeatDTO.setNumOfRows(numOfRows);
         reservedSeatDTO.setPrice(price);
+        reservedSeatDTO.setRuntime(runtime);
         reservedSeats.forEach(seat -> {
             reservedSeatDTO.getRows().add(seat.getSeatRow());
             reservedSeatDTO.getColumns().add(seat.getSeatColumn());
