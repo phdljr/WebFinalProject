@@ -34,6 +34,11 @@
   </div>
   <div class="commentTable">
     <h3 style="margin-top: 80px">댓글</h3>
+    <div class="commentInput">
+      <vue3-star-ratings v-model="rating"/>
+      <textarea v-model="comment"></textarea>
+      <b-button variant="success">저장</b-button>
+    </div>
     <b-button variant="danger" @click="$router.push('/review?title='+movieDetail.title)">평점작성</b-button>
     <b-button>내 평점</b-button>
     <b-row v-for="(row, index) in commentTable" :key="index">
@@ -52,7 +57,6 @@
       </b-col>
     </b-row>
   </div>
-  <div class="comment"></div>
 </template>
 
 <script>
@@ -88,6 +92,8 @@ export default {
           commentDate: ""
         }]
       },
+      comment:'',
+      rating:0,
     };
   },
   methods:{
@@ -134,6 +140,11 @@ created(){
       return this.movieDetail.actors.join(', ')
     }
   },
+  watch:{
+    rating:function(val){
+      this.rating = Math.round(val*2)/2
+    }
+  }
 };
 </script>
 
@@ -177,5 +188,23 @@ created(){
 .commentBox {
   border-bottom: 1px solid #333333;
   padding: 20px;
+}
+.commentInput{
+  border-top: 1px solid #333333;
+  padding-top: 20px;
+  margin-bottom: 80px;
+  clear: both;
+  overflow: hidden;
+}
+.commentInput textarea{
+  width:90%;
+  height: 120px;
+  float: left;
+  resize: none;
+}
+.commentInput button{
+  float: right;
+  height: 120px;
+  width: 8%;
 }
 </style>
