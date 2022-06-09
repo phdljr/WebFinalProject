@@ -34,6 +34,11 @@
   </div>
   <div class="commentTable">
     <h3 style="margin-top: 80px">댓글</h3>
+    <div class="commentInput">
+      <vue3-star-ratings v-model="rating"/>
+      <textarea v-model="comment"></textarea>
+      <b-button variant="success">저장</b-button>
+    </div>
     <b-row v-for="(row, index) in commentTable" :key="index">
       <b-col v-for="(comment, index) in row" :key="index">
         <div class="commentBox">
@@ -49,7 +54,6 @@
       </b-col>
     </b-row>
   </div>
-  <div class="comment"></div>
 </template>
 
 <script>
@@ -88,6 +92,8 @@ export default {
         sexChart: [],
         ageChart: [],
       },
+      comment:'',
+      rating:0,
     };
   },
   created(){
@@ -107,6 +113,11 @@ export default {
       return chunk(this.movieDetail.comment, 2);
     },
   },
+  watch:{
+    rating:function(val){
+      this.rating = Math.round(val*2)/2
+    }
+  }
 };
 </script>
 
@@ -150,5 +161,23 @@ export default {
 .commentBox {
   border-bottom: 1px solid #333333;
   padding: 20px;
+}
+.commentInput{
+  border-top: 1px solid #333333;
+  padding-top: 20px;
+  margin-bottom: 80px;
+  clear: both;
+  overflow: hidden;
+}
+.commentInput textarea{
+  width:90%;
+  height: 120px;
+  float: left;
+  resize: none;
+}
+.commentInput button{
+  float: right;
+  height: 120px;
+  width: 8%;
 }
 </style>
