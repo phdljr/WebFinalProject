@@ -6,6 +6,7 @@ SELECT * FROM BOOKING_DETAILS;
 SELECT * FROM USER;
 SELECT * FROM BOOK;
 SELECT * FROM SEATS;
+SELECT * FROM PERSON;
 
 -- 영화 데이터 넣기
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE ) values(100, '15세', '2021년 6월 6일', '150분',  '태극기 휘날리며');
@@ -33,3 +34,12 @@ values(205, 12000, '2021년 6월 8일', '17:00', 101, 98, 96);
 insert into movie_schedule(MS_ID, PRICE, SCREEN_DATE, SCREEN_TIME, MOVIE_ID, THEATER_ID, REMAINING_SEAT)
 values(206, 12000, '2021년 6월 8일', '18:00', 101, 98, 96);
 
+-- 감독 & 배우 데이터 넣기
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(300, '이상용', '감독', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(301, '마동석', '배우', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(302, '손석구', '배우', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(303, '최귀화', '배우', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(304, '박지환', '배우', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(305, '허동원', '배우', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(306, '하준', '배우', 102);
+insert into person(PERSON_ID, NAME, OCCUPATION, MOVIE_ID) values(307, '정재광', '배우', 102);
