@@ -11,6 +11,10 @@ import kr.ac.kumoh.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 import static kr.ac.kumoh.backend.domain.StatusOfUser.Success;
 
 
@@ -25,6 +29,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public StatusOfUser addComment(CommentDTO commentDTO) {
 
+        String currDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
         String userId = commentDTO.getUserId();
         String movieName = commentDTO.getMovieName();
         String comment = commentDTO.getComment();
@@ -33,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
         Movie findMovie = movieRepository.findByTitle(movieName);
 
         Comment newComment = new Comment();
+        newComment.setCommentDate(currDateTime);
         newComment.setUser(findUser);
         newComment.setMovie(findMovie);
         newComment.setComment(comment);

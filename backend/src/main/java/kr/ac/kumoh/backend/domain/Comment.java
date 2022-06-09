@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -29,4 +30,6 @@ public class Comment {
     private String comment;
 
     private int numOfLike = 0;
+
+    private String commentDate;
 }
