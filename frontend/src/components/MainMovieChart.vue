@@ -6,7 +6,7 @@
           <h3 style="text-align: left">무비차트</h3>
         </b-col>
         <b-col>
-          <router-link to="/movie?sort=book" style="float: right">전체보기</router-link>
+          <router-link to="/movie" style="float: right">전체보기</router-link>
         </b-col>
       </b-row>
       <b-list-group horizontal id="movieChart">

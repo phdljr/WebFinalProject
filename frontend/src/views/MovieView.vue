@@ -7,6 +7,7 @@
           v-model="sortSelected"
           :options="sortOptions"
         ></b-form-select>
+        <b-button @click="sortMovie">Go</b-button>
       </div>
       <b-row :key="key" v-for="(movieRow, key) in chunkMovies" cols="4">
         <b-col :key="index" v-for="(movie, index) in movieRow">
@@ -45,6 +46,7 @@ export default {
         //   grade: "",
         // },
       ],
+      sortSelected: "book",
       sortOptions: [
         { value: "book", text: "예매율" },
         { value: "rate", text: "평점" },
@@ -52,6 +54,14 @@ export default {
     };
   },
   methods:{
+    sortMovie(){
+      if(this.sortSelected == "book"){
+        this.sortBySale()
+      }
+      else{
+        this.sortByGrade()
+      }
+    },
     sortBySale(){
       axios.get(this.HOST+"/movies/sales").then((res) => {
         console.log(res.data)
@@ -74,11 +84,11 @@ export default {
       return chunk(this.movies, 4); // 한 줄당 4개씩 출력
     },
   },
-  watch: {
-    sortSelected: function (val) {
-      this.$router.push("movie?sort=" + val);
-    },
-  },
+  // watch: {
+  //   sortSelected: function (val) {
+  //     this.$router.push("movie?sort=" + val);
+  //   },
+  // },
 };
 </script>
 
