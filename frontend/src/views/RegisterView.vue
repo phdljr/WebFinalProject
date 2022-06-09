@@ -162,6 +162,13 @@ export default {
       return this.registerData.pw.length > 7;
     },
   },
+  watch:{
+    'registerData.id':function(){
+      if(this.idChecked==true)
+      this.checkAccept =  null
+      this.idChecked =  null
+    }
+  }
 };
 </script>
 
