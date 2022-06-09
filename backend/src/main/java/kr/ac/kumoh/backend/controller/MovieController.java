@@ -2,6 +2,7 @@ package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.MovieService;
 import kr.ac.kumoh.backend.dto.MovieDTO;
+import kr.ac.kumoh.backend.dto.MovieDetailInfo;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 
 @RequiredArgsConstructor
@@ -19,6 +19,11 @@ import java.util.Map;
 public class MovieController {
 
     private final MovieService movieService;
+
+    @GetMapping("/movie/{movieName}")
+    public MovieDetailInfo getMovieDetailInfo(@PathVariable String movieName) {
+        return movieService.getMovieDetailInfo(movieName);
+    }
 
     /**
      * 예매율순으로 Top10 영화 출력
