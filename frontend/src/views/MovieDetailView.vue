@@ -1,61 +1,61 @@
 <template>
-<div>
-  <!-- {{$route.params.movie}} -->
-  <div class="MovieDetail">
-    <img :src="movieDetail.img" />
-    <div class="movieContent">
-      <h1>{{ movieDetail.title }}</h1>
-      <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
-      <div class="score">예매율: {{Math.ceil(movieDetail.ticketSales * 100)}}%</div>
+  <div>
+    <!-- {{$route.params.movie}} -->
+    <div class="MovieDetail">
+      <img :src="movieDetail.img" />
+      <div class="movieContent">
+        <h1>{{ movieDetail.title }}</h1>
+        <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
+        <div class="score">예매율: {{Math.ceil(movieDetail.ticketSales * 100)}}%</div>
 
-      <h7
-        >감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h7
-      ><br />
-      <h7>장르 : {{ movieDetail.genre }} / 기본: {{movieDetail.mediaRate=="전체" ? movieDetail.mediaRate : movieDetail.mediaRate+" 이상"}}, {{movieDetail.runtime}}</h7
-      ><br />
-      <h7>개봉일: {{ movieDetail.releaseDate }}</h7
-      ><br />
-      <b-button
-        ref="cancel"
-        variant="outline-danger"
-        size="sm"
-        aria-describedby="cancel-label"
-        @click="$router.push('/ticket?movie=' + movieDetail.title)"
-      >
-        예매하기
-      </b-button>
+        <h7
+          >감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h7
+        ><br />
+        <h7>장르 : {{ movieDetail.genre }} / 기본: {{movieDetail.mediaRate=="전체" ? movieDetail.mediaRate : movieDetail.mediaRate+" 이상"}}, {{movieDetail.runtime}}</h7
+        ><br />
+        <h7>개봉일: {{ movieDetail.releaseDate }}</h7
+        ><br />
+        <b-button
+          ref="cancel"
+          variant="outline-danger"
+          size="sm"
+          aria-describedby="cancel-label"
+          @click="$router.push('/ticket?movie=' + movieDetail.title)"
+        >
+          예매하기
+        </b-button>
+      </div>
     </div>
-  </div>
-  <div class="movieGraph">
-    <movie-detail-chart-vue
-      ref="movieGraph"
-      :ageData="movieDetail.ageDistribution"
-      :sexData="movieDetail.genderDistribution"
-    ></movie-detail-chart-vue>
-  </div>
-  <div class="commentTable">
-    <h3 style="margin-top: 80px">댓글</h3>
-    <div class="commentInput">
-      <vue3-star-ratings v-model="rating"/>
-      <textarea v-model="comment"></textarea>
-      <b-button variant="success">저장</b-button>
+    <div class="movieGraph">
+      <movie-detail-chart-vue
+        ref="movieGraph"
+        :ageData="movieDetail.ageDistribution"
+        :sexData="movieDetail.genderDistribution"
+      ></movie-detail-chart-vue>
     </div>
-    <b-row v-for="(row, index) in commentTable" :key="index">
-      <b-col v-for="(comment, index) in row" :key="index">
-        <div class="commentBox">
-          <p>{{ comment.userId }}</p>
-          <div class="comment">
-            {{ comment.comment }}
+    <div class="commentTable">
+      <h3 style="margin-top: 80px">댓글</h3>
+      <div class="commentInput">
+        <vue3-star-ratings v-model="rating"/>
+        <textarea v-model="comment"></textarea>
+        <b-button variant="success">저장</b-button>
+      </div>
+      <b-row v-for="(row, index) in commentTable" :key="index">
+        <b-col v-for="(comment, index) in row" :key="index">
+          <div class="commentBox">
+            <p>{{ comment.userId }}</p>
+            <div class="comment">
+              {{ comment.comment }}
+            </div>
+            <b-button>
+              <b-icon icon="heart-fill" @click="addLike(comment)"></b-icon>
+              {{ comment.like }}
+            </b-button>
+            <span style="margin-left: 10px;">{{comment.commentDate}}</span>
           </div>
-          <b-button>
-            <b-icon icon="heart-fill" @click="addLike(comment)"></b-icon>
-            {{ comment.like }}
-          </b-button>
-          <span style="margin-left: 10px;">{{comment.commentDate}}</span>
-        </div>
-      </b-col>
-    </b-row>
-  </div>
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
