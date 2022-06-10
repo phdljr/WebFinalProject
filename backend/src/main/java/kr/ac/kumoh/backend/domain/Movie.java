@@ -26,6 +26,16 @@ public class Movie {
     private String runtime;
     private String genre;
 
+    // 평점
+    private double avgOfGrade;
+    private int numOfGrades;
+
+    public void calcGrade(double grade) {
+        this.numOfGrades += 1;
+        double avg = (avgOfGrade * (numOfGrades - 1) + grade) / numOfGrades;
+        this.avgOfGrade = Math.round(avg * 100) / 100.0;
+    }
+
     public Movie(String title, String mediaRating, String releaseDate, String runtime) {
         this.title = title;
         this.mediaRating = mediaRating;
