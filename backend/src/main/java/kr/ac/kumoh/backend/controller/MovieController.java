@@ -35,10 +35,9 @@ public class MovieController {
         return movieService.getTop10TicketSales();
     }
 
-    // 평점순으로 Top10 영화 출력 (아직 미완성)
     @GetMapping(value = "/movies/rates")
-    public List<MovieDTO> getMoviesByGrades() {
-        return null;
+    public List<Top10MovieDTO> getMoviesByGrades() {
+        return movieService.getTop10MovieGrades();
     }
 
     @PostMapping(value = "/movie/rate")

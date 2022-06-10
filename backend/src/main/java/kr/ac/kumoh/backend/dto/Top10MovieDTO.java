@@ -9,7 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Top10MovieDTO {
+public class Top10MovieDTO implements Comparable<Top10MovieDTO> {
 
     private String title;
     private Double rate;
@@ -17,5 +17,15 @@ public class Top10MovieDTO {
 
     public void setMediaRating(String mediaRating) {
         this.mediaRating = mediaRating;
+    }
+
+    @Override
+    public int compareTo(Top10MovieDTO dto) {
+        if (this.rate < dto.getRate())
+            return 1;
+        else if (this.rate > dto.getRate())
+            return -1;
+
+        return 0;
     }
 }

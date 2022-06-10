@@ -17,6 +17,8 @@ public interface MovieService {
 
     List<Top10MovieDTO> getTop10TicketSales();
 
+    List<Top10MovieDTO> getTop10MovieGrades();
+
     double getMovieTicketSales(String movieName);
 
     double getGenderReservationDistribution(String movieName);

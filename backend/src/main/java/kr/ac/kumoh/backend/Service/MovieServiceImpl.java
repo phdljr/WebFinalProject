@@ -176,7 +176,21 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public List<Top10MovieDTO> getTop10MovieGrades() {
-        return null;
+
+        List<Movie> movies = movieRepository.findAll();
+
+        List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
+        for (Movie movie : movies) {
+            Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
+                    .title(movie.getTitle())
+                    .mediaRating(movie.getMediaRating())
+                    .rate(movie.getAvgOfGrade()).build();
+            top10MovieDTOS.add(top10MovieDTO);
+        }
+
+        Collections.sort(top10MovieDTOS);
+
+        return top10MovieDTOS;
     }
 
     @Override
