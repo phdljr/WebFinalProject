@@ -22,22 +22,45 @@
             <div class="movieTitle">
                 <div style="float:left">({{movieDetail.age}}) {{movieDetail.title}}</div>
                 <div style="float:left;margin-left:1em;color: #a0a0a0;">{{movieDetail.genre}} / {{movieDetail.openingDate}}</div>
-                <div class="timeSelect" v-for="(theater, index) in movieDetail.theater" :key="index">
+                <div class="timeSelect" v-for="(theater, key) in movieDetail.theater" :key="key">
                     <div>▶ 2D | {{theater.name}} | 총 {{theater.totalSeat}}석</div>
-                    <b-button
-                        v-b-toggle.collapse-1
-                        class="timeButton"
-                        variant="outline-secondary"
-                        v-for="(time, index) in theater.time"
-                        :key="index">
-                        {{time.time}}<br>
-                        {{time.seat}}석
-                    </b-button>
-                    <b-collapse id="collapse-1" class="mt-2">
-                        <b-card>
-                            <p class="card-text">{{theater}}</p>
-                        </b-card>
-                    </b-collapse>
+                    <div class="saleButtons" v-for="(time, index) in theater.time" :key="index">
+                        <b-button
+                            v-b-toggle="['collapse-'+key+'-'+index]"
+                            class="timeButton"
+                            variant="outline-secondary"
+                            >
+                            {{time.time}}<br>
+                            {{time.seat}}석<br>
+                        </b-button>
+                        <b-collapse :id="'collapse-'+key+'-'+index" class="mt-2">
+                            <b-card id="collapseCard">
+                                <b-form @submit="applySale(key,index)">
+                                    <b-form-radio-group
+                                        id="radio-group-1"
+                                        v-model="saleData[key][index]['discount']"
+                                        :options="saleOptions"
+                                        name="radio-options"
+                                        required
+                                    ></b-form-radio-group>
+                                    <b-form-group
+                                        id="input-group-1"
+                                        label-for="input-1"
+                                    >
+                                        <b-form-input
+                                        id="input-1"
+                                        type="number"
+                                        v-model="saleData[key][index]['number']"
+                                        required
+                                        ></b-form-input>
+                                        <b-button type="submit">
+                                            적용
+                                        </b-button>
+                                    </b-form-group>
+                                </b-form>
+                            </b-card>
+                        </b-collapse>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,6 +103,30 @@ export default {
                     }
                 ]
             },
+            saleOptions:[
+                {text:"정률할인",value:"rate"},
+                {text:"정액할인",value:"amount"}
+            ],
+            saleData:[]
+        }
+    },
+    methods:{
+        makeSaleData(){
+            //이거 axios로 값 가져온뒤에 실행해야함
+            for(var key in this.movieDetail.theater){
+                var arr = []
+                for(var index in this.movieDetail.theater[key].time){
+                    this.movieDetail.theater[key].time[index]
+                    var sale = {discount:'', number:0}
+                    arr.push(sale)
+                }
+                this.saleData.push(arr);
+            }
+        },
+        applySale(a, b){
+            console.log(this.saleData[a][b])
+            console.log(this.movieDetail.theater[a].name)//관 이름
+            console.log(this.movieDetail.theater[a].time[b].time)//시간
         }
     },
     computed:{
@@ -92,12 +139,13 @@ export default {
         }
     },
     created(){
+        this.makeSaleData()//이거 axios로 값 가져온뒤에 실행해야함
         if(this.$store.state.userData.isAdmin == true){
             return;
         }
         else{
-            alert("잘못된 접근입니다.")
-            this.$router.push("/")
+            //alert("잘못된 접근입니다.")
+            //this.$router.push("/")
         }
     }
 }
@@ -139,8 +187,11 @@ export default {
     padding-top: 20px;
     border-bottom: none;
 }
-#collapse-1{
+.saleButtons div{
     width: 100%;
     float: left;
+}
+.saleButtons button{
+    margin-top: 10px;
 }
 </style>
