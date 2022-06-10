@@ -1,13 +1,11 @@
 package kr.ac.kumoh.backend.Service;
 
-import kr.ac.kumoh.backend.domain.Comment;
-import kr.ac.kumoh.backend.domain.Movie;
-import kr.ac.kumoh.backend.domain.StatusOfUser;
-import kr.ac.kumoh.backend.domain.User;
+import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.CommentDTO;
 import kr.ac.kumoh.backend.dto.AddLikeDTO;
 import kr.ac.kumoh.backend.dto.MovieCommentDTO;
 import kr.ac.kumoh.backend.repository.CommentRepository;
+import kr.ac.kumoh.backend.repository.LikeRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final MovieRepository movieRepository;
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     public StatusOfUser addComment(CommentDTO commentDTO) {
@@ -70,6 +69,10 @@ public class CommentServiceImpl implements CommentService {
             findComment.addLike();
             commentRepository.save(findComment);
             status = Success;
+
+            Like like = new Like(findComment, addLikeDTO.getUserId());
+            System.out.println("like = " + like);
+            likeRepository.save(like);
         }
 
         return status;

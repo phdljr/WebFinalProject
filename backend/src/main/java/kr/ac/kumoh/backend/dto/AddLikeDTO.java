@@ -8,4 +8,5 @@ public class AddLikeDTO {
 
     private String comment;
     private String commentDate;
+    private String userId;
 }
