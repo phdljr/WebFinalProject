@@ -11,7 +11,7 @@
                 </td>
                 <td v-if="selectMovie!=null">
                     <div class="theaterSelect" v-for="(theater, index) in timeline" :key="index">
-                        {{theater.theaterName}} (총 {{theater.totalSeat}}석)
+                        <span v-if="theater.totalSeat != null">{{theater.theaterName}} (총 {{theater.totalSeat}}석)</span>
                         <br>
                         <div class="timeSelector" v-for="(time, key) in theater.time" :key="key">
                             <b-button
@@ -100,11 +100,24 @@ export default {
         // 로그인이 됐을 땐 진행, 로그인이 안돼있으면 로그인 화면으로 이동하라는 alert가 뜸
         // alert에서 '확인'버튼을 눌러야만 login창으로 이동.
         getSeats(){
+
             // 로그인이 안됐을 때
             if(this.$store.state.login == false){
                 let result = confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?');
                 if(result == true){
-                    this.$router.push('/login')
+
+                    // 라우터로 이동시켰을 때, 변수를 넘겨줌
+                    // 해당 변수는 이동된 페이지에서 this.$router.params.(속성)을 통해 값 접근 가능
+                    // 로그인을 안한 상태에서 예매를 진행할 경우, 로그인 창에 선택한 영화 정보를 넘겨주는 부분
+                    this.$router.push({
+                    name: 'login',
+                    params: {
+                        state: "wasBooking",
+                        title: this.selectMovie,
+                        theater: this.selectTime.theater,
+                        time: this.selectTime.time
+                    }
+                })
                 }
             }
             else{

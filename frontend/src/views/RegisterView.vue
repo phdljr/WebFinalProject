@@ -130,7 +130,7 @@ export default {
     },
     submitForm() {
       // 아이디 중복 체크
-      if (this.validId == false) {
+      if (this.validId == false || this.validId == null) {
         alert("아이디를 다시 확인해주세요.");
         return;
       }
