@@ -5,10 +5,7 @@ import kr.ac.kumoh.backend.dto.MovieCommentDTO;
 import kr.ac.kumoh.backend.dto.MovieDetailInfo;
 import kr.ac.kumoh.backend.dto.RateMovieDTO;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
-import kr.ac.kumoh.backend.repository.BookDetailsRepository;
-import kr.ac.kumoh.backend.repository.MovieRepository;
-import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
-import kr.ac.kumoh.backend.repository.PersonRepository;
+import kr.ac.kumoh.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,22 +20,34 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
+    private final CommentService commentService;
     private final MovieRepository movieRepository;
     private final PersonRepository personRepository;
-    private final MovieScheduleRepository movieScheduleRepository;
+    private final MovieGradeRepository movieGradeRepository;
     private final BookDetailsRepository bookDetailsRepository;
-    private final CommentService commentService;
+    private final MovieScheduleRepository movieScheduleRepository;
 
     @Override
     public StatusOfUser giveGrade(RateMovieDTO rateMovieDTO) {
+
+        StatusOfUser status = StatusOfUser.Success;
 
         String movieName = rateMovieDTO.getMovieName();
         String userId = rateMovieDTO.getUserId();
         Double grade = rateMovieDTO.getGrade();
 
-        Movie movie = movieRepository.findByTitle(movieName);
-        movie.calcGrade(grade);
-        return StatusOfUser.Success;
+        Optional<MovieGrade> findUserId = movieGradeRepository.findByUserId(userId);
+        if (findUserId.isPresent())
+            status = StatusOfUser.AlreadyGiveGrade;
+        else {
+            Movie movie = movieRepository.findByTitle(movieName);
+            movie.calcGrade(grade);
+
+            MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
+            movieGradeRepository.save(movieGrade);
+        }
+
+        return status;
     }
 
     @Override
