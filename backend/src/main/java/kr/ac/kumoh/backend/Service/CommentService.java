@@ -16,5 +16,5 @@ public interface CommentService {
 
     List<MovieCommentDTO> getMovieComments(String movieName);
 
-    StatusOfUser removeLike(AddLikeDTO addLikeDTO);
+    StatusOfUser removeLike(RemoveLikeDTO addLikeDTO);
 }

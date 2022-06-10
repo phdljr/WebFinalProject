@@ -3,7 +3,6 @@ package kr.ac.kumoh.backend.Service;
 import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.MovieCommentDTO;
 import kr.ac.kumoh.backend.dto.MovieDetailInfo;
-import kr.ac.kumoh.backend.dto.RateMovieDTO;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
 import kr.ac.kumoh.backend.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -23,32 +22,8 @@ public class MovieServiceImpl implements MovieService {
     private final CommentService commentService;
     private final MovieRepository movieRepository;
     private final PersonRepository personRepository;
-    private final MovieGradeRepository movieGradeRepository;
     private final BookDetailsRepository bookDetailsRepository;
     private final MovieScheduleRepository movieScheduleRepository;
-
-    @Override
-    public StatusOfUser giveGrade(RateMovieDTO rateMovieDTO) {
-
-        StatusOfUser status = StatusOfUser.Success;
-
-        String movieName = rateMovieDTO.getMovieName();
-        String userId = rateMovieDTO.getUserId();
-        Double grade = rateMovieDTO.getGrade();
-
-        Optional<MovieGrade> findUserId = movieGradeRepository.findByUserId(userId);
-        if (findUserId.isPresent())
-            status = StatusOfUser.AlreadyGiveGrade;
-        else {
-            Movie movie = movieRepository.findByTitle(movieName);
-            movie.calcGrade(grade);
-
-            MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
-            movieGradeRepository.save(movieGrade);
-        }
-
-        return status;
-    }
 
     @Override
     public MovieDetailInfo getMovieDetailInfo(String movieName) {
@@ -59,6 +34,7 @@ public class MovieServiceImpl implements MovieService {
         double genderReservationDistribution = getGenderReservationDistribution(movieName);     // 성별 예매 분포
         List<Integer> ageReservationDistribution = getAgeReservationDistribution(movieName);    // 나이별 예매 분포
         List<MovieCommentDTO> movieComments = commentService.getMovieComments(movieName);       // 댓글
+        double avgOfGrade = movie.getAvgOfGrade();                                              // 평균 평점
 
         // 배우 & 감독 데이터
         String director = null;
@@ -71,7 +47,7 @@ public class MovieServiceImpl implements MovieService {
         }
 
         // 나머지 데이터
-        // 예매율 / 장르 / 개봉일 / 등급 / 런타임 / 성별 예매 분포 / 나이별 예매 분포 / 댓글
+        // 예매율 / 장르 / 개봉일 / 등급 / 런타임 / 성별 예매 분포 / 나이별 예매 분포 / 댓글 / 평균 평점
         MovieDetailInfo movieDetailInfo = MovieDetailInfo.builder()
                 .director(director)
                 .actors(person)
@@ -82,7 +58,8 @@ public class MovieServiceImpl implements MovieService {
                 .runtime(movie.getRuntime())
                 .genderDistribution(genderReservationDistribution)
                 .ageDistribution(ageReservationDistribution)
-                .comments(movieComments).build();
+                .comments(movieComments)
+                .avgOfGrade(avgOfGrade).build();
 
         return movieDetailInfo;
     }

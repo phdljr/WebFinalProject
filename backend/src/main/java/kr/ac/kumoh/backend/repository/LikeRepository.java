@@ -14,7 +14,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("select l from Like l join fetch l.comment where l.userId = :userId")
     List<Like> getUserLikes(@Param("userId") String userId);
 
-    Like findByComment(Comment comment);
+    Like findByUserIdAndComment(String userId, Comment comment);
 
     List<Like> findAllByComment_Id(Long commentId);
 }

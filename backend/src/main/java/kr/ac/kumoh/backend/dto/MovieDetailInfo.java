@@ -22,4 +22,5 @@ public class MovieDetailInfo {
     private double genderDistribution;
     private List<Integer> ageDistribution;
     private List<MovieCommentDTO> comments;
+    private double avgOfGrade;
 }

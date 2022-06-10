@@ -4,5 +4,6 @@ public enum StatusOfUser {
     Success, Fail,
     Duplicated,
     NonExistUser, NonExistMovie, CantSaveSeat,
-    AlreadyGiveGrade
+    AlreadyGiveGrade,
+    AlreadyExist
 }

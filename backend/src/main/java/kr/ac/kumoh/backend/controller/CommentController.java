@@ -3,10 +3,7 @@ package kr.ac.kumoh.backend.controller;
 import kr.ac.kumoh.backend.Service.CommentService;
 import kr.ac.kumoh.backend.Service.LikeService;
 import kr.ac.kumoh.backend.domain.StatusOfUser;
-import kr.ac.kumoh.backend.dto.CommentDTO;
-import kr.ac.kumoh.backend.dto.AddLikeDTO;
-import kr.ac.kumoh.backend.dto.DeleteCommentDTO;
-import kr.ac.kumoh.backend.dto.RevisedCommentDTO;
+import kr.ac.kumoh.backend.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,8 +38,8 @@ public class CommentController {
     }
 
     @PostMapping("/removeLike")
-    public StatusOfUser removeLike(@RequestBody AddLikeDTO addLikeDTO) {
-        return commentService.removeLike(addLikeDTO);
+    public StatusOfUser removeLike(@RequestBody RemoveLikeDTO removeLikeDTO) {
+        return commentService.removeLike(removeLikeDTO);
     }
 
     @GetMapping("/{userId}/likes")

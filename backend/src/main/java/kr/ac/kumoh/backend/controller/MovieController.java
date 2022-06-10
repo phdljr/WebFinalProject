@@ -40,11 +40,6 @@ public class MovieController {
         return movieService.getTop10MovieGrades();
     }
 
-    @PostMapping(value = "/movie/rate")
-    public StatusOfUser rateMovie(@RequestBody RateMovieDTO rateMovieDTO) {
-        return movieService.giveGrade(rateMovieDTO);
-    }
-
     @GetMapping("/movie/{movieName}/age")
     public List<Integer> getAgeReservationDistribution(@PathVariable("movieName") String movieName) {
         return movieService.getAgeReservationDistribution(movieName);

@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface MovieService {
 
-    StatusOfUser giveGrade(RateMovieDTO rateMovieDTO);
-
     MovieDetailInfo getMovieDetailInfo(String movieName);
 
     List<Top10MovieDTO> getTop10TicketSales();
