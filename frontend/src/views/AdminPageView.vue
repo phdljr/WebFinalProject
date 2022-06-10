@@ -29,14 +29,13 @@
                         class="timeButton"
                         variant="outline-secondary"
                         v-for="(time, index) in theater.time"
-                        :key="index"
-                        @click="isOpen = !isOpen">
+                        :key="index">
                         {{time.time}}<br>
                         {{time.seat}}석
                     </b-button>
                     <b-collapse id="collapse-1" class="mt-2">
                         <b-card>
-                            <p class="card-text">Collapse contents Here</p>
+                            <p class="card-text">{{theater}}</p>
                         </b-card>
                     </b-collapse>
                 </div>
@@ -46,15 +45,9 @@
 </template>
 
 <script>
-// import { CollapseTransition } from "@ivanv/vue-collapse-transition"
-
 export default {
-    components: {
-    //   CollapseTransition,
-    },
     data() {
         return {
-            isOpen: false,
             movieDetail: {
                 title: "쥬라기 월드-도미니언",
                 genre: "범죄, 액션",
@@ -97,6 +90,15 @@ export default {
             }
             return total
         }
+    },
+    created(){
+        if(this.$store.state.userData.isAdmin == true){
+            return;
+        }
+        else{
+            alert("잘못된 접근입니다.")
+            this.$router.push("/")
+        }
     }
 }
 </script>
@@ -136,5 +138,9 @@ export default {
 .movieTitle{
     padding-top: 20px;
     border-bottom: none;
+}
+#collapse-1{
+    width: 100%;
+    float: left;
 }
 </style>

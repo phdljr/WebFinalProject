@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -85,6 +86,13 @@ export default {
             }
             return total
         }
+    },
+    created(){
+        axios.get(this.HOST+"/theaters").then(res=>{
+            console.log(res)
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 }
 </script>
