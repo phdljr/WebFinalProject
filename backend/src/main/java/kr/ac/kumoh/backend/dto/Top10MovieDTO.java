@@ -13,5 +13,9 @@ public class Top10MovieDTO {
 
     private String title;
     private Double rate;
-    private int grade;
+    private String mediaRating;
+
+    public void setMediaRating(String mediaRating) {
+        this.mediaRating = mediaRating;
+    }
 }

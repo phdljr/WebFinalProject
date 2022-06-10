@@ -145,11 +145,12 @@ public class MovieServiceImpl implements MovieService {
     public List<Top10MovieDTO> getTop10TicketSales() {
 
         Map<String, Double> moviesSaleTickets = new HashMap<>();
-        List<String> allMovieName = movieRepository.findAllMovieName();
+        List<Movie> movieList = movieRepository.findAll();
 
-        for (String movieName : allMovieName) {
-            double ticketSales = getMovieTicketSales(movieName);
-            moviesSaleTickets.put(movieName, ticketSales);
+        for (Movie movie : movieList) {
+            String movieTitle = movie.getTitle();
+            double ticketSales = getMovieTicketSales(movieTitle);
+            moviesSaleTickets.put(movieTitle, ticketSales);
         }
 
         List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
@@ -159,13 +160,23 @@ public class MovieServiceImpl implements MovieService {
                 .forEachOrdered(x -> {
                     Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
                             .title(x.getKey())
-                            .grade(12)
+                            .mediaRating("")
                             .rate(x.getValue()).build();
 
                     top10MovieDTOS.add(top10MovieDTO);
                 });
 
+        int index = 0;
+        for (Movie movie : movieList) {
+            String mediaRating = movie.getMediaRating();
+            top10MovieDTOS.get(index++).setMediaRating(mediaRating);
+        }
+
         return top10MovieDTOS;
+    }
+
+    public List<Top10MovieDTO> getTop10MovieGrades() {
+        return null;
     }
 
     @Override

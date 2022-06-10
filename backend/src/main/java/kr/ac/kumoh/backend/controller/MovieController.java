@@ -37,7 +37,7 @@ public class MovieController {
 
     // 평점순으로 Top10 영화 출력 (아직 미완성)
     @GetMapping(value = "/movies/rates")
-    public List<MovieDTO> getMoviesByRates() {
+    public List<MovieDTO> getMoviesByGrades() {
         return null;
     }
 
