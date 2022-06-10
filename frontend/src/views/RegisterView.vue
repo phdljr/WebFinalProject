@@ -164,9 +164,10 @@ export default {
   },
   watch:{
     'registerData.id':function(){
-      if(this.idChecked==true)
-      this.checkAccept =  null
-      this.idChecked =  null
+      if(this.idChecked==true){
+        this.validId = null
+        this.idChecked = null
+      }
     }
   }
 };
