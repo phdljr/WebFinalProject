@@ -40,6 +40,18 @@ export default {
         pw: this.pw,
       };
 
+      // 관리자 정보로 로그인할 경우
+      if (data.id === "admin" || data.pw === "admin") {
+        this.$store.commit("login", {
+                  id: null,
+                  age: null,
+                  gender: null,
+                  isAdmin: true
+                });
+        this.$router.push('/admin');
+        return;
+      }
+
       if (data.id === "" || data.pw === "") {
         alert("정보를 입력해 주세요.");
         return;

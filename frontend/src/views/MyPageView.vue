@@ -9,7 +9,7 @@
     </div>
     <div class="my-cgv">
       <h5 class="text-left">예매 내역</h5>
-      <div class="my-booking">
+      <div class="my-booking" v-if="reservations.length != 0">
         <b-table-simple
           small
           responsive
@@ -44,7 +44,7 @@
               <b-td>관람좌석</b-td>
               <b-td colspan="4" class="text-left"
                 ><span v-for="(temp, index) in book.numOfPeople" :key="index"
-                  >{{ book.rows[index] + book.columns[index] + " " }}
+                  >{{ book.rows[index] + (book.columns[index]+1) + " " }}
                 </span></b-td
               >
             </b-tr>
@@ -65,6 +65,9 @@
             </b-tr>
           </b-tfoot>
         </b-table-simple>
+      </div>
+      <div class="my-booking" v-else>
+        <h5>고객님의 최근 예매내역이 존재하지 않습니다.</h5>
       </div>
     </div>
   </div>

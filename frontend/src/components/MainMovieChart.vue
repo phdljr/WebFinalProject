@@ -36,7 +36,7 @@
               :aria-hidden="showOverlayList[key] ? 'true' : null"
               @mouseover="showOverlayList[key] = true"
             >
-              <p>{{movie.rate >= 0 ? "예매율 " + Math.ceil(movie.rate * 100) + "%" : "상영 예정"}}</p>
+              <p>예매율{{ movie.rate * 100 }}%</p>
             </b-card>
             <template #overlay>
               <div class="text-center" @mouseout="showOverlayList[key] = false">
@@ -52,7 +52,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('/ticket?movie=' + movie.title)"
+                  @click="goTicket(movie.title)"
                 >
                   예매하기
                 </b-button>
@@ -99,6 +99,14 @@ export default {
     };
   },
   methods: {
+    goTicket(title){
+      if(title == "범죄도시 2"){
+        this.$router.push('/ticket?movie=' + title)
+      }
+      else{
+        alert("구미 CGV에서 상영중인 영화가 아닙니다.")
+      }
+    }
   },
   computed: {
     listMovieChart() {
