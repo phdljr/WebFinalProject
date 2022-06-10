@@ -4,13 +4,9 @@ import lombok.Getter;
 
 
 @Getter
-public class CommentDTO {
-
+public class RemoveLikeDTO {
+    private String commentUserId;
     private String movieName;
-
     private String userId;
-
-    private String comment;
-
-    private Double grade;
 }
+
