@@ -42,6 +42,16 @@ public class Comment {
         this.numOfLike += 1;
     }
 
+    public void removeLike() {
+        this.numOfLike -= 1;
+    }
+
+    public void reviseComment(String newComment) { this.comment = newComment; }
+
+    public void setCommentDate(String commentDate) {
+        this.commentDate = commentDate;
+    }
+
     public Comment(Movie movie, User user, String comment, String commentDate) {
         this.movie = movie;
         this.user = user;
