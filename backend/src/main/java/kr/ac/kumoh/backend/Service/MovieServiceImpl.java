@@ -3,11 +3,9 @@ package kr.ac.kumoh.backend.Service;
 import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.MovieCommentDTO;
 import kr.ac.kumoh.backend.dto.MovieDetailInfo;
+import kr.ac.kumoh.backend.dto.RateMovieDTO;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
-import kr.ac.kumoh.backend.repository.BookDetailsRepository;
-import kr.ac.kumoh.backend.repository.MovieRepository;
-import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
-import kr.ac.kumoh.backend.repository.PersonRepository;
+import kr.ac.kumoh.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,11 +20,35 @@ import java.util.*;
 @RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
+    private final CommentService commentService;
     private final MovieRepository movieRepository;
     private final PersonRepository personRepository;
-    private final MovieScheduleRepository movieScheduleRepository;
+    private final MovieGradeRepository movieGradeRepository;
     private final BookDetailsRepository bookDetailsRepository;
-    private final CommentService commentService;
+    private final MovieScheduleRepository movieScheduleRepository;
+
+    @Override
+    public StatusOfUser giveGrade(RateMovieDTO rateMovieDTO) {
+
+        StatusOfUser status = StatusOfUser.Success;
+
+        String movieName = rateMovieDTO.getMovieName();
+        String userId = rateMovieDTO.getUserId();
+        Double grade = rateMovieDTO.getGrade();
+
+        Optional<MovieGrade> findUserId = movieGradeRepository.findByUserId(userId);
+        if (findUserId.isPresent())
+            status = StatusOfUser.AlreadyGiveGrade;
+        else {
+            Movie movie = movieRepository.findByTitle(movieName);
+            movie.calcGrade(grade);
+
+            MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
+            movieGradeRepository.save(movieGrade);
+        }
+
+        return status;
+    }
 
     @Override
     public MovieDetailInfo getMovieDetailInfo(String movieName) {
@@ -63,33 +85,6 @@ public class MovieServiceImpl implements MovieService {
                 .comments(movieComments).build();
 
         return movieDetailInfo;
-    }
-
-    @Override
-    public List<Top10MovieDTO> getTop10TicketSales() {
-
-        Map<String, Double> moviesSaleTickets = new HashMap<>();
-        List<String> allMovieName = movieRepository.findAllMovieName();
-
-        for (String movieName : allMovieName) {
-            double ticketSales = getMovieTicketSales(movieName);
-            moviesSaleTickets.put(movieName, ticketSales);
-        }
-
-        List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
-//        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
-        moviesSaleTickets.entrySet().stream()
-                .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
-                .forEachOrdered(x -> {
-                    Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
-                            .title(x.getKey())
-                            .grade(12)
-                            .rate(x.getValue()).build();
-
-                    top10MovieDTOS.add(top10MovieDTO);
-                });
-
-        return top10MovieDTOS;
     }
 
     @Override
@@ -144,6 +139,58 @@ public class MovieServiceImpl implements MovieService {
         rates.add(etc);
 
         return rates;
+    }
+
+    @Override
+    public List<Top10MovieDTO> getTop10TicketSales() {
+
+        Map<String, Double> moviesSaleTickets = new HashMap<>();
+        List<Movie> movieList = movieRepository.findAll();
+
+        for (Movie movie : movieList) {
+            String movieTitle = movie.getTitle();
+            double ticketSales = getMovieTicketSales(movieTitle);
+            moviesSaleTickets.put(movieTitle, ticketSales);
+        }
+
+        List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
+//        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
+        moviesSaleTickets.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
+                .forEachOrdered(x -> {
+                    Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
+                            .title(x.getKey())
+                            .mediaRating("")
+                            .rate(x.getValue()).build();
+
+                    top10MovieDTOS.add(top10MovieDTO);
+                });
+
+        int index = 0;
+        for (Movie movie : movieList) {
+            String mediaRating = movie.getMediaRating();
+            top10MovieDTOS.get(index++).setMediaRating(mediaRating);
+        }
+
+        return top10MovieDTOS;
+    }
+
+    public List<Top10MovieDTO> getTop10MovieGrades() {
+
+        List<Movie> movies = movieRepository.findAll();
+
+        List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
+        for (Movie movie : movies) {
+            Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
+                    .title(movie.getTitle())
+                    .mediaRating(movie.getMediaRating())
+                    .rate(movie.getAvgOfGrade()).build();
+            top10MovieDTOS.add(top10MovieDTO);
+        }
+
+        Collections.sort(top10MovieDTOS);
+
+        return top10MovieDTOS;
     }
 
     @Override

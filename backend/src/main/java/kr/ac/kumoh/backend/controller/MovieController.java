@@ -1,14 +1,14 @@
 package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.MovieService;
+import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.dto.MovieDTO;
 import kr.ac.kumoh.backend.dto.MovieDetailInfo;
+import kr.ac.kumoh.backend.dto.RateMovieDTO;
 import kr.ac.kumoh.backend.dto.Top10MovieDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,14 +32,17 @@ public class MovieController {
      */
     @GetMapping(value = "/movies/sales")
     public List<Top10MovieDTO> getMoviesBySales() {
-
         return movieService.getTop10TicketSales();
     }
 
-    // 평점순으로 Top10 영화 출력 (아직 미완성)
     @GetMapping(value = "/movies/rates")
-    public List<MovieDTO> getMoviesByRates() {
-        return null;
+    public List<Top10MovieDTO> getMoviesByGrades() {
+        return movieService.getTop10MovieGrades();
+    }
+
+    @PostMapping(value = "/movie/rate")
+    public StatusOfUser rateMovie(@RequestBody RateMovieDTO rateMovieDTO) {
+        return movieService.giveGrade(rateMovieDTO);
     }
 
     @GetMapping("/movie/{movieName}/age")

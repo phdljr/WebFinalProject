@@ -4,9 +4,9 @@ import lombok.Getter;
 
 
 @Getter
-public class AddLikeDTO {
+public class RateMovieDTO {
 
-    private String comment;
-    private String commentDate;
     private String userId;
+    private String movieName;
+    private Double grade;
 }

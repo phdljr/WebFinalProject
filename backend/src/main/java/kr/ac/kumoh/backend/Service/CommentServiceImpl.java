@@ -1,13 +1,9 @@
 package kr.ac.kumoh.backend.Service;
 
-import kr.ac.kumoh.backend.domain.Comment;
-import kr.ac.kumoh.backend.domain.Movie;
-import kr.ac.kumoh.backend.domain.StatusOfUser;
-import kr.ac.kumoh.backend.domain.User;
-import kr.ac.kumoh.backend.dto.CommentDTO;
-import kr.ac.kumoh.backend.dto.AddLikeDTO;
-import kr.ac.kumoh.backend.dto.MovieCommentDTO;
+import kr.ac.kumoh.backend.domain.*;
+import kr.ac.kumoh.backend.dto.*;
 import kr.ac.kumoh.backend.repository.CommentRepository;
+import kr.ac.kumoh.backend.repository.LikeRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
 import kr.ac.kumoh.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +29,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final MovieRepository movieRepository;
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     public StatusOfUser addComment(CommentDTO commentDTO) {
@@ -54,6 +51,37 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public StatusOfUser reviseComment(RevisedCommentDTO revisedCommentDTO) {
+
+        String currDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        Comment findComment = commentRepository.findByCommentAndCommentDate(
+                revisedCommentDTO.getComment(), revisedCommentDTO.getCommentDate());
+
+        findComment.reviseComment(revisedCommentDTO.getNewComment());
+        findComment.setCommentDate(currDateTime);
+        commentRepository.save(findComment);
+
+        return Success;
+    }
+
+    @Override
+    public StatusOfUser deleteComment(DeleteCommentDTO deleteCommentDTO) {
+
+        Comment findComment = commentRepository.findByCommentAndCommentDate(
+                deleteCommentDTO.getComment(), deleteCommentDTO.getCommentDate());
+
+        List<Like> findLikes
+                = likeRepository.findAllByComment_Id(findComment.getId());
+
+        likeRepository.deleteAll(findLikes);
+        commentRepository.delete(findComment);
+
+        return Success;
+    }
+
+    @Override
     public StatusOfUser addLike(AddLikeDTO addLikeDTO) {
         StatusOfUser status = Fail;
         Comment findComment = null;
@@ -70,9 +98,28 @@ public class CommentServiceImpl implements CommentService {
             findComment.addLike();
             commentRepository.save(findComment);
             status = Success;
+
+            Like like = new Like(findComment, addLikeDTO.getUserId());
+            System.out.println("like = " + like);
+            likeRepository.save(like);
         }
 
         return status;
+    }
+
+    @Override
+    public StatusOfUser removeLike(AddLikeDTO addLikeDTO) {
+
+        Comment findComment = commentRepository.findByCommentAndCommentDate(
+                addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+
+        findComment.removeLike();
+        commentRepository.save(findComment);
+
+        Like findLike = likeRepository.findByComment(findComment); // 수정
+        likeRepository.delete(findLike);
+
+        return Success;
     }
 
     @Override

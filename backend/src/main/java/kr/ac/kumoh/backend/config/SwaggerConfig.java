@@ -26,8 +26,8 @@ public class SwaggerConfig {
 
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder()
-                .title("우리끼리 API Documentation")
-                .description("API")
+                .title("고급 웹 프로그래밍 텀 프로젝트")
+                .description("API Documentation")
                 .build();
     }
 }

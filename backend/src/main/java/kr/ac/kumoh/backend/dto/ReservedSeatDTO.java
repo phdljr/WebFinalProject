@@ -17,6 +17,7 @@ public class ReservedSeatDTO {
     private int numOfRows;
     private int numOfColumns;
     private int price;
+    private String runtime;
     private List<String> rows = new ArrayList<>();
     private List<Integer> columns = new ArrayList<>();
 }

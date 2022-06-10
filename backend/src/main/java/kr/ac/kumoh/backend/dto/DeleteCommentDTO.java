@@ -4,7 +4,7 @@ import lombok.Getter;
 
 
 @Getter
-public class AddLikeDTO {
+public class DeleteCommentDTO {
 
     private String comment;
     private String commentDate;

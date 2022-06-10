@@ -11,17 +11,23 @@ SELECT * FROM COMMENTS;
 
 -- 영화 데이터 넣기
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
-values(100, '15세', '2021년 6월 6일', '150분',  '태극기 휘날리며', '역사');
+values(100, '12세', '2022년 6월 1일', '147분',  '쥬라기 월드-도미니언', '액션, 어드벤처');
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
-values(101, '12세', '2022년 6월 1일', '147분',  '쥬라기 월드-도미니언', '액션, 어드벤처');
+values(101, '15세', '2022년 5월 18일', '106분',  '범죄도시 2', '범죄, 액션');
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
-values(102, '15세', '2022년 5월 18일', '106분',  '범죄도시 2', '범죄, 액션');
+values(102, '12세', '2022년 6월 8일', '129분',  '브로커', '드라마');
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
-values(103, '12세', '2022년 6월 8일', '129분',  '브로커', '드라마');
+values(103, '12세', '2021년 6월 22일', '130분',  '탑건-매버릭', '액션');
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
-values(104, '12세', '2021년 6월 22일', '130분',  '탑건-매버릭', '액션');
+values(104, '15세', '2022년 5월 4일', '126분',  '닥터 스트레인지-대혼돈의 멀티버스', '액션, 어드벤처, 환타지');
 insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
-values(105, '15세', '2022년 5월 4일', '126분',  '닥터 스트레인지-대혼돈의 멀티버스', '액션, 어드벤처, 환타지');
+values(105, '전체', '2022년 6월 15일', '105분',  '버즈 라이트이어', '애니메이션');
+insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
+values(106, '전체', '2022년 6월 1일', '96분',  '극장판 포켓몬스터DP-기라티나와 하늘의 꽃다발 쉐이미', '애니메이션');
+insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
+values(107, '15세', '2022년 6월 15일', '137분', '마녀(魔女) Part2. The Other One', '액션');
+insert into movie(MOVIE_ID, MEDIA_RATING, RELEASE_DATE, RUNTIME, TITLE, GENRE)
+values(108, '15세', '2022년 6월 8일', '126분',  '이공삼칠', '드라마');
 
 -- 영화관 데이터 넣기
 insert into theater(THEATER_ID, FLOOR, SCREEN, NUM_OF_COLUMNS, NUM_OF_ROWS, NUM_OF_SEATS) values(98, 1, '1관', 13, 13, 169);
