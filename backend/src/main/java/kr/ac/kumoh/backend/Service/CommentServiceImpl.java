@@ -53,6 +53,26 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public StatusOfUser reviseComment(AddLikeDTO addLikeDTO) {
+        return null;
+    }
+
+    @Override
+    public StatusOfUser deleteComment(AddLikeDTO addLikeDTO) {
+
+        Comment findComment = commentRepository.findByCommentAndCommentDate(
+                addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+
+        List<Like> findLikes
+                = likeRepository.findAllByComment_Id(findComment.getId());
+
+        likeRepository.deleteAll(findLikes);
+        commentRepository.delete(findComment);
+
+        return Success;
+    }
+
+    @Override
     public StatusOfUser addLike(AddLikeDTO addLikeDTO) {
         StatusOfUser status = Fail;
         Comment findComment = null;
@@ -87,7 +107,7 @@ public class CommentServiceImpl implements CommentService {
         findComment.removeLike();
         commentRepository.save(findComment);
 
-        Like findLike = likeRepository.findByComment(findComment);
+        Like findLike = likeRepository.findByComment(findComment); // 수정
         likeRepository.delete(findLike);
 
         return Success;

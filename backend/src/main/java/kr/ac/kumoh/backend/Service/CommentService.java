@@ -10,6 +10,10 @@ import java.util.List;
 public interface CommentService {
     StatusOfUser addComment(CommentDTO commentDTO);
 
+    StatusOfUser reviseComment(AddLikeDTO addLikeDTO);
+
+    StatusOfUser deleteComment(AddLikeDTO addLikeDTO);
+
     StatusOfUser addLike(AddLikeDTO addLikeDTO);
 
     List<MovieCommentDTO> getMovieComments(String movieName);

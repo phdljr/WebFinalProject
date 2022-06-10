@@ -1,7 +1,7 @@
 package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.CommentService;
-import kr.ac.kumoh.backend.Service.LikeServiceImpl;
+import kr.ac.kumoh.backend.Service.LikeService;
 import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.dto.CommentDTO;
 import kr.ac.kumoh.backend.dto.AddLikeDTO;
@@ -16,11 +16,21 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
-    private final LikeServiceImpl likeService;
+    private final LikeService likeService;
 
     @PostMapping("/addComment")
     public StatusOfUser addMovieComment(@RequestBody CommentDTO commentDTO) {
         return commentService.addComment(commentDTO);
+    }
+
+    @PostMapping("/reviseComment")
+    public StatusOfUser reviseMovieComment(@RequestBody AddLikeDTO addLikeDTO) {
+        return commentService.reviseComment(addLikeDTO);
+    }
+
+    @PostMapping("/deleteComment")
+    public StatusOfUser deleteMovieComment(@RequestBody AddLikeDTO addLikeDTO) {
+        return commentService.deleteComment(addLikeDTO);
     }
 
     @PostMapping("/addLike")
