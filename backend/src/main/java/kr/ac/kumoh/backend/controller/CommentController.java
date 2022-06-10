@@ -5,6 +5,7 @@ import kr.ac.kumoh.backend.Service.LikeService;
 import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.dto.CommentDTO;
 import kr.ac.kumoh.backend.dto.AddLikeDTO;
+import kr.ac.kumoh.backend.dto.RevisedCommentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,8 @@ public class CommentController {
     }
 
     @PostMapping("/reviseComment")
-    public StatusOfUser reviseMovieComment(@RequestBody AddLikeDTO addLikeDTO) {
-        return commentService.reviseComment(addLikeDTO);
+    public StatusOfUser reviseMovieComment(@RequestBody RevisedCommentDTO revisedCommentDTO) {
+        return commentService.reviseComment(revisedCommentDTO);
     }
 
     @PostMapping("/deleteComment")

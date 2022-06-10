@@ -4,6 +4,7 @@ import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.CommentDTO;
 import kr.ac.kumoh.backend.dto.AddLikeDTO;
 import kr.ac.kumoh.backend.dto.MovieCommentDTO;
+import kr.ac.kumoh.backend.dto.RevisedCommentDTO;
 import kr.ac.kumoh.backend.repository.CommentRepository;
 import kr.ac.kumoh.backend.repository.LikeRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
@@ -53,8 +54,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public StatusOfUser reviseComment(AddLikeDTO addLikeDTO) {
-        return null;
+    public StatusOfUser reviseComment(RevisedCommentDTO revisedCommentDTO) {
+
+        String currDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        Comment findComment = commentRepository.findByCommentAndCommentDate(
+                revisedCommentDTO.getComment(), revisedCommentDTO.getCommentDate());
+
+        findComment.reviseComment(revisedCommentDTO.getNewComment());
+        findComment.setCommentDate(currDateTime);
+        commentRepository.save(findComment);
+
+        return Success;
     }
 
     @Override
