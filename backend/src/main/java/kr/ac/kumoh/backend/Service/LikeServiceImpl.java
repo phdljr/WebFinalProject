@@ -20,8 +20,8 @@ public class LikeServiceImpl implements LikeService {
 
         List<String> likes = new ArrayList<>();
         userLikes.forEach(like -> {
-            String commentDate = like.getComment().getCommentDate();
-            likes.add(commentDate);
+            String commentUserId = like.getComment().getUser().getUserId();
+            likes.add(commentUserId);
         });
 
         return likes;

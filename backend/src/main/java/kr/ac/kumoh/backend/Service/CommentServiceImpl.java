@@ -56,8 +56,8 @@ public class CommentServiceImpl implements CommentService {
         String currDateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        Comment findComment = commentRepository.findByCommentAndCommentDate(
-                revisedCommentDTO.getComment(), revisedCommentDTO.getCommentDate());
+        Comment findComment = commentRepository.findUserComment(
+                revisedCommentDTO.getMovieName(), revisedCommentDTO.getCommentUserId());
 
         findComment.reviseComment(revisedCommentDTO.getNewComment());
         findComment.setCommentDate(currDateTime);
@@ -69,8 +69,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public StatusOfUser deleteComment(DeleteCommentDTO deleteCommentDTO) {
 
-        Comment findComment = commentRepository.findByCommentAndCommentDate(
-                deleteCommentDTO.getComment(), deleteCommentDTO.getCommentDate());
+        Comment findComment = commentRepository.findUserComment(
+                deleteCommentDTO.getMovieName(), deleteCommentDTO.getCommentUserId());
 
         List<Like> findLikes
                 = likeRepository.findAllByComment_Id(findComment.getId());
@@ -87,12 +87,15 @@ public class CommentServiceImpl implements CommentService {
         Comment findComment = null;
 
         try {
-            findComment = commentRepository.findByCommentAndCommentDate(
-                    addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+            String movieName = addLikeDTO.getMovieName();
+            String commentUserId = addLikeDTO.getCommentUserId();
+            System.out.println("movieName = " + movieName);
+            System.out.println("commentUserId = " + commentUserId);
+            findComment = commentRepository.findUserComment(movieName, commentUserId);
         } catch (Exception ignored) {
             log.warn("Doesn't match LocalDateTime Format");
         }
-
+        System.out.println("findComment = " + findComment);
         if (!isNull(findComment)) {
             log.info("좋아요 +1");
             findComment.addLike();
@@ -110,8 +113,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public StatusOfUser removeLike(AddLikeDTO addLikeDTO) {
 
-        Comment findComment = commentRepository.findByCommentAndCommentDate(
-                addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+        Comment findComment = commentRepository.findUserComment(
+                addLikeDTO.getMovieName(), addLikeDTO.getCommentUserId());
 
         findComment.removeLike();
         commentRepository.save(findComment);
