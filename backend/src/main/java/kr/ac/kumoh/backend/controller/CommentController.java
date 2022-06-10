@@ -28,6 +28,11 @@ public class CommentController {
         return commentService.addLike(addLikeDTO);
     }
 
+    @PostMapping("/removeLike")
+    public StatusOfUser removeLike(@RequestBody AddLikeDTO addLikeDTO) {
+        return commentService.removeLike(addLikeDTO);
+    }
+
     @GetMapping("/{userId}/likes")
     public List<String> usersLike(@PathVariable("userId") String userId) {
         return likeService.getCommentsThatUserHitLikeButton(userId);

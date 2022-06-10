@@ -79,6 +79,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public StatusOfUser removeLike(AddLikeDTO addLikeDTO) {
+
+        Comment findComment = commentRepository.findByCommentAndCommentDate(
+                addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+
+        findComment.removeLike();
+        commentRepository.save(findComment);
+
+        Like findLike = likeRepository.findByComment(findComment);
+        likeRepository.delete(findLike);
+
+        return Success;
+    }
+
+    @Override
     public List<MovieCommentDTO> getMovieComments(String movieName) {
         List<Comment> movieComments = commentRepository.getMovieComments(movieName);
 
