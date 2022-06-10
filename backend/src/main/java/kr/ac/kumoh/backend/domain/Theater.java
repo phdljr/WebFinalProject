@@ -19,6 +19,8 @@ public class Theater {
     @Column(name = "THEATER_ID")
     private Long id;
 
+    // 영화관 이름
+    private String theaterName;
     // 몇 층
     private int floor;
     // 몇 관
