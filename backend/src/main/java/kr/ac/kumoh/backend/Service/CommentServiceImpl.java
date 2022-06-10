@@ -2,10 +2,7 @@ package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.*;
-import kr.ac.kumoh.backend.repository.CommentRepository;
-import kr.ac.kumoh.backend.repository.LikeRepository;
-import kr.ac.kumoh.backend.repository.MovieRepository;
-import kr.ac.kumoh.backend.repository.UserRepository;
+import kr.ac.kumoh.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,11 +11,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 import static java.util.Objects.isNull;
-import static kr.ac.kumoh.backend.domain.StatusOfUser.Fail;
-import static kr.ac.kumoh.backend.domain.StatusOfUser.Success;
+import static kr.ac.kumoh.backend.domain.StatusOfUser.*;
 
 
 @Slf4j
@@ -30,24 +27,46 @@ public class CommentServiceImpl implements CommentService {
     private final MovieRepository movieRepository;
     private final CommentRepository commentRepository;
     private final LikeRepository likeRepository;
+    private final MovieGradeRepository movieGradeRepository;
 
     @Override
     public StatusOfUser addComment(CommentDTO commentDTO) {
 
+        StatusOfUser status = Success;
         String currDateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
         String userId = commentDTO.getUserId();
         String movieName = commentDTO.getMovieName();
         String comment = commentDTO.getComment();
+        Double grade = commentDTO.getGrade();
 
-        User findUser = userRepository.findByUserId(userId);
-        Movie findMovie = movieRepository.findByTitle(movieName);
+        Comment findComment = commentRepository.findUserComment(movieName, userId);
+        if (isNull(findComment)) {
+            giveGrade(new RateMovieDTO(userId, movieName, grade));
 
-        Comment newComment = new Comment(findMovie, findUser, comment, currDateTime);
-        commentRepository.save(newComment);
+            User findUser = userRepository.findByUserId(userId);
+            Movie findMovie = movieRepository.findByTitle(movieName);
 
-        return Success;
+            Comment newComment = new Comment(findMovie, findUser, comment, currDateTime);
+            commentRepository.save(newComment);
+        } else {
+            status = AlreadyExist;
+        }
+
+        return status;
+    }
+
+    public void giveGrade(RateMovieDTO rateMovieDTO) {
+        String movieName = rateMovieDTO.getMovieName();
+        String userId = rateMovieDTO.getUserId();
+        Double grade = rateMovieDTO.getGrade();
+
+        Movie movie = movieRepository.findByTitle(movieName);
+        movie.calcGrade(grade);
+
+        MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
+        movieGradeRepository.save(movieGrade);
     }
 
     @Override
@@ -56,8 +75,8 @@ public class CommentServiceImpl implements CommentService {
         String currDateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        Comment findComment = commentRepository.findByCommentAndCommentDate(
-                revisedCommentDTO.getComment(), revisedCommentDTO.getCommentDate());
+        Comment findComment = commentRepository.findUserComment(
+                revisedCommentDTO.getMovieName(), revisedCommentDTO.getCommentUserId());
 
         findComment.reviseComment(revisedCommentDTO.getNewComment());
         findComment.setCommentDate(currDateTime);
@@ -69,8 +88,8 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public StatusOfUser deleteComment(DeleteCommentDTO deleteCommentDTO) {
 
-        Comment findComment = commentRepository.findByCommentAndCommentDate(
-                deleteCommentDTO.getComment(), deleteCommentDTO.getCommentDate());
+        Comment findComment = commentRepository.findUserComment(
+                deleteCommentDTO.getMovieName(), deleteCommentDTO.getUserId());
 
         List<Like> findLikes
                 = likeRepository.findAllByComment_Id(findComment.getId());
@@ -87,12 +106,15 @@ public class CommentServiceImpl implements CommentService {
         Comment findComment = null;
 
         try {
-            findComment = commentRepository.findByCommentAndCommentDate(
-                    addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+            String movieName = addLikeDTO.getMovieName();
+            String commentUserId = addLikeDTO.getCommentUserId();
+            System.out.println("movieName = " + movieName);
+            System.out.println("commentUserId = " + commentUserId);
+            findComment = commentRepository.findUserComment(movieName, commentUserId);
         } catch (Exception ignored) {
             log.warn("Doesn't match LocalDateTime Format");
         }
-
+        System.out.println("findComment = " + findComment);
         if (!isNull(findComment)) {
             log.info("좋아요 +1");
             findComment.addLike();
@@ -108,15 +130,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public StatusOfUser removeLike(AddLikeDTO addLikeDTO) {
+    public StatusOfUser removeLike(RemoveLikeDTO removeLikeDTO) {
 
-        Comment findComment = commentRepository.findByCommentAndCommentDate(
-                addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+        Comment findComment = commentRepository.findUserComment(
+                removeLikeDTO.getMovieName(), removeLikeDTO.getCommentUserId());
 
         findComment.removeLike();
         commentRepository.save(findComment);
 
-        Like findLike = likeRepository.findByComment(findComment); // 수정
+        Like findLike = likeRepository.findByUserIdAndComment(removeLikeDTO.getUserId(), findComment); // 수정
         likeRepository.delete(findLike);
 
         return Success;

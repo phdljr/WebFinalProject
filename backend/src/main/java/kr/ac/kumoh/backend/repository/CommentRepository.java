@@ -11,7 +11,10 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    Comment findByCommentAndCommentDate(String comment, String commentDate);
+    @Query("select c from Comment c join fetch c.user join fetch c.movie " +
+            "where c.user.userId = :commentUserId and c.movie.title = :movieName")
+    Comment findUserComment(@Param("movieName") String movieName,
+                            @Param("commentUserId") String commentUserId);
 
     @EntityGraph(value = "Comment.User.Movie", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select c from Comment c where c.movie.title = :movieName")

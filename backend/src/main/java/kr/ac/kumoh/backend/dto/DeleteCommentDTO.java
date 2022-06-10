@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class DeleteCommentDTO {
 
-    private String comment;
-    private String commentDate;
+    private String movieName;
     private String userId;
 }
