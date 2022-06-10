@@ -29,8 +29,11 @@ public class BookServiceImpl implements BookService {
 
         // Get Values from DTO
         String userId = reserveMovieDTO.getUserId();
-        String movieName = reserveMovieDTO.getMovieName();
+        //
+        String theaterName = reserveMovieDTO.getTheaterName();
+        String screenName = reserveMovieDTO.getScreenName();
         String screenTime = reserveMovieDTO.getScreenTime();
+        //
         int numOfPeople = reserveMovieDTO.getNumOfPeople();
         int price = reserveMovieDTO.getPrice();
         List<String> rows = reserveMovieDTO.getRows();
@@ -43,7 +46,7 @@ public class BookServiceImpl implements BookService {
             return NonExistUser;
 
         // find MovieSchedule
-        MovieSchedule movieSchedule = movieScheduleRepository.getMovieScheduleEntity(movieName, screenTime);
+        MovieSchedule movieSchedule = movieScheduleRepository.getCertainMovieSchedule(theaterName, screenName, screenTime);
         if (isNull(movieSchedule))
             return NonExistMovie;
 

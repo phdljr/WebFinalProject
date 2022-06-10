@@ -12,9 +12,12 @@ public class ReserveMovieDTO {
 
     private String userId;
     private String movieName;
-    private String screenTime;
     private int numOfPeople;
     private int price;
     private List<String> rows;
     private List<Integer> columns;
+
+    private String theaterName;
+    private String screenName;
+    private String screenTime;
 }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetReservedSeatDTO {
 
+    private String theaterName;
     private String screenName;
     private String screenTime;
 }

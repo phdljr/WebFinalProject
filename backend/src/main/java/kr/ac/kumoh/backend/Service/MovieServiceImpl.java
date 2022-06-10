@@ -200,7 +200,7 @@ public class MovieServiceImpl implements MovieService {
         int totalNumOfTotalSeat = 0;
         double ticketSales;
 
-        List<MovieSchedule> movieSchedules = movieScheduleRepository.getAllMovieSchedules(movieName);
+        List<MovieSchedule> movieSchedules = movieScheduleRepository.getAllTheaterCertainMovieSchedules(movieName);
         if (movieSchedules.size() > 0) {
             for (MovieSchedule movieSchedule : movieSchedules) {
                 int numOfSeats = movieSchedule.getTheater().getNumOfSeats();

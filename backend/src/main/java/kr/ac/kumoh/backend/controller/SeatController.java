@@ -24,11 +24,12 @@ public class SeatController {
     @PostMapping("/reservedSeats")
     public ReservedSeatDTO getReservedSeats(@RequestBody GetReservedSeatDTO getReservedSeatDTO) {
 
+        String theaterName = getReservedSeatDTO.getTheaterName();
         String screenName = getReservedSeatDTO.getScreenName();
         String screenTime = getReservedSeatDTO.getScreenTime();
 
-        List<Seat> reservedSeats = seatRepository.getReservedSeats(screenName, screenTime);
-        MovieSchedule theater = movieScheduleRepository.getTheater(screenName, screenTime);
+        List<Seat> reservedSeats = seatRepository.getReservedSeats(theaterName, screenName, screenTime);
+        MovieSchedule theater = movieScheduleRepository.getCertainMovieSchedule(theaterName, screenName, screenTime);
 
         int numOfRows = theater.getTheater().getNumOfRows();
         int numOfColumns = theater.getTheater().getNumOfColumns();

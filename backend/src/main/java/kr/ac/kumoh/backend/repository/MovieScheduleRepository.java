@@ -11,23 +11,27 @@ import java.util.List;
 
 public interface MovieScheduleRepository extends JpaRepository<MovieSchedule, Long> {
 
+    // 특정 극장 전체 상영 시간표
     @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select ms from MovieSchedule ms where ms.theater.theaterName = :theaterName")
     List<MovieSchedule> getTheaterMovieSchedules(@Param("theaterName") String theaterName);
 
+    // 특정 극장 특정 영화 상영 시간표
     @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName and ms.theater.theaterName = :theaterName")
     List<MovieSchedule> getCertainMovieSchedules(@Param("movieName") String movieName, @Param("theaterName") String theaterName);
 
+    // 모든 극장 특정 영화 상영 시간표
     @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName")
-    List<MovieSchedule> getAllMovieSchedules(@Param("movieName") String movieName);
+    List<MovieSchedule> getAllTheaterCertainMovieSchedules(@Param("movieName") String movieName);
 
+    // 특정 극장 특정 영화 상영 시간표 중 하나
     @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName and ms.screenTime = :screenTime")
-    MovieSchedule getMovieScheduleEntity(@Param("movieName") String movieName, @Param("screenTime") String screenTime);
-
-    @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select ms from MovieSchedule ms where ms.theater.screen = :screenName and ms.screenTime = :screenTime")
-    MovieSchedule getTheater(@Param("screenName") String screenName, @Param("screenTime") String screenTime);
+    @Query("select ms from MovieSchedule ms " +
+            "where ms.screenTime = :screenTime " +
+            "and ms.theater.screen = :screenName and ms.theater.theaterName = :theaterName")
+    MovieSchedule getCertainMovieSchedule(@Param("theaterName") String theaterName,
+                                          @Param("screenName") String screenName,
+                                          @Param("screenTime") String screenTime);
 }
