@@ -1,5 +1,8 @@
 package kr.ac.kumoh.backend.controller;
 
+import kr.ac.kumoh.backend.domain.Movie;
+import kr.ac.kumoh.backend.domain.Theater;
+import kr.ac.kumoh.backend.dto.TheaterMovieScheduleDTO;
 import kr.ac.kumoh.backend.repository.MovieScheduleRepository;
 import kr.ac.kumoh.backend.domain.MovieSchedule;
 import kr.ac.kumoh.backend.dto.MovieScheduleDTO;
@@ -20,9 +23,32 @@ public class MovieScheduleController {
 
     private final MovieScheduleRepository scheduleRepository;
 
-    @GetMapping("/schedules/{movieName}")
-    public List<MovieScheduleDTO> getMovieSchedule(@PathVariable(name = "movieName") String movieName) {
-        List<MovieSchedule> movieSchedules = scheduleRepository.getAllMovieSchedules(movieName);
+    @GetMapping("/schedules/{theaterName}")
+    public List<TheaterMovieScheduleDTO> getMovieSchedules(@PathVariable(name = "theaterName") String theaterName) {
+
+        List<MovieSchedule> theaterMovieSchedules = scheduleRepository.getTheaterMovieSchedules(theaterName);
+
+        List<TheaterMovieScheduleDTO> theaterMovieScheduleDTOS
+                = new ArrayList<>();
+        for (MovieSchedule theaterMovieSchedule : theaterMovieSchedules) {
+            Movie movie = theaterMovieSchedule.getMovie();
+            Theater theater = theaterMovieSchedule.getTheater();
+
+            TheaterMovieScheduleDTO movieSchedule = new TheaterMovieScheduleDTO(
+                    movie.getMediaRating(), movie.getTitle(), movie.getGenre(), movie.getRuntime(), movie.getReleaseDate(),
+                    theater.getFloor(), theater.getScreen(), theater.getNumOfSeats(),
+                    theaterMovieSchedule.getScreenTime(), theaterMovieSchedule.getRemainingSeat());
+
+            theaterMovieScheduleDTOS.add(movieSchedule);
+        }
+        return theaterMovieScheduleDTOS;
+    }
+
+    @GetMapping("/schedules/{theaterName}/{movieName}")
+    public List<MovieScheduleDTO> getMovieSchedule(@PathVariable(name = "movieName") String movieName,
+                                                   @PathVariable(name = "theaterName") String theaterName) {
+
+        List<MovieSchedule> movieSchedules = scheduleRepository.getCertainMovieSchedules(movieName, theaterName);
 
         List<MovieScheduleDTO> movieScheduleDTOS = new ArrayList<>();
         movieSchedules.forEach(ms -> {

@@ -12,6 +12,14 @@ import java.util.List;
 public interface MovieScheduleRepository extends JpaRepository<MovieSchedule, Long> {
 
     @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select ms from MovieSchedule ms where ms.theater.theaterName = :theaterName")
+    List<MovieSchedule> getTheaterMovieSchedules(@Param("theaterName") String theaterName);
+
+    @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName and ms.theater.theaterName = :theaterName")
+    List<MovieSchedule> getCertainMovieSchedules(@Param("movieName") String movieName, @Param("theaterName") String theaterName);
+
+    @EntityGraph(value = "MovieSchedule.Movie.Theater.graph", type = EntityGraph.EntityGraphType.LOAD)
     @Query("select ms from MovieSchedule ms where ms.movie.title = :movieName")
     List<MovieSchedule> getAllMovieSchedules(@Param("movieName") String movieName);
 
