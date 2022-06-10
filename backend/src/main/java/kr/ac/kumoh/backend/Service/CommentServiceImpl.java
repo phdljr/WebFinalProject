@@ -1,10 +1,7 @@
 package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.domain.*;
-import kr.ac.kumoh.backend.dto.CommentDTO;
-import kr.ac.kumoh.backend.dto.AddLikeDTO;
-import kr.ac.kumoh.backend.dto.MovieCommentDTO;
-import kr.ac.kumoh.backend.dto.RevisedCommentDTO;
+import kr.ac.kumoh.backend.dto.*;
 import kr.ac.kumoh.backend.repository.CommentRepository;
 import kr.ac.kumoh.backend.repository.LikeRepository;
 import kr.ac.kumoh.backend.repository.MovieRepository;
@@ -70,10 +67,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public StatusOfUser deleteComment(AddLikeDTO addLikeDTO) {
+    public StatusOfUser deleteComment(DeleteCommentDTO deleteCommentDTO) {
 
         Comment findComment = commentRepository.findByCommentAndCommentDate(
-                addLikeDTO.getComment(), addLikeDTO.getCommentDate());
+                deleteCommentDTO.getComment(), deleteCommentDTO.getCommentDate());
 
         List<Like> findLikes
                 = likeRepository.findAllByComment_Id(findComment.getId());

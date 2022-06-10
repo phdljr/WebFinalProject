@@ -5,6 +5,7 @@ import kr.ac.kumoh.backend.Service.LikeService;
 import kr.ac.kumoh.backend.domain.StatusOfUser;
 import kr.ac.kumoh.backend.dto.CommentDTO;
 import kr.ac.kumoh.backend.dto.AddLikeDTO;
+import kr.ac.kumoh.backend.dto.DeleteCommentDTO;
 import kr.ac.kumoh.backend.dto.RevisedCommentDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ public class CommentController {
     }
 
     @PostMapping("/deleteComment")
-    public StatusOfUser deleteMovieComment(@RequestBody AddLikeDTO addLikeDTO) {
-        return commentService.deleteComment(addLikeDTO);
+    public StatusOfUser deleteMovieComment(@RequestBody DeleteCommentDTO deleteCommentDTO) {
+        return commentService.deleteComment(deleteCommentDTO);
     }
 
     @PostMapping("/addLike")

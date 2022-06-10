@@ -1,10 +1,7 @@
 package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.domain.StatusOfUser;
-import kr.ac.kumoh.backend.dto.CommentDTO;
-import kr.ac.kumoh.backend.dto.AddLikeDTO;
-import kr.ac.kumoh.backend.dto.MovieCommentDTO;
-import kr.ac.kumoh.backend.dto.RevisedCommentDTO;
+import kr.ac.kumoh.backend.dto.*;
 
 import java.util.List;
 
@@ -13,7 +10,7 @@ public interface CommentService {
 
     StatusOfUser reviseComment(RevisedCommentDTO revisedCommentDTO);
 
-    StatusOfUser deleteComment(AddLikeDTO addLikeDTO);
+    StatusOfUser deleteComment(DeleteCommentDTO addLikeDTO);
 
     StatusOfUser addLike(AddLikeDTO addLikeDTO);
 
