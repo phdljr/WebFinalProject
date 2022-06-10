@@ -43,7 +43,14 @@
       <b-row v-for="(row, index) in commentTable" :key="index">
         <b-col v-for="(comment, index) in row" :key="index">
           <div class="commentBox">
-            <p>{{ comment.userId }}</p>
+            <p>
+              {{ comment.userId }}
+              <span v-if="$store.state.userData.id == comment.userId">
+                <b-button variant="primary" @click="reviseComment(comment)">수정</b-button>
+                <b-button variant="danger" @click="deleteComment(comment)">삭제</b-button>
+              </span>
+            </p>
+            
             <div class="comment">
               {{ comment.comment }}
             </div>
@@ -206,6 +213,10 @@ export default {
 
     // 후기 삭제
     deleteComment(comment){
+      if(!confirm("정말로 작성하신 후기를 삭제하시겠습니까?")){
+        return;
+      }
+
       axios.post(this.HOST+"/deleteComment", {
         commentUserId: comment.userId,
         movieName: this.movieDetail.title,
@@ -215,6 +226,7 @@ export default {
         if(res.data == "Success"){
           axios.get(this.HOST+"/movie/"+this.$route.params.movie).then(res=>{
             console.log(res)
+            alert("후기를 삭제했습니다.")
             this.movieDetail.comments = res.data.comments
           }).catch(err=>{
             console.log(err)
@@ -226,7 +238,9 @@ export default {
     },
 
     // 후기 수정
+    // 수정 버튼 클릭 시, 입력칸이 뜨도록
     reviseComment(){
+      console.log("수정하기")
     },
 
     goTicket(title){
