@@ -6,7 +6,7 @@
       <div class="movieContent">
         <h1>{{ movieDetail.title }}</h1>
         <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
-        <div class="score">예매율: {{Math.ceil(movieDetail.ticketSales * 100)}}%</div>
+        <div class="score">예매율: {{Math.ceil(movieDetail.ticketSales * 100)}}% | 평점: {{movieDetail.avgOfGrade}}</div>
 
         <h6
           >감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h6
@@ -38,7 +38,7 @@
       <div class="commentInput">
         <vue3-star-ratings v-model="rating"/>
         <textarea v-model="comment"></textarea>
-        <b-button variant="success">저장</b-button>
+        <b-button variant="success" @click="addComment">저장</b-button>
       </div>
       <b-row v-for="(row, index) in commentTable" :key="index">
         <b-col v-for="(comment, index) in row" :key="index">
@@ -47,8 +47,10 @@
             <div class="comment">
               {{ comment.comment }}
             </div>
-            <b-button>
-              <b-icon icon="heart-fill" @click="addLike(comment)"></b-icon>
+            <b-button @click="addLike(comment)">
+              <!-- 자신이 이미 좋아요를 누른 후기는 가득 한 하트로 표시 -->
+              <b-icon v-if="selectedLikeArr.includes(comment.userId)" icon="heart-fill" ></b-icon>
+              <b-icon v-else icon="heart"></b-icon>
               {{ comment.like }}
             </b-button>
             <span style="margin-left: 10px;">{{comment.commentDate}}</span>
@@ -83,35 +85,58 @@ export default {
         mediaRate: "",
         runtime: "",
         ticketSales: "",
+        avgOfGrade:"",
         genderDistribution: [],
         ageDistribution: [],
         comments:[{
           userId: "",
           comment: "",
           like: "",
-          commentDate: ""
+          commentDate: "",
         }]
       },
       comment:'',
-      rating:0, // 0~5
+      selectedLikeArr: [], // 자신이 좋아요를 눌렀던 후기의 작성자 아이디가 들어갈 배열
+      rating:2.5, // 0~5
     };
   },
   methods:{
+    // 좋아요 클릭
+    // 이미 좋아요가 된 상태라면, 해제함
     addLike(comment){
+      console.log("클릭")
       // 로그인이 안됐을 때
-      console.log(comment)
       if(this.$store.state.login == false){
-        let result = confirm('로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?');
+        let result = confirm("로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?");
         if(result == true){
             this.$router.push('/login')
         }
       }
       else{
+        // 내가 작성한 후기에 좋아요를 누를 경우
+        if(comment.userId == this.$store.state.userData.id){
+          alert("자신이 작성한 후기에 좋아요를 누를 수 없습니다.")
+          return;
+        }
+
+        // 이미 좋아요를 누른 후기일 경우
+        if(this.selectedLikeArr.includes(comment.userId)){
+          let select = confirm("이미 좋아요를 눌렀습니다.\n좋아요를 취소하시겠습니까?");
+
+          // 눌렀던 좋아요를 다시 삭제할 경우
+          if(select == true){
+            this.removeLike(comment)
+          }
+          return;
+        }
+
         axios.post(this.HOST+"/addLike", {
-          comment: this.movieDetail.comments.comment,
-          commentDate: this.movieDetail.comments.commentDate
+          commentUserId: comment.userId,
+          movieName: this.movieDetail.title,
+          userId: this.$store.state.userData.id
         }).then(res=>{
           if(res.data == "Success"){
+            this.selectedLikeArr.push(comment.userId)
             comment.like++;
           }
         }).catch(err=>{
@@ -119,6 +144,91 @@ export default {
         })
       }
     },
+
+    // 좋아요 삭제
+    removeLike(comment){
+      axios.post(this.HOST+"/removeLike", {
+              commentUserId: comment.userId,
+              movieName: this.movieDetail.title,
+              userId: this.$store.state.userData.id
+            }).then(res=>{
+              if(res.data == "Success"){
+                delete this.selectedLikeArr[this.selectedLikeArr.indexOf(comment.userId)]
+                comment.like--;
+              }
+            }).catch(err=>{
+              console.log(err)
+            })
+    },
+
+    // 후기 등록
+    addComment(){
+      // 로그인이 안됐을 때
+      if(this.$store.state.login == false){
+        let result = confirm("로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?");
+        if(result == true){
+            this.$router.push('/login')
+        }
+        return;
+      }
+
+      if(this.comment == ""){
+        alert("후기를 작성해 주세요.")
+        return;
+      }
+
+      axios.post(this.HOST+"/addComment", {
+        comment: this.comment,
+        movieName: this.movieDetail.title,
+        userId: this.$store.state.userData.id,
+        grade: this.rating
+      }).then(res=>{
+        // 정상적으로 후기를 등록한 경우, 후기 데이터 다시 얻어오기
+        // 이미 자신이 후기를 등록했다면, 이미 등록했다고 alert 띄우기
+        if(res.data == "Success"){
+          axios.get(this.HOST+"/movie/"+this.$route.params.movie).then(res=>{
+            console.log(res)
+            this.movieDetail.comments = res.data.comments
+            this.comment = ""
+            alert("후기를 등록했습니다.")
+          }).catch(err=>{
+            console.log(err)
+          })
+        }
+        else if(res.data == "AlreadyExist"){
+          alert("이미 후기를 작성하셨습니다.");
+          this.comment = "";
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+
+    // 후기 삭제
+    deleteComment(comment){
+      axios.post(this.HOST+"/deleteComment", {
+        commentUserId: comment.userId,
+        movieName: this.movieDetail.title,
+        userId: this.$store.state.userData.id
+      }).then(res=>{
+        // 정상적으로 후기를 삭제한 경우, 후기 데이터 다시 얻어오기
+        if(res.data == "Success"){
+          axios.get(this.HOST+"/movie/"+this.$route.params.movie).then(res=>{
+            console.log(res)
+            this.movieDetail.comments = res.data.comments
+          }).catch(err=>{
+            console.log(err)
+          })
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
+    },
+
+    // 후기 수정
+    reviseComment(){
+    },
+
     goTicket(title){
       if(title == "범죄도시 2"){
         this.$router.push('/ticket?movie=' + title)
@@ -128,16 +238,22 @@ export default {
       }
     }
   },
-created(){
-  console.log("접속 시: " + this.$route.params.movie)
-  // 영화 상세 데이터 받아오기
-  axios.get(this.HOST+"/movie/"+this.$route.params.movie).then(res=>{
-      console.log(res)
-      this.movieDetail = res.data
-      this.movieDetail.title = this.$route.params.movie
-      this.movieDetail.titleEng = "영어"
-      this.movieDetail.img = "../movies/" + this.$route.params.movie + ".jpg"
-      this.movieDetail.genderDistribution = [res.data.genderDistribution, 1-res.data.genderDistribution]
+  created(){
+    console.log("접속 시: " + this.$route.params.movie)
+    // 영화 상세 데이터 받아오기
+    axios.get(this.HOST+"/movie/"+this.$route.params.movie).then(res=>{
+        console.log(res)
+        this.movieDetail = res.data
+        this.movieDetail.title = this.$route.params.movie
+        this.movieDetail.titleEng = "영어"
+        this.movieDetail.img = "../movies/" + this.$route.params.movie + ".jpg"
+        this.movieDetail.genderDistribution = [res.data.genderDistribution, 1-res.data.genderDistribution]
+      })
+    axios.get(this.HOST+"/"+this.$store.state.userData.id+"/likes").then(res=>{
+      console.log(res.data)
+      this.selectedLikeArr = res.data
+    }).catch(err=>{
+      console.log(err)
     })
   },
   computed: {
