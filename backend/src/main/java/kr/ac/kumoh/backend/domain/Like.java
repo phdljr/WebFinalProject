@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Table(name = "LIKES")
 @NoArgsConstructor
 @ToString
+@Getter
 public class Like {
 
     @Id
@@ -23,7 +25,6 @@ public class Like {
 
     @Column(name = "USER_NAME")
     private String userId;
-
 
     public Like(Comment comment, String user) {
         this.comment = comment;
