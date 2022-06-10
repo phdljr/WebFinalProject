@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class AddLikeDTO {
 
-    private String comment;
-    private String commentDate;
+    private String commentUserId;
+    private String movieName;
     private String userId;
 }
