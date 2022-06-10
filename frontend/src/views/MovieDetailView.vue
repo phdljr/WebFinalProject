@@ -8,19 +8,19 @@
         <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
         <div class="score">예매율: {{Math.ceil(movieDetail.ticketSales * 100)}}%</div>
 
-        <h7
-          >감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h7
+        <h6
+          >감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h6
         ><br />
-        <h7>장르 : {{ movieDetail.genre }} / 기본: {{movieDetail.mediaRate=="전체" ? movieDetail.mediaRate : movieDetail.mediaRate+" 이상"}}, {{movieDetail.runtime}}</h7
+        <h6>장르 : {{ movieDetail.genre }} / 기본: {{movieDetail.mediaRate=="전체" ? movieDetail.mediaRate : movieDetail.mediaRate+" 이상"}} / {{movieDetail.runtime}}</h6
         ><br />
-        <h7>개봉일: {{ movieDetail.releaseDate }}</h7
+        <h6>개봉일: {{ movieDetail.releaseDate }}</h6
         ><br />
         <b-button
           ref="cancel"
           variant="outline-danger"
           size="sm"
           aria-describedby="cancel-label"
-          @click="$router.push('/ticket?movie=' + movieDetail.title)"
+          @click="goTicket(movieDetail.title)"
         >
           예매하기
         </b-button>
@@ -117,6 +117,14 @@ export default {
         }).catch(err=>{
           console.log(err)
         })
+      }
+    },
+    goTicket(title){
+      if(title == "범죄도시 2"){
+        this.$router.push('/ticket?movie=' + title)
+      }
+      else{
+        alert("구미 CGV에서 상영중인 영화가 아닙니다.")
       }
     }
   },

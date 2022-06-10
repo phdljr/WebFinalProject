@@ -16,11 +16,12 @@
                         <div class="timeSelector" v-for="(time, key) in theater.time" :key="key">
                             <b-button
                                 variant="outline-secondary"
+                                :disabled="theater.seat[key] <= 0"
                                 :pressed="selectTime.theater==theater.theaterName&&selectTime.time==time"
                                 @click="selectTime={ theater:theater.theaterName, time:time}">
                                 {{time}}
                             </b-button>
-                            {{theater.seat[key]}}석
+                            <span>{{theater.seat[key] > 0 ? theater.seat[key] + "석" : "마감"}}</span>
                         </div>
                     </div>
                 </td>
@@ -53,6 +54,26 @@ export default {
     name: "movieBookingView",
     data() {
         return {
+            selectMovie:"",
+            selectTime:{ theater:this.$route.query.theater, time:this.$route.query.time},
+            movie:[
+                { value: this.$route.query.movie, text: this.$route.query.movie },
+            ],
+            timeline:[
+                {
+                    theaterName:"1관",
+                    totalSeat:null,
+                    time:[],
+                    seat:[]
+                },
+                {
+                    theaterName:"2관",
+                    totalSeat:null,
+                    time:[],
+                    seat:[]
+                },
+            ]
+            
             // selectMovie:this.$route.query.movie,
             // selectMovie:"쥬라기 월드-도미니언",
             // selectTime:{ theater:this.$route.query.theater, time:this.$route.query.time},
@@ -73,26 +94,6 @@ export default {
             //         seat:[50]
             //     },
             // ]
-            selectMovie:"", // ㅇ
-            selectTime:{ theater:this.$route.query.theater, time:this.$route.query.time}, // 쿼리스트링
-            movie:[
-                { value: this.$route.query.movie, text: this.$route.query.movie },
-                // { value: "나2", text: "나" },
-            ],
-            timeline:[
-                {
-                    theaterName:"1관",
-                    totalSeat:null,
-                    time:[],
-                    seat:[]
-                },
-                {
-                    theaterName:"2관",
-                    totalSeat:null,
-                    time:[],
-                    seat:[]
-                },
-            ]
         }
     },
     methods:{
@@ -110,14 +111,14 @@ export default {
                     // 해당 변수는 이동된 페이지에서 this.$router.params.(속성)을 통해 값 접근 가능
                     // 로그인을 안한 상태에서 예매를 진행할 경우, 로그인 창에 선택한 영화 정보를 넘겨주는 부분
                     this.$router.push({
-                    name: 'login',
-                    params: {
-                        state: "wasBooking",
-                        title: this.selectMovie,
-                        theater: this.selectTime.theater,
-                        time: this.selectTime.time
-                    }
-                })
+                        name: 'login',
+                        params: {
+                            state: "wasBooking",
+                            title: this.selectMovie,
+                            theater: this.selectTime.theater,
+                            time: this.selectTime.time
+                        }
+                    })
                 }
             }
             else{
@@ -143,9 +144,10 @@ export default {
         }
     },
     created(){
-        axios.get(this.HOST+"/schedules/"+this.$route.query.movie)
+        // axios.get(this.HOST+"/schedules/"+this.$route.query.movie)
+        axios.get(this.HOST+"/schedules/구미 CGV/범죄도시 2")
         .then(res=>{
-            console.log(res)
+            console.log(res.data)
             this.selectMovie = this.$route.query.movie
 
             // 1관은 index 0, 2관은 index 1

@@ -1,0 +1,42 @@
+[
+    {
+        "title": "범죄도시 2",
+        "theater": "구미CGV",
+        "schedule": [{
+            "timeline":[
+                {
+                    "floor":"1층",
+                    "totalSeat":null,
+                    "time":[],
+                    "seat":[]
+                },
+                {
+                    "floor":"2층",
+                    "totalSeat":null,
+                    "time":[],
+                    "seat":[]
+                }
+            ]
+        }]
+    },
+    {
+        "title": "쥬라기 공원",
+        "theater": "대구CGV",
+        "schedule": [{
+            "timeline":[
+                {
+                    "floor":"1층",
+                    "totalSeat":null,
+                    "time":[],
+                    "seat":[]
+                },
+                {
+                    "floor":"2층",
+                    "totalSeat":null,
+                    "time":[],
+                    "seat":[]
+                }
+            ]
+        }]
+    }
+]

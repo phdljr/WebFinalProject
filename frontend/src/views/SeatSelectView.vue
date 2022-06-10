@@ -121,6 +121,8 @@ export default {
                 price: this.selectSeat.length * this.price,
                 rows: row_arr,
                 columns: col_arr,
+                theaterName: "구미 CGV",
+                screenName: this.$route.params.screenName,
                 screenTime: this.$route.params.screenTime,
                 movieName: this.seatData.title,
             };
@@ -147,6 +149,7 @@ export default {
     },
     created(){
         axios.post(this.HOST+"/reservedSeats", {
+            theaterName : "구미 CGV",
             screenName: this.$route.params.screenName,
             screenTime: this.$route.params.screenTime
         }).then(res=>{

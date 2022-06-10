@@ -17,10 +17,11 @@
           /></router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
-            <p>{{ movie.rate >= 0 ? "예매율 " + Math.ceil(movie.rate * 100) + "%" : "상영 예정" }}</p>
+            <p v-if="sortShow == 'book'">예매율: {{ movie.rate*100 }}%</p>
+            <p v-else>평점: {{ movie.rate }}★</p>
             <b-button
               variant="outline-danger"
-              @click="$router.push('/ticket?movie=' + movie.title)"
+              @click="goTicket(movie.title)"
               >예매하기</b-button
             >
           </div>
@@ -46,6 +47,7 @@ export default {
         //   grade: "",
         // },
       ],
+      sortShow: "book", // 텍스트 표기용
       sortSelected: "book",
       sortOptions: [
         { value: "book", text: "예매율" },
@@ -57,9 +59,11 @@ export default {
     sortMovie(){
       if(this.sortSelected == "book"){
         this.sortBySale()
+        this.sortShow = "book"
       }
       else{
         this.sortByGrade()
+        this.sortShow = "grade"
       }
     },
     sortBySale(){
@@ -69,10 +73,18 @@ export default {
       });
     },
     sortByGrade(){
-      axios.get(this.HOST+"/movies/grade").then((res) => {
+      axios.get(this.HOST+"/movies/rates").then((res) => {
         console.log(res.data)
         this.movies = res.data
       });
+    },
+    goTicket(title){
+      if(title == "범죄도시 2"){
+        this.$router.push('/ticket?movie=' + title)
+      }
+      else{
+        alert("구미 CGV에서 상영중인 영화가 아닙니다.")
+      }
     }
   },
   created() {

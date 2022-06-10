@@ -44,7 +44,7 @@
               <b-td>관람좌석</b-td>
               <b-td colspan="4" class="text-left"
                 ><span v-for="(temp, index) in book.numOfPeople" :key="index"
-                  >{{ book.rows[index] + book.columns[index] + " " }}
+                  >{{ book.rows[index] + (book.columns[index]+1) + " " }}
                 </span></b-td
               >
             </b-tr>
