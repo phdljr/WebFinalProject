@@ -53,25 +53,18 @@
       <b-row v-for="(row, index) in commentTable" :key="index">
         <b-col v-for="(comment, index) in row" :key="index">
           <div class="commentBox">
-            <p>
-              {{ comment.userId }} | {{ comment.rating }}
-              <!-- <b-img
-                v-bind="mainProps"
-                rounded="circle"
-                alt="Circle image"
-              ></b-img> -->
+            <div class="idBox">
+              {{ comment.userId }}
               <span v-if="$store.state.userData.id == comment.userId">
-                <b-button variant="primary" @click="reviseComment(comment)"
-                  >수정</b-button
-                >
-                <b-button variant="danger" @click="deleteComment(comment)"
-                  >삭제</b-button
-                >
+                <b-button variant="primary" @click="reviseComment(comment.comment,$event)">수정</b-button>
+                <b-button variant="danger" @click="deleteComment(comment)">삭제</b-button>
               </span>
-            </p>
-
+            </div>
             <div class="comment">
               {{ comment.comment }}
+            </div>
+            <div class="reviseComment">
+              <textarea v-model="comment.commnet"></textarea>
             </div>
             <b-button @click="addLike(comment)">
               <!-- 자신이 이미 좋아요를 누른 후기는 가득 한 하트로 표시 -->
@@ -126,6 +119,7 @@ export default {
             rating: "",
           },
         ],
+        comments:[]
       },
       comment: "",
       selectedLikeArr: [], // 자신이 좋아요를 눌렀던 후기의 작성자 아이디가 들어갈 배열
@@ -288,8 +282,15 @@ export default {
 
     // 후기 수정
     // 수정 버튼 클릭 시, 입력칸이 뜨도록
-    reviseComment() {
-      console.log("수정하기");
+    reviseComment(comment, event){
+      var revisedCommnet = event.target.parentNode.parentNode.parentNode.childNodes[2].childNodes[0].value
+      if(event.target.parentNode.parentNode.parentNode.childNodes[2].style.display == "block"){
+        console.log("여기에 수정시 댓글 가져오기")
+        console.log(revisedCommnet)//이게 댓글 수정된거 가져온거임
+      }
+      event.target.parentNode.parentNode.parentNode.childNodes[2].style.display = "block"
+      event.target.parentNode.parentNode.parentNode.childNodes[2].childNodes[0].value = comment
+      event.target.parentNode.parentNode.parentNode.childNodes[1].style.display = "none"
     },
 
     goTicket(title) {
@@ -376,6 +377,8 @@ export default {
 }
 .comment {
   height: 200px;
+  clear: both;
+  margin-bottom: 6px;
 }
 .commentBox {
   border-bottom: 1px solid #333333;
@@ -398,5 +401,26 @@ export default {
   float: right;
   height: 120px;
   width: 8%;
+}
+.idBox{
+  width: 100%;
+  height: 40px;
+  float: left;
+  margin-bottom: 10px;
+}
+.commentBox span{
+  float: right;
+}
+.commentBox span button{
+  margin-left: 5px;
+}
+.reviseComment{
+  display: none;
+  clear: both;
+}
+.reviseComment textarea{
+  height: 200px;
+  resize: none;
+  width: 100%;
 }
 </style>
