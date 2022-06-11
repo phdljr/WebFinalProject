@@ -3,6 +3,13 @@
     <h2>무비차트</h2>
     <div class="MovieList">
       <div class="sortSelect">
+        <b-form-input
+          style="width: 250px"
+          v-model="searchInput"
+          placeholder="배우 또는 감독으로 검색하기"
+          @click="searchMovie"
+        ></b-form-input>
+        <b-button @click="sortMovie">Go</b-button>
         <b-form-select
           v-model="sortSelected"
           :options="sortOptions"
@@ -11,17 +18,15 @@
       </div>
       <b-row :key="key" v-for="(movieRow, key) in chunkMovies" cols="4">
         <b-col :key="index" v-for="(movie, index) in movieRow">
-          <div class="movieListRank">No. {{ index+1 + key*4 }}</div>
+          <div class="movieListRank">No. {{ index + 1 + key * 4 }}</div>
           <router-link :to="'/movie/' + movie.title"
             ><img :src="'../movies/' + movie.title + '.jpg'"
           /></router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
-            <p v-if="sortShow == 'book'">예매율: {{ movie.rate*100 }}%</p>
+            <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
             <p v-else>평점: {{ movie.rate }}★</p>
-            <b-button
-              variant="outline-danger"
-              @click="goTicket(movie.title)"
+            <b-button variant="outline-danger" @click="goTicket(movie.title)"
               >예매하기</b-button
             >
           </div>
@@ -53,43 +58,43 @@ export default {
         { value: "book", text: "예매율" },
         { value: "rate", text: "평점" },
       ],
+      searchInput: null,
     };
   },
-  methods:{
-    sortMovie(){
-      if(this.sortSelected == "book"){
-        this.sortBySale()
-        this.sortShow = "book"
-      }
-      else{
-        this.sortByGrade()
-        this.sortShow = "grade"
+  methods: {
+    searchMovue() {},
+    sortMovie() {
+      if (this.sortSelected == "book") {
+        this.sortBySale();
+        this.sortShow = "book";
+      } else {
+        this.sortByGrade();
+        this.sortShow = "grade";
       }
     },
-    sortBySale(){
-      axios.get(this.HOST+"/movies/sales").then((res) => {
-        console.log(res.data)
-        this.movies = res.data
+    sortBySale() {
+      axios.get(this.HOST + "/movies/sales").then((res) => {
+        console.log(res.data);
+        this.movies = res.data;
       });
     },
-    sortByGrade(){
-      axios.get(this.HOST+"/movies/rates").then((res) => {
-        console.log(res.data)
-        this.movies = res.data
+    sortByGrade() {
+      axios.get(this.HOST + "/movies/rates").then((res) => {
+        console.log(res.data);
+        this.movies = res.data;
       });
     },
-    goTicket(title){
-      if(title == "범죄도시 2"){
-        this.$router.push('/ticket?movie=' + title)
+    goTicket(title) {
+      if (title == "범죄도시 2") {
+        this.$router.push("/ticket?movie=" + title);
+      } else {
+        alert("구미 CGV에서 상영중인 영화가 아닙니다.");
       }
-      else{
-        alert("구미 CGV에서 상영중인 영화가 아닙니다.")
-      }
-    }
+    },
   },
   created() {
     // 해당 페이지가 출력되면 영화 데이터를 받아옴(예매율순)
-    this.sortBySale()
+    this.sortBySale();
   },
   computed: {
     chunkMovies() {
