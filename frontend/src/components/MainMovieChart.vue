@@ -36,7 +36,9 @@
               :aria-hidden="showOverlayList[key] ? 'true' : null"
               @mouseover="showOverlayList[key] = true"
             >
-              <p>예매율{{ movie.rate * 100 }}%</p>
+            <span :class="setMediaRateImg(movie.mediaRating)"></span>
+              <p>예매율: {{ movie.rate * 100 }}%</p>
+              <p>평점: {{movie.grade.toFixed(2)}}★</p>
             </b-card>
             <template #overlay>
               <div class="text-center" @mouseout="showOverlayList[key] = false">
@@ -93,9 +95,11 @@ export default {
         //   title: "",
         //   rate: "",
         //   grade: "",
+        //   mediaRating: "",
         // },
       ],
       showOverlayList: [false, false, false, false, false],
+      shape: { blank: true, blankColor: '#777', width: 30, height: 30, class: 'm1' }
     };
   },
   methods: {
@@ -106,6 +110,25 @@ export default {
       else{
         alert("구미 CGV에서 상영중인 영화가 아닙니다.")
       }
+    },
+    setMediaRateImg(mediaRating){
+      let result = "ico-grade "
+      switch(mediaRating){
+        case "전체":
+          result += "grade-all"
+          break;
+        case "12세":
+          result += "grade-12"
+          break;
+        case "15세":
+          result += "grade-15"
+          break;
+        case "청불":
+          result += "grade-19"
+          break;
+      }
+      console.log(result)
+      return result;
     }
   },
   computed: {
@@ -145,4 +168,14 @@ export default {
   display: flex;
   justify-content: center;
 }
+.media-rate{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+.ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
+.ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
+.ico-grade.grade-12{ background-position:-51px 0;}/* 12세 */
+.ico-grade.grade-15{ background-position:-72px 0;}/* 15세 */
+.ico-grade.grade-19{ background-position:-93px 0;}/* 청불 */
 </style>
