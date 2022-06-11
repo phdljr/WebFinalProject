@@ -1,6 +1,8 @@
 package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.MovieService;
+import kr.ac.kumoh.backend.domain.Movie;
+import kr.ac.kumoh.backend.domain.Person;
 import kr.ac.kumoh.backend.domain.ResponseStatus;
 import kr.ac.kumoh.backend.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -17,12 +20,18 @@ public class MovieController {
 
     private final MovieService movieService;
 
+    @GetMapping("/search/{param}")
+    public List<SearchMovieDTO> searchMovie(@PathVariable("param") String param) {
+
+        return movieService.searchMovie(param);
+    }
+
     @GetMapping("/movie/{movieName}")
-    public MovieDetailInfo getMovieDetailInfo(@PathVariable String movieName) {
+    public MovieDetailInfo getMovieDetailInfo(@PathVariable("movieName") String movieName) {
         return movieService.getMovieDetailInfo(movieName);
     }
 
-    @PostMapping("movie/discount")
+    @PostMapping("/movie/discount")
     public ResponseStatus discountMovie(@RequestBody DiscountMovieDTO discountMovieDTO) {
         return movieService.discountMovie(discountMovieDTO);
     }

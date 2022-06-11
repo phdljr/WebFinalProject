@@ -2,11 +2,9 @@ package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.Service.discount.DiscountServiceImpl;
 import kr.ac.kumoh.backend.domain.*;
-import kr.ac.kumoh.backend.dto.DiscountMovieDTO;
-import kr.ac.kumoh.backend.dto.MovieCommentDTO;
-import kr.ac.kumoh.backend.dto.MovieDetailInfo;
-import kr.ac.kumoh.backend.dto.Top10MovieDTO;
+import kr.ac.kumoh.backend.dto.*;
 import kr.ac.kumoh.backend.repository.*;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,30 @@ public class MovieServiceImpl implements MovieService {
     private final DiscountServiceImpl discountService;
     private final BookDetailsRepository bookDetailsRepository;
     private final MovieScheduleRepository movieScheduleRepository;
+
+    @Override
+    public List<SearchMovieDTO> searchMovie(String param) {
+
+        List<Movie> findMovie = movieRepository.searchMovieByTitle(param);
+        List<Person> findPerson = personRepository.searchPersonByName(param);
+
+        Set<Movie> result = new HashSet<>();
+        if (!findMovie.isEmpty() || !findPerson.isEmpty()) {
+            result.addAll(findMovie);
+            findPerson.forEach(m -> result.add(m.getMovie()));
+        }
+
+        List<SearchMovieDTO> searchMovieDTOS = new ArrayList<>();
+        result.forEach(r -> {
+            SearchMovieDTO searchMovieDTO = SearchMovieDTO.builder()
+                    .movieName(r.getTitle())
+                    .rate(getMovieTicketSales(r.getTitle()))
+                    .grade(r.getAvgOfGrade()).build();
+            searchMovieDTOS.add(searchMovieDTO);
+        });
+
+        return searchMovieDTOS;
+    }
 
     @Override
     public MovieDetailInfo getMovieDetailInfo(String movieName) {
