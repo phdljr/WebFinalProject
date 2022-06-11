@@ -2,14 +2,15 @@
   <div class="movies">
     <h2>무비차트</h2>
     <div class="MovieList">
-      <div class="sortSelect">
+      <div class="searchInput">
         <b-form-input
-          style="width: 250px"
           v-model="searchInput"
           placeholder="배우 또는 감독으로 검색하기"
           @click="searchMovie"
         ></b-form-input>
         <b-button @click="sortMovie">Go</b-button>
+      </div>
+      <div class="sortSelect">
         <b-form-select
           v-model="sortSelected"
           :options="sortOptions"
@@ -24,8 +25,9 @@
           /></router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
-            <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
-            <p v-else>평점: {{ movie.rate }}★</p>
+            <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ movie.rate }}★</p>
+            <!-- <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
+            <p v-else>평점: {{ movie.rate }}★</p> -->
             <b-button variant="outline-danger" @click="goTicket(movie.title)"
               >예매하기</b-button
             >
@@ -58,7 +60,7 @@ export default {
         { value: "book", text: "예매율" },
         { value: "rate", text: "평점" },
       ],
-      searchInput: null,
+      searchInput: null, // 사람 이름으로 검색
     };
   },
   methods: {
@@ -136,5 +138,9 @@ export default {
 }
 .sortSelect select {
   width: 7em;
+}
+.searchInput {
+  width: 250px;
+  float: left;
 }
 </style>
