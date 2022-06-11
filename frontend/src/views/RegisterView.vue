@@ -138,8 +138,11 @@ export default {
         alert("비밀번호를 다시 확인해주세요.");
         return;
       }
-      console.log(this.registerData);
 
+      if(!this.checkPw){
+        alert("비밀번호를 재입력해 주세요")
+        return
+      }
       axios
         .post(this.HOST + "/register", this.registerData)
         .then(() => {
