@@ -26,9 +26,9 @@
           </div>
           <b-button
             class="timeButton"
-            variant="outline-secondary"
             v-for="(time, index) in theater.time"
             :key="index"
+            :variant="getPolicyColor(time.discountPolicy)"
             :disabled="time.remainingNumOfSeats <= 0"
             @click="
               $router.push(
@@ -77,6 +77,7 @@ export default {
               // {
               //     screenTime: "",
               //     remainingNumOfSeats: 0
+              //     discountPolicy: "", // rate(정률), fix(정액), none
               // }
             ],
           },
@@ -88,12 +89,25 @@ export default {
               // {
               //     screenTime: "",
               //     remainingNumOfSeats: 0
+              //     discountPolicy: "", // rate(정률), fix(정액), none
               // }
             ],
           },
         ],
       },
     };
+  },
+  methods:{
+    getPolicyColor(discountPolicy){
+      switch(discountPolicy){
+        case "rate":
+          return "outline-success"
+        case "fix":
+          return "outline-danger"
+        default:
+          return "outline-secondary"
+      }
+    }
   },
   computed: {
     totalSeat() {
@@ -121,6 +135,7 @@ export default {
           this.movieDetail.theater[res.data[i].theaterFloor - 1].time.push({
             screenTime: res.data[i].screenTime,
             remainingNumOfSeats: res.data[i].remainingNumOfSeats,
+            discountPolicy: res.data[i].discountPolicy
           });
         }
       })

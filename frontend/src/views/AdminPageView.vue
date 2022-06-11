@@ -32,7 +32,7 @@
             <b-button
               v-b-toggle="['collapse-' + key + '-' + index]"
               class="timeButton"
-              variant="outline-secondary"
+            :variant="getPolicyColor(time.discountPolicy)"
             >
               {{ time.screenTime }}<br />
               {{
@@ -43,10 +43,10 @@
             </b-button>
             <b-collapse :id="'collapse-' + key + '-' + index" class="mt-2">
               <b-card id="collapseCard">
-                <b-form @submit="applySale(key, index)">
+                <b-form @submit="applySale(theater.theaterScreen, time)">
                   <b-form-radio-group
                     id="radio-group-1"
-                    v-model="saleData[key][index]['discount']"
+                    v-model="time.discountPolicy"
                     :options="saleOptions"
                     name="radio-options"
                     required
@@ -55,7 +55,11 @@
                     <b-form-input
                       id="input-1"
                       type="number"
-                      v-model="saleData[key][index]['number']"
+                      v-model="time.discountRate"
+                      :min="time.discountPolicy == 'rate' ? 1 : 0"
+                      :max="time.discountPolicy == 'rate' ? 100 : 5000"
+                      :disabled="time.discountPolicy == 'none'"
+                      :value="time.discountPolicy == 'none' ? 0 : time.discountRate"
                       required
                     ></b-form-input>
                     <b-button type="submit"> 적용 </b-button>
@@ -94,6 +98,8 @@ export default {
               // {
               //     screenTime: "",
               //     remainingNumOfSeats: 0
+              //     discountPolicy: "",
+              //     discountRate: "",
               // }
             ],
           },
@@ -105,6 +111,8 @@ export default {
               // {
               //     screenTime: "",
               //     remainingNumOfSeats: 0
+              //     discountPolicy: "",
+              //     discountRate: "",
               // }
             ],
           },
@@ -112,16 +120,8 @@ export default {
       },
       saleOptions: [
         { text: "정률할인", value: "rate" },
-        { text: "정액할인", value: "amount" },
-      ],
-       // [행][열] = { discount: "정률할인", number: 20 }
-      saleData: [
-        // [ //[0]
-        //   { discount: "정률할인", number: 20 }, { discount: "정률할인", number: 20 }
-        // ],
-        // [ //[1]
-        //   { discount: "정률할인", number: 20 }, { discount: "정률할인", number: 20 }
-        // ]
+        { text: "정액할인", value: "fix" },
+        { text: "할인 취소", value: "none" },
       ],
     };
   },
@@ -143,28 +143,65 @@ export default {
           this.movieDetail.theater[res.data[i].theaterFloor - 1].time.push({
             screenTime: res.data[i].screenTime,
             remainingNumOfSeats: res.data[i].remainingNumOfSeats,
+            discountPolicy: res.data[i].discountPolicy,
+            discountRate: res.data[i].discountRate
           });
-        }
-
-          //이거 axios로 값 가져온뒤에 실행해야함
-        for (var key in this.movieDetail.theater) {
-          var arr = [];
-          for (var index in this.movieDetail.theater[key].time) {
-            this.movieDetail.theater[key].time[index];
-            var sale = { discount: "", number: 0 };
-            arr.push(sale);
-          }
-          this.saleData.push(arr);
         }
       })
       .catch((err) => {
         console.log(err);
       });
     },
-    applySale(a, b) {
-      console.log(this.saleData[a][b]);
-      console.log(this.movieDetail.theater[a].theaterScreen); //관 이름
-      console.log(this.movieDetail.theater[a].time[b].screenTime); //시간
+    getPolicyColor(discountPolicy){
+      switch(discountPolicy){
+        case "rate":
+          return "outline-success"
+        case "fix":
+          return "outline-danger"
+        default:
+          return "outline-secondary"
+      }
+    },
+    applySale(screenName, time) {
+      let data = {
+        discountPolicy: time.discountPolicy,
+        discountRate: time.discountRate,
+        screenName: screenName,
+        screenTime: time.screenTime,
+        theaterName: "구미 CGV"
+      }
+
+      // // 정률할인 범위 체크 : 1~100 사이의 값만 입력 가능
+      // if(data.discountPolicy == "rate"){
+      //   if(!(data.discountRate > 0 || data.discountRate <= 100)){
+      //     alert("정률 할인은 1~100 사이의 값만 입력할 수 있습니다.")
+      //     return;
+      //   }
+      // }
+
+      // // 정액할인 범위 체크 : 1 이상의 값만 입력 가능
+      // if(data.discountPolicy == "fix"){
+      //   if(data.discountRate > 5000){
+      //     alert("정액 할인은 5000 보다 작은 값만 입력할 수 있습니다.")
+      //     return;
+      //   }
+      // }
+
+      axios.post(this.HOST+"/movie/discount",data).then(res=>{
+        console.log(res.data)
+        if(res.data == "Success"){
+          alert("성공적으로 적용되었습니다.")
+          this.$router.go();
+        }
+        else if(res.data == "PriceIsNegative"){
+          alert("할인이 적용된 가격이 음수가 될 수 없습니다.")
+        }
+        else{
+          alert("잘못된 할인 정책입니다.")
+        }
+      }).catch(err=>{
+        console.log(err)
+      })
     },
   },
   computed: {

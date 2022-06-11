@@ -15,7 +15,7 @@
                         <br>
                         <div class="timeSelector" v-for="(time, key) in theater.time" :key="key">
                             <b-button
-                                variant="outline-secondary"
+                                :variant="getPolicyColor(theater.discountPolicy[key])"
                                 :disabled="theater.seat[key] <= 0"
                                 :pressed="selectTime.theater==theater.theaterName&&selectTime.time==time"
                                 @click="selectTime={ theater:theater.theaterName, time:time}">
@@ -64,13 +64,15 @@ export default {
                     theaterName:"1관",
                     totalSeat:null,
                     time:[],
-                    seat:[]
+                    seat:[],
+                    discountPolicy:[]
                 },
                 {
                     theaterName:"2관",
                     totalSeat:null,
                     time:[],
-                    seat:[]
+                    seat:[],
+                    discountPolicy:[]
                 },
             ]
             
@@ -86,12 +88,14 @@ export default {
             //         totalSeat:48,
             //         time:[ "12:00", "15:00" ],
             //         seat:[20,30]
+            //         discountPolicy: ["rate", "fix"], // rate(정률), fix(정액), none
             //     },
             //     {
             //         theaterName:"2관",
             //         totalSeat:60,
             //         time:[ "10:00"],
             //         seat:[50]
+            //         discountPolicy: ["rate", "fix"], // rate(정률), fix(정액), none
             //     },
             // ]
         }
@@ -131,6 +135,16 @@ export default {
                     }
                 })
             }
+        },
+        getPolicyColor(discountPolicy){
+            switch(discountPolicy){
+                case "rate":
+                    return "outline-success"
+                case "fix":
+                    return "outline-danger"
+                default:
+                    return "outline-secondary"
+            }
         }
     },
     computed:{
@@ -158,11 +172,13 @@ export default {
                     this.timeline[0].totalSeat = data.numOfTheaterSeats;
                     this.timeline[0].time.push(data.screenTime);
                     this.timeline[0].seat.push(data.getRemainingSeat);
+                    this.timeline[0].discountPolicy.push(data.discountPolicy)
                 }
                 else{
                     this.timeline[1].totalSeat = data.numOfTheaterSeats;
                     this.timeline[1].time.push(data.screenTime);
                     this.timeline[1].seat.push(data.getRemainingSeat);
+                    this.timeline[1].discountPolicy.push(data.discountPolicy)
                 }
             }
         })
