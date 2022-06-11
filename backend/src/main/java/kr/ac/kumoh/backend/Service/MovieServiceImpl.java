@@ -101,6 +101,7 @@ public class MovieServiceImpl implements MovieService {
         int price = findMovieSchedule.getPrice();
         int discountedPrice = discountService.getDiscountedPrice(price, discountPolicy, discountRate);
 
+        findMovieSchedule.setDiscountPolicyAndRate(discountPolicy, discountRate);
         ResponseStatus status = Success;
         if (discountedPrice == -1)
             status = PriceIsNegative;
