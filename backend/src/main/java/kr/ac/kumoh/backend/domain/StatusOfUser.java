@@ -5,5 +5,6 @@ public enum StatusOfUser {
     Duplicated,
     NonExistUser, NonExistMovie, CantSaveSeat,
     AlreadyGiveGrade,
-    AlreadyExist
+    AlreadyExist,
+    PriceIsNegative, WrongDiscountPolicy
 }

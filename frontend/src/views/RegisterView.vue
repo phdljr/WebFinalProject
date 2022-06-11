@@ -118,7 +118,6 @@ export default {
           console.log(res);
           if (res.data == "Success") {
             this.validId = true;
-            this.tempId = this.registerData.id;
           } else {
             // 중복이라면 "Duplicated"
             this.validId = false;
@@ -130,7 +129,7 @@ export default {
     },
     submitForm() {
       // 아이디 중복 체크
-      if (this.validId == false || this.validId == null) {
+      if (this.vailidId == false) {
         alert("아이디를 다시 확인해주세요.");
         return;
       }
@@ -140,7 +139,6 @@ export default {
         alert("비밀번호를 다시 확인해주세요.")
         return;
       }
-
       console.log(this.registerData);
 
       axios
@@ -169,14 +167,6 @@ export default {
       return this.registerData.pw.length > 7;
     },
   },
-  watch:{
-    'registerData.id':function(){
-      if(this.idChecked==true){
-        this.validId = null
-        this.idChecked = null
-      }
-    }
-  }
 };
 </script>
 
