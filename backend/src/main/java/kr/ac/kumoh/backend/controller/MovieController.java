@@ -2,10 +2,7 @@ package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.MovieService;
 import kr.ac.kumoh.backend.domain.StatusOfUser;
-import kr.ac.kumoh.backend.dto.MovieDTO;
-import kr.ac.kumoh.backend.dto.MovieDetailInfo;
-import kr.ac.kumoh.backend.dto.RateMovieDTO;
-import kr.ac.kumoh.backend.dto.Top10MovieDTO;
+import kr.ac.kumoh.backend.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +22,11 @@ public class MovieController {
         return movieService.getMovieDetailInfo(movieName);
     }
 
+    @PostMapping("movie/discount")
+    public StatusOfUser discountMovie(@RequestBody DiscountMovieDTO discountMovieDTO) {
+        return movieService.discountMovie(discountMovieDTO);
+    }
+
     /**
      * 예매율순으로 Top10 영화 출력
      *
@@ -35,6 +37,11 @@ public class MovieController {
         return movieService.getTop10TicketSales();
     }
 
+    /**
+     * 평점순으로 Top10 영화 출력
+     *
+     * @return 값이 0이면, 그 영화에 대한 평점이 아직 없음
+     */
     @GetMapping(value = "/movies/rates")
     public List<Top10MovieDTO> getMoviesByGrades() {
         return movieService.getTop10MovieGrades();

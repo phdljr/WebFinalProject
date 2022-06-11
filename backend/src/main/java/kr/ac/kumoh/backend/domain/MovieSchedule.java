@@ -44,4 +44,8 @@ public class MovieSchedule {
     public void subRemainingSeat(int numOfPeople) {
         this.remainingSeat -= numOfPeople;
     }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 }
