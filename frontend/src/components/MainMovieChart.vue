@@ -27,7 +27,7 @@
           <b-overlay :show="showOverlayList[key]" rounded="sm">
             <b-card
               :img-src="'../movies/' + movie.title + '.jpg'"
-              img-alt="Image"
+              :img-alt="movie.title"
               img-top
               tag="article"
               style="width: 200px;height: 450px;"
