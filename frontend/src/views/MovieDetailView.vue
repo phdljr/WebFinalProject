@@ -54,7 +54,7 @@
         <b-col cols="6" v-for="(comment, index) in row" :key="index">
           <div class="commentBox">
             <div class="idBox">
-              {{ comment.userId }} | 평점: {{comment.rating}}
+              {{ comment.userId }} | 평점: {{comment.grade}}★
               <span v-if="$store.state.userData.id == comment.userId">
                 <b-button variant="primary" @click="reviseComment(comment.comment,$event)">수정</b-button>
                 <b-button variant="danger" @click="deleteComment(comment)">삭제</b-button>
@@ -114,7 +114,7 @@ export default {
           //   comment: "",
           //   like: "",
           //   commentDate: "",
-          //   rating: "",
+          //   grade: "",
           // },
         ],
       },
