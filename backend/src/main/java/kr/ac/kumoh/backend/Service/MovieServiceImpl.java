@@ -2,10 +2,7 @@ package kr.ac.kumoh.backend.Service;
 
 import kr.ac.kumoh.backend.Service.discount.DiscountServiceImpl;
 import kr.ac.kumoh.backend.domain.*;
-import kr.ac.kumoh.backend.dto.DiscountMovieDTO;
-import kr.ac.kumoh.backend.dto.MovieCommentDTO;
-import kr.ac.kumoh.backend.dto.MovieDetailInfo;
-import kr.ac.kumoh.backend.dto.Top10MovieDTO;
+import kr.ac.kumoh.backend.dto.*;
 import kr.ac.kumoh.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
-import static kr.ac.kumoh.backend.domain.StatusOfUser.*;
+import static java.util.Objects.isNull;
+import static kr.ac.kumoh.backend.domain.ResponseStatus.*;
 
 
 @Service
@@ -29,6 +27,30 @@ public class MovieServiceImpl implements MovieService {
     private final DiscountServiceImpl discountService;
     private final BookDetailsRepository bookDetailsRepository;
     private final MovieScheduleRepository movieScheduleRepository;
+
+    @Override
+    public List<SearchMovieDTO> searchMovie(String param) {
+
+        List<Movie> findMovie = movieRepository.searchMovieByTitle(param);
+        List<Person> findPerson = personRepository.searchPersonByName(param);
+
+        Set<Movie> result = new HashSet<>();
+        if (!findMovie.isEmpty() || !findPerson.isEmpty()) {
+            result.addAll(findMovie);
+            findPerson.forEach(m -> result.add(m.getMovie()));
+        }
+
+        List<SearchMovieDTO> searchMovieDTOS = new ArrayList<>();
+        result.forEach(r -> {
+            SearchMovieDTO searchMovieDTO = SearchMovieDTO.builder()
+                    .title(r.getTitle())
+                    .rate(getMovieTicketSales(r.getTitle()))
+                    .grade(r.getAvgOfGrade()).build();
+            searchMovieDTOS.add(searchMovieDTO);
+        });
+
+        return searchMovieDTOS;
+    }
 
     @Override
     public MovieDetailInfo getMovieDetailInfo(String movieName) {
@@ -70,23 +92,34 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public StatusOfUser discountMovie(DiscountMovieDTO discountMovieDTO) {
+    public ResponseStatus discountMovie(DiscountMovieDTO discountMovieDTO) {
+
+        ResponseStatus status = Success;
 
         MovieSchedule findMovieSchedule = movieScheduleRepository.getCertainMovieSchedule(
                 discountMovieDTO.getTheaterName(), discountMovieDTO.getScreenName(), discountMovieDTO.getScreenTime());
+        if (isNull(findMovieSchedule))
+            return Fail;
 
         String discountPolicy = discountMovieDTO.getDiscountPolicy();
-        int discountRate = discountMovieDTO.getDiscountRate();
-        int price = findMovieSchedule.getPrice();
-        int discountedPrice = discountService.getDiscountedPrice(price, discountPolicy, discountRate);
+        findMovieSchedule.setPrice(12000);
+        if (!discountPolicy.equals("none")) {
 
-        StatusOfUser status = Success;
-        if (discountedPrice == -1)
-            status = PriceIsNegative;
-        else if (discountedPrice == -2)
-            status = WrongDiscountPolicy;
-        else {
-            findMovieSchedule.setPrice(discountedPrice);
+            int discountRate = discountMovieDTO.getDiscountRate();
+            int price = findMovieSchedule.getPrice();
+
+            int discountedPrice = discountService.getDiscountedPrice(price, discountPolicy, discountRate);
+
+            if (discountedPrice == -1)
+                status = PriceIsNegative;
+            else if (discountedPrice == -2)
+                status = WrongDiscountPolicy;
+            else {
+                findMovieSchedule.setPrice(discountedPrice);
+                findMovieSchedule.setDiscountPolicyAndRate(discountPolicy, discountRate);
+            }
+        } else {
+            findMovieSchedule.setDiscountPolicyAndRate("none", 0);
         }
 
         return status;
@@ -159,24 +192,20 @@ public class MovieServiceImpl implements MovieService {
         }
 
         List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
-//        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
         moviesSaleTickets.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
                 .forEachOrdered(x -> {
+                    String movieName = x.getKey();
+                    Movie findMovie = movieRepository.findByTitle(movieName);
                     Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
-                            .title(x.getKey())
-                            .mediaRating("")
-                            .rate(x.getValue()).build();
+                            .title(movieName)
+                            .mediaRating(findMovie.getMediaRating())
+                            .rate(x.getValue())
+                            .grade(findMovie.getAvgOfGrade())
+                            .build();
 
                     top10MovieDTOS.add(top10MovieDTO);
                 });
-
-        int index = 0;
-        for (Movie movie : movieList) {
-            String mediaRating = movie.getMediaRating();
-            top10MovieDTOS.get(index++).setMediaRating(mediaRating);
-        }
-
         return top10MovieDTOS;
     }
 
@@ -189,7 +218,8 @@ public class MovieServiceImpl implements MovieService {
             Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
                     .title(movie.getTitle())
                     .mediaRating(movie.getMediaRating())
-                    .rate(movie.getAvgOfGrade()).build();
+                    .grade(movie.getAvgOfGrade())
+                    .rate(getMovieTicketSales(movie.getTitle())).build();
             top10MovieDTOS.add(top10MovieDTO);
         }
 

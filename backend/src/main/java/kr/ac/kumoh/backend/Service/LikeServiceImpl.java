@@ -1,6 +1,8 @@
 package kr.ac.kumoh.backend.Service;
 
+import kr.ac.kumoh.backend.domain.Comment;
 import kr.ac.kumoh.backend.domain.Like;
+import kr.ac.kumoh.backend.repository.CommentRepository;
 import kr.ac.kumoh.backend.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,8 @@ public class LikeServiceImpl implements LikeService {
 
         List<String> likes = new ArrayList<>();
         userLikes.forEach(like -> {
-            String commentUserId = like.getComment().getUser().getUserId();
+            Comment comment = like.getComment();
+            String commentUserId = comment.getUser().getUserId();
             likes.add(commentUserId);
         });
 

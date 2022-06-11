@@ -31,6 +31,7 @@ public class Movie {
     private int numOfGrades;
 
     public void addGrade(double grade) {
+        System.out.println("Movie.addGrade");
         double avg = avgOfGrade * numOfGrades + grade;
         this.numOfGrades += 1;
 

@@ -25,15 +25,15 @@ public class UserServiceImpl implements UserService {
     private final BookDetailsRepository bookDetailsRepository;
 
     @Override
-    public StatusOfUser login(String userId, String userPw) {
+    public ResponseStatus login(String userId, String userPw) {
 
         User loginUser = userRepository.findByUserIdAndUserPw(userId, userPw);
 
-        StatusOfUser result;
+        ResponseStatus result;
         if (isNull(loginUser))
-            result = StatusOfUser.Fail;
+            result = ResponseStatus.Fail;
         else
-            result = StatusOfUser.Success;
+            result = ResponseStatus.Success;
 
         return result;
     }
@@ -92,9 +92,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public StatusOfUser register(RegisterDTO registerDTO) {
+    public ResponseStatus register(RegisterDTO registerDTO) {
 
-        StatusOfUser result;
+        ResponseStatus result;
         try {
             User user = User.builder()
                     .userId(registerDTO.getId())
@@ -104,24 +104,24 @@ public class UserServiceImpl implements UserService {
                     .build();
 
             userRepository.save(user);
-            result = StatusOfUser.Success;
+            result = ResponseStatus.Success;
         } catch (Exception e) {
-            result = StatusOfUser.Fail;
+            result = ResponseStatus.Fail;
         }
 
         return result;
     }
 
     @Override
-    public StatusOfUser checkIfIdDuplicated(String userId) {
+    public ResponseStatus checkIfIdDuplicated(String userId) {
 
         User duplicatedIdUser = userRepository.findByUserId(userId);
 
-        StatusOfUser result;
+        ResponseStatus result;
         if (isNull(duplicatedIdUser))
-            result = StatusOfUser.Success;
+            result = ResponseStatus.Success;
         else
-            result = StatusOfUser.Duplicated;
+            result = ResponseStatus.Duplicated;
 
         return result;
     }

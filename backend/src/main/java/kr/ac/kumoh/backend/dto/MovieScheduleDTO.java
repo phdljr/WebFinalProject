@@ -25,4 +25,6 @@ public class MovieScheduleDTO {
     private int getRemainingSeat;
 
     private int numOfTheaterSeats;
+
+    private String discountPolicy;
 }
