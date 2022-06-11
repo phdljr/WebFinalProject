@@ -60,7 +60,7 @@ public class MovieServiceImpl implements MovieService {
         double ticketSales = getMovieTicketSales(movieName);                                    // 예매율
         double genderReservationDistribution = getGenderReservationDistribution(movieName);     // 성별 예매 분포
         List<Integer> ageReservationDistribution = getAgeReservationDistribution(movieName);    // 나이별 예매 분포
-        List<MovieCommentDTO> movieComments = commentService.getMovieComments(movieName);       // 댓글
+        List<MovieCommentDTO> movieComments = commentService.getMovieComments(movie);       // 댓글
         double avgOfGrade = movie.getAvgOfGrade();                                              // 평균 평점
 
         // 배우 & 감독 데이터

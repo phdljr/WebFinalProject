@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 import static java.util.Objects.isNull;
@@ -163,16 +164,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<MovieCommentDTO> getMovieComments(String movieName) {
+    public List<MovieCommentDTO> getMovieComments(Movie movie) {
+        String movieName = movie.getTitle();
         List<Comment> movieComments = commentRepository.getMovieComments(movieName);
 
         List<MovieCommentDTO> movieCommentDTOS = new ArrayList<>();
         for (Comment movieComment : movieComments) {
+            Optional<MovieGrade> movieGrade
+                    = movieGradeRepository.findByMovieAndUserId(movie, movieComment.getUser().getUserId());
+
+            double grade = movieGrade.map(MovieGrade::getGrade).orElse(-1.0);
+
             MovieCommentDTO commentDTO = MovieCommentDTO.builder()
-                    .userName(movieComment.getUser().getUserId())
+                    .userId(movieComment.getUser().getUserId())
                     .commentDate(movieComment.getCommentDate())
                     .comment(movieComment.getComment())
-                    .like(movieComment.getNumOfLike()).build();
+                    .like(movieComment.getNumOfLike())
+                    .grade(grade)
+                    .build();
 
             movieCommentDTOS.add(commentDTO);
         }
