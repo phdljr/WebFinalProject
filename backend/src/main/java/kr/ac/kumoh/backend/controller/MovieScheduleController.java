@@ -37,7 +37,8 @@ public class MovieScheduleController {
             TheaterMovieScheduleDTO movieSchedule = new TheaterMovieScheduleDTO(
                     movie.getMediaRating(), movie.getTitle(), movie.getGenre(), movie.getRuntime(), movie.getReleaseDate(),
                     theater.getFloor(), theater.getScreen(), theater.getNumOfSeats(),
-                    theaterMovieSchedule.getScreenTime(), theaterMovieSchedule.getRemainingSeat());
+                    theaterMovieSchedule.getScreenTime(), theaterMovieSchedule.getRemainingSeat(),
+                    theaterMovieSchedule.getDiscountPolicy(), theaterMovieSchedule.getDiscountRate());
 
             theaterMovieScheduleDTOS.add(movieSchedule);
         }
@@ -58,7 +59,8 @@ public class MovieScheduleController {
                     ms.getScreenTime(),
                     ms.getPrice(),
                     ms.getRemainingSeat(),
-                    ms.getTheater().getNumOfSeats()
+                    ms.getTheater().getNumOfSeats(),
+                    ms.getDiscountPolicy()
             );
             movieScheduleDTOS.add(movieScheduleDTO);
         });

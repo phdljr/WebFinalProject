@@ -20,4 +20,6 @@ public class TheaterMovieScheduleDTO {
     private int numOfSeats;
     private String screenTime;
     private int remainingNumOfSeats;
+    private String discountPolicy;
+    private int discountRate;
 }

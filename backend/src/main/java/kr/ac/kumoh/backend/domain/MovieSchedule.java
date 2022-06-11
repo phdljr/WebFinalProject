@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.persistence.*;
 
 
-@NamedEntityGraph (
+@NamedEntityGraph(
         name = "MovieSchedule.Movie.Theater.graph",
         attributeNodes = {
                 @NamedAttributeNode("movie"),
@@ -41,11 +41,20 @@ public class MovieSchedule {
 
     private int remainingSeat;
 
+    private String discountPolicy;
+
+    private int discountRate;
+
     public void subRemainingSeat(int numOfPeople) {
         this.remainingSeat -= numOfPeople;
     }
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public void setDiscountPolicyAndRate(String discountPolicy, int discountRate) {
+        this.discountPolicy = discountPolicy;
+        this.discountRate = discountRate;
     }
 }

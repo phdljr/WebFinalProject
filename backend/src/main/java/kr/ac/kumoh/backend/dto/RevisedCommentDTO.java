@@ -8,6 +8,5 @@ public class RevisedCommentDTO {
 
     private String commentUserId;
     private String movieName;
-    private String userId;
     private String newComment;
 }

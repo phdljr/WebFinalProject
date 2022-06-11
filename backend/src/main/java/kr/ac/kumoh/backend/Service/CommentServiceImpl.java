@@ -11,11 +11,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 import static java.util.Objects.isNull;
-import static kr.ac.kumoh.backend.domain.StatusOfUser.*;
+import static kr.ac.kumoh.backend.domain.ResponseStatus.*;
 
 
 @Slf4j
@@ -30,9 +29,9 @@ public class CommentServiceImpl implements CommentService {
     private final MovieGradeRepository movieGradeRepository;
 
     @Override
-    public StatusOfUser addComment(CommentDTO commentDTO) {
+    public ResponseStatus addComment(CommentDTO commentDTO) {
 
-        StatusOfUser status = Success;
+        ResponseStatus status = Success;
         String currDateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
@@ -64,13 +63,14 @@ public class CommentServiceImpl implements CommentService {
 
         Movie movie = movieRepository.findByTitle(movieName);
         movie.addGrade(grade);
+        movieRepository.save(movie);
 
         MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
         movieGradeRepository.save(movieGrade);
     }
 
     @Override
-    public StatusOfUser reviseComment(RevisedCommentDTO revisedCommentDTO) {
+    public ResponseStatus reviseComment(RevisedCommentDTO revisedCommentDTO) {
 
         String currDateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -86,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public StatusOfUser deleteComment(DeleteCommentDTO deleteCommentDTO) {
+    public ResponseStatus deleteComment(DeleteCommentDTO deleteCommentDTO) {
 
         String movieName = deleteCommentDTO.getMovieName();
         String userId = deleteCommentDTO.getUserId();
@@ -115,11 +115,12 @@ public class CommentServiceImpl implements CommentService {
 
         movie.subtractGrade(movieGrade.getGrade());
         movieGradeRepository.delete(movieGrade);
+        movieRepository.save(movie);
     }
 
     @Override
-    public StatusOfUser addLike(AddLikeDTO addLikeDTO) {
-        StatusOfUser status = Fail;
+    public ResponseStatus addLike(AddLikeDTO addLikeDTO) {
+        ResponseStatus status = Fail;
         Comment findComment = null;
 
         try {
@@ -147,7 +148,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public StatusOfUser removeLike(RemoveLikeDTO removeLikeDTO) {
+    public ResponseStatus removeLike(RemoveLikeDTO removeLikeDTO) {
 
         Comment findComment = commentRepository.findUserComment(
                 removeLikeDTO.getMovieName(), removeLikeDTO.getCommentUserId());

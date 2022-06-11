@@ -5,6 +5,12 @@ import lombok.Getter;
 import javax.persistence.*;
 
 
+@NamedEntityGraph(
+        name = "person.movie",
+        attributeNodes = {
+                @NamedAttributeNode("movie")
+        }
+)
 @Entity
 @Getter
 public class Person {
