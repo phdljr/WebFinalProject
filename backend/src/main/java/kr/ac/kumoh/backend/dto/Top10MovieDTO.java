@@ -13,6 +13,7 @@ public class Top10MovieDTO implements Comparable<Top10MovieDTO> {
 
     private String title;
     private Double rate;
+    private Double grade;
     private String mediaRating;
 
     public void setMediaRating(String mediaRating) {

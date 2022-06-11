@@ -192,24 +192,20 @@ public class MovieServiceImpl implements MovieService {
         }
 
         List<Top10MovieDTO> top10MovieDTOS = new ArrayList<>();
-//        Map<String, Double> sortMoviesSaleTicketsByDesc = new LinkedHashMap<>();
         moviesSaleTickets.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue(Comparator.reverseOrder()).thenComparing(Map.Entry.comparingByKey()))
                 .forEachOrdered(x -> {
+                    String movieName = x.getKey();
+                    Movie findMovie = movieRepository.findByTitle(movieName);
                     Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
-                            .title(x.getKey())
-                            .mediaRating("")
-                            .rate(x.getValue()).build();
+                            .title(movieName)
+                            .mediaRating(findMovie.getMediaRating())
+                            .rate(x.getValue())
+                            .grade(findMovie.getAvgOfGrade())
+                            .build();
 
                     top10MovieDTOS.add(top10MovieDTO);
                 });
-
-        int index = 0;
-        for (Movie movie : movieList) {
-            String mediaRating = movie.getMediaRating();
-            top10MovieDTOS.get(index++).setMediaRating(mediaRating);
-        }
-
         return top10MovieDTOS;
     }
 
@@ -222,7 +218,8 @@ public class MovieServiceImpl implements MovieService {
             Top10MovieDTO top10MovieDTO = Top10MovieDTO.builder()
                     .title(movie.getTitle())
                     .mediaRating(movie.getMediaRating())
-                    .rate(movie.getAvgOfGrade()).build();
+                    .grade(movie.getAvgOfGrade())
+                    .rate(getMovieTicketSales(movie.getTitle())).build();
             top10MovieDTOS.add(top10MovieDTO);
         }
 

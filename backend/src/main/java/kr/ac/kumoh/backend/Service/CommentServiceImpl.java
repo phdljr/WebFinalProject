@@ -63,6 +63,7 @@ public class CommentServiceImpl implements CommentService {
 
         Movie movie = movieRepository.findByTitle(movieName);
         movie.addGrade(grade);
+        movieRepository.save(movie);
 
         MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
         movieGradeRepository.save(movieGrade);
@@ -114,6 +115,7 @@ public class CommentServiceImpl implements CommentService {
 
         movie.subtractGrade(movieGrade.getGrade());
         movieGradeRepository.delete(movieGrade);
+        movieRepository.save(movie);
     }
 
     @Override

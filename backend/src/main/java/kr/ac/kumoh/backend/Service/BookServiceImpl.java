@@ -74,7 +74,7 @@ public class BookServiceImpl implements BookService {
         bookDetails.setUser(findUser);
         bookDetails.setMovieSchedule(movieSchedule);
         bookDetailsRepository.save(bookDetails);
-
+        movieScheduleRepository.save(movieSchedule);
         return Success;
     }
 }
