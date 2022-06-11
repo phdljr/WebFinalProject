@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 import static java.util.Objects.isNull;
@@ -63,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
         Double grade = rateMovieDTO.getGrade();
 
         Movie movie = movieRepository.findByTitle(movieName);
-        movie.calcGrade(grade);
+        movie.addGrade(grade);
 
         MovieGrade movieGrade = new MovieGrade(userId, movie, grade);
         movieGradeRepository.save(movieGrade);
@@ -88,16 +87,33 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public StatusOfUser deleteComment(DeleteCommentDTO deleteCommentDTO) {
 
-        Comment findComment = commentRepository.findUserComment(
-                deleteCommentDTO.getMovieName(), deleteCommentDTO.getUserId());
+        String movieName = deleteCommentDTO.getMovieName();
+        String userId = deleteCommentDTO.getUserId();
 
-        List<Like> findLikes
-                = likeRepository.findAllByComment_Id(findComment.getId());
+        Comment findComment = commentRepository.findUserComment(movieName, userId);
+
+        List<Like> findLikes = likeRepository.findAllByComment_Id(findComment.getId());
 
         likeRepository.deleteAll(findLikes);
         commentRepository.delete(findComment);
 
+        subtractGrade(new RateMovieDTO(userId, movieName, 0.0));
+
         return Success;
+    }
+
+    public void subtractGrade(RateMovieDTO rateMovieDTO) {
+        String movieName = rateMovieDTO.getMovieName();
+        String userId = rateMovieDTO.getUserId();
+
+        // 영화 찾기
+        Movie movie = movieRepository.findByTitle(movieName);
+
+        // 영화 평점 찾기
+        MovieGrade movieGrade = movieGradeRepository.findByMovieAndUserId(movie, userId).get();
+
+        movie.subtractGrade(movieGrade.getGrade());
+        movieGradeRepository.delete(movieGrade);
     }
 
     @Override
