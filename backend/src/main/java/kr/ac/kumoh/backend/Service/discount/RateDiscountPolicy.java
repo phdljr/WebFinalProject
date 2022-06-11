@@ -6,7 +6,7 @@ public class RateDiscountPolicy implements DiscountPolicy {
     @Override
     public int discount(int price, int rateOfDiscount) {
 
-        int discountedPrice = price * (1 - rateOfDiscount / 100);
+        int discountedPrice = (int) (price * (1 - rateOfDiscount / 100.0));
         return discountedPrice;
     }
 }
