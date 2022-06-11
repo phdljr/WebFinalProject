@@ -111,7 +111,7 @@ export default {
                     // 해당 변수는 이동된 페이지에서 this.$router.params.(속성)을 통해 값 접근 가능
                     // 로그인을 안한 상태에서 예매를 진행할 경우, 로그인 창에 선택한 영화 정보를 넘겨주는 부분
                     this.$router.push({
-                        name: 'login',
+                        name: 'LoginView',
                         params: {
                             state: "wasBooking",
                             title: this.selectMovie,

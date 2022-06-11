@@ -17,10 +17,10 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
-              <a class="nav-link" @click="$router.push('/movie')">영화</a>
+              <a class="nav-link" @click="$router.push('/movieview')">영화</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="$router.push('/theater')">극장</a>
+              <a class="nav-link" @click="$router.push('/theaterview')">극장</a>
             </li>
           </ul>
         </div>
@@ -31,7 +31,7 @@
         >
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" @click="$router.push('/mypage')"
+              <a class="nav-link" @click="$router.push('/mypageview')"
                 >마이페이지</a
               >
             </li>
@@ -43,12 +43,12 @@
         <div class="collapse navbar-collapse" id="navbarCollapse" v-else>
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" @click="$router.push('/register')"
+              <a class="nav-link" @click="$router.push('/registerview')"
                 >회원가입</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="$router.push('/login')">로그인</a>
+              <a class="nav-link" @click="$router.push('/loginview')">로그인</a>
             </li>
             <!-- // 최종 마무리에선 지워야 함 -->
             <li class="nav-item">

@@ -6,7 +6,7 @@
           <h3 style="text-align: left">무비차트</h3>
         </b-col>
         <b-col>
-          <router-link to="/movie" style="float: right">전체보기</router-link>
+          <router-link to="/movieview" style="float: right">전체보기</router-link>
         </b-col>
       </b-row>
       <b-list-group horizontal id="movieChart">
@@ -44,7 +44,7 @@
                   variant="outline-danger"
                   size="sm"
                   aria-describedby="cancel-label"
-                  @click="$router.push('/movie/' + movie.title)"
+                  @click="$router.push('/moviedetailview/' + movie.title)"
                 >
                   상세보기
                 </b-button>
@@ -101,7 +101,7 @@ export default {
   methods: {
     goTicket(title){
       if(title == "범죄도시 2"){
-        this.$router.push('/ticket?movie=' + title)
+        this.$router.push('/ticketview?movie=' + title)
       }
       else{
         alert("구미 CGV에서 상영중인 영화가 아닙니다.")
