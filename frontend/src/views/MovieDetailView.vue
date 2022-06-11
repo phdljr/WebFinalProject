@@ -6,10 +6,9 @@
       <span :class="setMediaRateImg(movieDetail.mediaRate)"></span>
       <div class="movieContent">
         <h1>{{ movieDetail.title }}</h1>
-        <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
         <div class="score">
           예매율: {{ Math.ceil(movieDetail.ticketSales * 100) }}% | 평점:
-          {{ movieDetail.avgOfGrade }}
+          {{ Math.round(movieDetail.avgOfGrade * 100) / 100 }}
         </div>
 
         <h6>감독 : {{ movieDetail.director }} / 배우 : {{ actorsPrint }}</h6>

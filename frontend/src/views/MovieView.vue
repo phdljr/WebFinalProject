@@ -26,8 +26,8 @@
             </div>
           </router-link>
           <div class="movieListDetail">
-            <p>{{ movie.title }}</p>
-            <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ movie.grade.toFixed(2) }}★</p>
+            <strong class="title">{{movie.title}}</strong>
+            <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ Math.round(movie.grade * 100) / 100 }}★</p>
             <!-- <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
             <p v-else>평점: {{ movie.rate }}★</p> -->
             <b-button variant="outline-danger" @click="goTicket(movie.title)"
@@ -128,7 +128,7 @@ export default {
       }
       console.log(result)
       return result;
-    }
+    },
   },
   created() {
     // 해당 페이지가 출력되면 영화 데이터를 받아옴(예매율순)
@@ -179,6 +179,13 @@ export default {
 }
 .movie-media-rate{
   position: relative;
+}
+.title{
+  display: block;
+  color: #333333;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
 .ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */

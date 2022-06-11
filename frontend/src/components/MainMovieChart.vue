@@ -26,17 +26,17 @@
         <b-list-group-item :key="key" v-for="(movie, key) in listMovieChart">
           <b-overlay :show="showOverlayList[key]" rounded="sm">
             <b-card
-              :title="movie.title"
               :img-src="'../movies/' + movie.title + '.jpg'"
               img-alt="Image"
               img-top
               tag="article"
               style="width: 200px;height: 450px;"
-              class="mb-2"
+              class="mb-2 title"
               :aria-hidden="showOverlayList[key] ? 'true' : null"
               @mouseover="showOverlayList[key] = true"
             >
-            <span :class="setMediaRateImg(movie.mediaRating)"></span>
+              <b-card-title class="title">{{movie.title}}</b-card-title>
+              <span :class="setMediaRateImg(movie.mediaRating)"></span>
               <p>예매율: {{ movie.rate * 100 }}%</p>
               <p>평점: {{movie.grade.toFixed(2)}}★</p>
             </b-card>
@@ -129,7 +129,7 @@ export default {
       }
       console.log(result)
       return result;
-    }
+    },
   },
   computed: {
     listMovieChart() {
@@ -172,6 +172,13 @@ export default {
   position: absolute;
   top: 5px;
   left: 5px;
+}
+.title{
+  display: block;
+  color: #333333;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
 .ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
