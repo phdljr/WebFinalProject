@@ -4,7 +4,6 @@ import kr.ac.kumoh.backend.Service.discount.DiscountServiceImpl;
 import kr.ac.kumoh.backend.domain.*;
 import kr.ac.kumoh.backend.dto.*;
 import kr.ac.kumoh.backend.repository.*;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,7 @@ public class MovieServiceImpl implements MovieService {
         List<SearchMovieDTO> searchMovieDTOS = new ArrayList<>();
         result.forEach(r -> {
             SearchMovieDTO searchMovieDTO = SearchMovieDTO.builder()
-                    .movieName(r.getTitle())
+                    .title(r.getTitle())
                     .rate(getMovieTicketSales(r.getTitle()))
                     .grade(r.getAvgOfGrade()).build();
             searchMovieDTOS.add(searchMovieDTO);

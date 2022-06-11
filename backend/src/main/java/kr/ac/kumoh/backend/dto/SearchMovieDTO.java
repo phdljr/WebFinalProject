@@ -8,7 +8,7 @@ import lombok.Getter;
 @Builder
 public class SearchMovieDTO {
 
-    private String movieName;
+    private String title;
     private double rate;
     private double grade;
 }

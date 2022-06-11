@@ -7,6 +7,20 @@ import lombok.ToString;
 import javax.persistence.*;
 
 
+@NamedEntityGraph(
+        name = "like.comment.user",
+        attributeNodes = {
+                @NamedAttributeNode(value = "comment", subgraph = "comment.user")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "comment.user",
+                        attributeNodes = {
+                                @NamedAttributeNode("user")
+                        }
+                )
+        }
+)
 @Entity
 @Table(name = "LIKES")
 @NoArgsConstructor

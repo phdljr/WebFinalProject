@@ -29,7 +29,7 @@ public class Comment {
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USERS_ID")
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     private String comment;
