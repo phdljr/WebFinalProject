@@ -133,9 +133,10 @@ export default {
         alert("아이디를 다시 확인해주세요.");
         return;
       }
-
-      if (this.registerData.pw.length <= 7) {
-        alert("비밀번호를 다시 확인해주세요.");
+      
+      // 비밀번호 자릿수 체크
+      if(this.registerData.pw.length <= 7){
+        alert("비밀번호를 다시 확인해주세요.")
         return;
       }
 

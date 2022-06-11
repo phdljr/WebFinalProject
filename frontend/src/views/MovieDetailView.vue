@@ -51,10 +51,10 @@
         <b-button variant="success" @click="addComment">저장</b-button>
       </div>
       <b-row v-for="(row, index) in commentTable" :key="index">
-        <b-col v-for="(comment, index) in row" :key="index">
+        <b-col cols="6" v-for="(comment, index) in row" :key="index">
           <div class="commentBox">
             <div class="idBox">
-              {{ comment.userId }}
+              {{ comment.userId }} | 평점: {{comment.rating}}
               <span v-if="$store.state.userData.id == comment.userId">
                 <b-button variant="primary" @click="reviseComment(comment.comment,$event)">수정</b-button>
                 <b-button variant="danger" @click="deleteComment(comment)">삭제</b-button>
@@ -111,15 +111,14 @@ export default {
         genderDistribution: [],
         ageDistribution: [],
         comments: [
-          {
-            userId: "",
-            comment: "",
-            like: "",
-            commentDate: "",
-            rating: "",
-          },
+          // {
+          //   userId: "",
+          //   comment: "",
+          //   like: "",
+          //   commentDate: "",
+          //   rating: "",
+          // },
         ],
-        comments:[]
       },
       comment: "",
       selectedLikeArr: [], // 자신이 좋아요를 눌렀던 후기의 작성자 아이디가 들어갈 배열
@@ -206,7 +205,15 @@ export default {
           "로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?"
         );
         if (result == true) {
-          this.$router.push("/loginview");
+          this.$router.push({
+                        name: 'LoginView',
+                        params: {
+                            state: "wasReviewing",
+                            title: this.movieDetail.title,
+                            theater: null,
+                            time: null
+                        }
+                    })
         }
         return;
       }
@@ -287,6 +294,19 @@ export default {
       if(event.target.parentNode.parentNode.parentNode.childNodes[2].style.display == "block"){
         console.log("여기에 수정시 댓글 가져오기")
         console.log(revisedCommnet)//이게 댓글 수정된거 가져온거임
+        axios.post(this.HOST+"/reviseComment", {
+          commentUserId: this.$store.state.userData.id,
+          movieName: this.movieDetail.title,
+          newComment: revisedCommnet,
+        }).then(res=>{
+          if(res.data == "Success"){
+            alert("후기가 수정되었습니다.");
+            this.$router.go();
+            return;
+          }
+        }).catch(err=>{
+          console.log(err)
+        })
       }
       event.target.parentNode.parentNode.parentNode.childNodes[2].style.display = "block"
       event.target.parentNode.parentNode.parentNode.childNodes[2].childNodes[0].value = comment
@@ -322,6 +342,7 @@ export default {
         this.selectedLikeArr = res.data;
       })
       .catch((err) => {
+        console.log("좋아요 에러")
         console.log(err);
       });
   },
