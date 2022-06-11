@@ -1,5 +1,6 @@
 package kr.ac.kumoh.backend.domain;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "GRADES")
+@Getter
 @NoArgsConstructor
 public class MovieGrade {
 

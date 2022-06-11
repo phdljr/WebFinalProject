@@ -30,10 +30,28 @@ public class Movie {
     private double avgOfGrade;
     private int numOfGrades;
 
-    public void calcGrade(double grade) {
+    public void addGrade(double grade) {
+        double avg = avgOfGrade * numOfGrades + grade;
         this.numOfGrades += 1;
-        double avg = (avgOfGrade * (numOfGrades - 1) + grade) / numOfGrades;
-        this.avgOfGrade = Math.round(avg * 100) / 100.0;
+
+        if (this.numOfGrades == 0)
+            avg = 0;
+        else
+            avg = avg / numOfGrades;
+
+        this.avgOfGrade = avg;
+    }
+
+    public void subtractGrade(double grade) {
+        double avg = avgOfGrade * numOfGrades - grade;
+        this.numOfGrades -= 1;
+
+        if (this.numOfGrades == 0)
+            avg = 0;
+        else
+            avg = avg / numOfGrades;
+
+        this.avgOfGrade = avg;
     }
 
     public Movie(String title, String mediaRating, String releaseDate, String runtime) {
