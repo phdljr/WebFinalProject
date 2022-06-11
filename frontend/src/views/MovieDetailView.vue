@@ -98,9 +98,7 @@ export default {
     return {
       movieDetail: {
         title: this.$route.params.movie,
-        // titleEng: "",
         img: "../movies/" + this.$route.params.movie + ".jpg",
-        // persons: [],
         director: "",
         actors: [],
         genre: "",
