@@ -30,7 +30,12 @@
           v-if="isLogin"
         >
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
+            <li v-if="$store.state.userData.isAdmin==true" class="nav-item">
+              <a class="nav-link" @click="$router.push('/adminview')"
+                >관리자 페이지</a
+              >
+            </li>
+            <li v-if="$store.state.userData.isAdmin==false" class="nav-item">
               <a class="nav-link" @click="$router.push('/mypageview')"
                 >마이페이지</a
               >
@@ -40,7 +45,7 @@
             </li>
           </ul>
         </div>
-        <div class="collapse navbar-collapse" id="navbarCollapse" v-else>
+        <div v-else class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link" @click="$router.push('/registerview')"
@@ -49,10 +54,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" @click="$router.push('/loginview')">로그인</a>
-            </li>
-            <!-- // 최종 마무리에선 지워야 함 -->
-            <li class="nav-item">
-              <a class="nav-link" @click="testLogin">테스트로그인</a>
             </li>
           </ul>
         </div>
@@ -68,15 +69,6 @@ export default {
     logout() {
       this.$store.commit("logout");
       this.$router.push("/");
-    },
-    // 최종 마무리에선 지워야 함
-    testLogin() {
-      this.$store.commit("login", {
-        userId: "test",
-        userGender: null,
-        userAge: null,
-        bookingMovie: [],
-      });
     },
   },
   computed: {

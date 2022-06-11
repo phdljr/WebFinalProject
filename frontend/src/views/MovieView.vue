@@ -19,14 +19,17 @@
       <b-row :key="key" v-for="(movieRow, key) in chunkMovies" cols="4">
         <b-col :key="index" v-for="(movie, index) in movieRow">
           <div class="movieListRank">No. {{ index + 1 + key * 4 }}</div>
-          <router-link :to="'/moviedetailview/' + movie.title"
-            ><img :src="'../movies/' + movie.title + '.jpg'"
-          /></router-link>
+          <router-link :to="'/moviedetailview/' + movie.title">
+            <div class="movie-media-rate">
+              <img :src="'../movies/' + movie.title + '.jpg'"/>
+              <span :class="setMediaRateImg(movie.mediaRating)"></span>
+            </div>
+          </router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
-            <!-- <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ movie.rate }}★</p> -->
-            <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
-            <p v-else>평점: {{ movie.rate }}★</p>
+            <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ movie.grade.toFixed(2) }}★</p>
+            <!-- <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
+            <p v-else>평점: {{ movie.rate }}★</p> -->
             <b-button variant="outline-danger" @click="goTicket(movie.title)"
               >예매하기</b-button
             >
@@ -51,6 +54,7 @@ export default {
         //   mediaRating: "",
         //   title: "",
         //   rate: "",
+        //   grade: ""
         // },
       ],
       sortShow: "book", // 텍스트 표기용
@@ -106,6 +110,25 @@ export default {
         alert("구미 CGV에서 상영중인 영화가 아닙니다.");
       }
     },
+    setMediaRateImg(mediaRating){
+      let result = "ico-grade "
+      switch(mediaRating){
+        case "전체":
+          result += "grade-all"
+          break;
+        case "12세":
+          result += "grade-12"
+          break;
+        case "15세":
+          result += "grade-15"
+          break;
+        case "청불":
+          result += "grade-19"
+          break;
+      }
+      console.log(result)
+      return result;
+    }
   },
   created() {
     // 해당 페이지가 출력되면 영화 데이터를 받아옴(예매율순)
@@ -154,4 +177,12 @@ export default {
   justify-content: right;
   float: left;
 }
+.movie-media-rate{
+  position: relative;
+}
+.ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
+.ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
+.ico-grade.grade-12{ background-position:-51px 0;}/* 12세 */
+.ico-grade.grade-15{ background-position:-72px 0;}/* 15세 */
+.ico-grade.grade-19{ background-position:-93px 0;}/* 청불 */
 </style>

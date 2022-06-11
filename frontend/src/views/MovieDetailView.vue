@@ -3,6 +3,7 @@
     <!-- {{$route.params.movie}} -->
     <div class="MovieDetail">
       <img :src="movieDetail.img" />
+      <span :class="setMediaRateImg(movieDetail.mediaRate)"></span>
       <div class="movieContent">
         <h1>{{ movieDetail.title }}</h1>
         <!-- <h7>{{ movieDetail.titleEng }}</h7> -->
@@ -320,6 +321,26 @@ export default {
         alert("구미 CGV에서 상영중인 영화가 아닙니다.");
       }
     },
+
+    setMediaRateImg(mediaRating){
+      let result = "ico-grade "
+      switch(mediaRating){
+        case "전체":
+          result += "grade-all"
+          break;
+        case "12세":
+          result += "grade-12"
+          break;
+        case "15세":
+          result += "grade-15"
+          break;
+        case "청불":
+          result += "grade-19"
+          break;
+      }
+      console.log(result)
+      return result;
+    }
   },
   created() {
     console.log("접속 시: " + this.$route.params.movie);
@@ -366,6 +387,7 @@ export default {
 .MovieDetail {
   width: 100%;
   height: max-content;
+  position: relative;
   text-align: left;
   clear: both;
   overflow: hidden;
@@ -444,4 +466,9 @@ export default {
   resize: none;
   width: 100%;
 }
+.ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
+.ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
+.ico-grade.grade-12{ background-position:-51px 0;}/* 12세 */
+.ico-grade.grade-15{ background-position:-72px 0;}/* 15세 */
+.ico-grade.grade-19{ background-position:-93px 0;}/* 청불 */
 </style>
