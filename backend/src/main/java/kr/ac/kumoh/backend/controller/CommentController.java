@@ -2,7 +2,7 @@ package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.CommentService;
 import kr.ac.kumoh.backend.Service.LikeService;
-import kr.ac.kumoh.backend.domain.StatusOfUser;
+import kr.ac.kumoh.backend.domain.ResponseStatus;
 import kr.ac.kumoh.backend.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +18,27 @@ public class CommentController {
     private final LikeService likeService;
 
     @PostMapping("/addComment")
-    public StatusOfUser addMovieComment(@RequestBody CommentDTO commentDTO) {
+    public ResponseStatus addMovieComment(@RequestBody CommentDTO commentDTO) {
         return commentService.addComment(commentDTO);
     }
 
     @PostMapping("/reviseComment")
-    public StatusOfUser reviseMovieComment(@RequestBody RevisedCommentDTO revisedCommentDTO) {
+    public ResponseStatus reviseMovieComment(@RequestBody RevisedCommentDTO revisedCommentDTO) {
         return commentService.reviseComment(revisedCommentDTO);
     }
 
     @PostMapping("/deleteComment")
-    public StatusOfUser deleteMovieComment(@RequestBody DeleteCommentDTO deleteCommentDTO) {
+    public ResponseStatus deleteMovieComment(@RequestBody DeleteCommentDTO deleteCommentDTO) {
         return commentService.deleteComment(deleteCommentDTO);
     }
 
     @PostMapping("/addLike")
-    public StatusOfUser addLike(@RequestBody AddLikeDTO addLikeDTO) {
+    public ResponseStatus addLike(@RequestBody AddLikeDTO addLikeDTO) {
         return commentService.addLike(addLikeDTO);
     }
 
     @PostMapping("/removeLike")
-    public StatusOfUser removeLike(@RequestBody RemoveLikeDTO removeLikeDTO) {
+    public ResponseStatus removeLike(@RequestBody RemoveLikeDTO removeLikeDTO) {
         return commentService.removeLike(removeLikeDTO);
     }
 

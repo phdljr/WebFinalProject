@@ -1,7 +1,7 @@
 package kr.ac.kumoh.backend.controller;
 
 import kr.ac.kumoh.backend.Service.MovieService;
-import kr.ac.kumoh.backend.domain.StatusOfUser;
+import kr.ac.kumoh.backend.domain.ResponseStatus;
 import kr.ac.kumoh.backend.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ public class MovieController {
     }
 
     @PostMapping("movie/discount")
-    public StatusOfUser discountMovie(@RequestBody DiscountMovieDTO discountMovieDTO) {
+    public ResponseStatus discountMovie(@RequestBody DiscountMovieDTO discountMovieDTO) {
         return movieService.discountMovie(discountMovieDTO);
     }
 

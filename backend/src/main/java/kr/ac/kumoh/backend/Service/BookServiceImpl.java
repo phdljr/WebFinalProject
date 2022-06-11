@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static kr.ac.kumoh.backend.domain.StatusOfUser.*;
+import static kr.ac.kumoh.backend.domain.ResponseStatus.*;
 
 
 @Slf4j
@@ -25,7 +25,7 @@ public class BookServiceImpl implements BookService {
     private final MovieScheduleRepository movieScheduleRepository;
 
     @Override
-    public StatusOfUser saveUserMovieReservation(ReserveMovieDTO reserveMovieDTO) {
+    public ResponseStatus saveUserMovieReservation(ReserveMovieDTO reserveMovieDTO) {
 
         // Get Values from DTO
         String userId = reserveMovieDTO.getUserId();

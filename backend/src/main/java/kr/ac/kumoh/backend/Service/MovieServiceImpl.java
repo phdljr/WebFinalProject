@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
-import static kr.ac.kumoh.backend.domain.StatusOfUser.*;
+import static kr.ac.kumoh.backend.domain.ResponseStatus.*;
 
 
 @Service
@@ -70,7 +70,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public StatusOfUser discountMovie(DiscountMovieDTO discountMovieDTO) {
+    public ResponseStatus discountMovie(DiscountMovieDTO discountMovieDTO) {
 
         MovieSchedule findMovieSchedule = movieScheduleRepository.getCertainMovieSchedule(
                 discountMovieDTO.getTheaterName(), discountMovieDTO.getScreenName(), discountMovieDTO.getScreenTime());
@@ -80,7 +80,7 @@ public class MovieServiceImpl implements MovieService {
         int price = findMovieSchedule.getPrice();
         int discountedPrice = discountService.getDiscountedPrice(price, discountPolicy, discountRate);
 
-        StatusOfUser status = Success;
+        ResponseStatus status = Success;
         if (discountedPrice == -1)
             status = PriceIsNegative;
         else if (discountedPrice == -2)
