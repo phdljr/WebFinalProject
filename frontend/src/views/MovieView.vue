@@ -63,7 +63,21 @@ export default {
     };
   },
   methods: {
-    searchMovie() {},
+    searchMovie() {
+      if(this.searchInput == null ||this.searchInput == ""){
+        alert("값을 입력해주세요.")
+        return;
+      }
+
+      axios.get(this.HOST + "/search/"+this.searchInput).then((res) => {
+        console.log(res.data);
+        if(res.data == [] || res.data.length == 0){
+          alert("검색 결과가 없습니다.")
+          return;
+        }
+        this.movies = res.data;
+      });
+    },
     sortMovie() {
       if (this.sortSelected == "book") {
         this.sortBySale();

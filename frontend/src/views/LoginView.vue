@@ -79,8 +79,11 @@ export default {
                 if(this.$route.params.state == "wasBooking"){
                   this.$router.push('/ticketview?movie='+this.$route.params.title+'&theater=' + this.$route.params.theater + '&time=' + this.$route.params.time)
                 }
+                else if(this.$route.params.state == "wasReviewing"){
+                  this.$router.push('/moviedetailview/'+this.$route.params.title)
+                }
                 else{
-                  this.$router.push("/");
+                  this.$router.push('/')
                 }
               })
               .catch((err) => {
