@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
+import static java.util.Objects.isNull;
 import static kr.ac.kumoh.backend.domain.ResponseStatus.*;
 
 
@@ -93,22 +94,32 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ResponseStatus discountMovie(DiscountMovieDTO discountMovieDTO) {
 
+        ResponseStatus status = Success;
+
         MovieSchedule findMovieSchedule = movieScheduleRepository.getCertainMovieSchedule(
                 discountMovieDTO.getTheaterName(), discountMovieDTO.getScreenName(), discountMovieDTO.getScreenTime());
+        if (isNull(findMovieSchedule))
+            return Fail;
 
         String discountPolicy = discountMovieDTO.getDiscountPolicy();
-        int discountRate = discountMovieDTO.getDiscountRate();
-        int price = findMovieSchedule.getPrice();
-        int discountedPrice = discountService.getDiscountedPrice(price, discountPolicy, discountRate);
+        findMovieSchedule.setPrice(12000);
+        if (!discountPolicy.equals("none")) {
 
-        findMovieSchedule.setDiscountPolicyAndRate(discountPolicy, discountRate);
-        ResponseStatus status = Success;
-        if (discountedPrice == -1)
-            status = PriceIsNegative;
-        else if (discountedPrice == -2)
-            status = WrongDiscountPolicy;
-        else {
-            findMovieSchedule.setPrice(discountedPrice);
+            int discountRate = discountMovieDTO.getDiscountRate();
+            int price = findMovieSchedule.getPrice();
+
+            int discountedPrice = discountService.getDiscountedPrice(price, discountPolicy, discountRate);
+
+            if (discountedPrice == -1)
+                status = PriceIsNegative;
+            else if (discountedPrice == -2)
+                status = WrongDiscountPolicy;
+            else {
+                findMovieSchedule.setPrice(discountedPrice);
+                findMovieSchedule.setDiscountPolicyAndRate(discountPolicy, discountRate);
+            }
+        } else {
+            findMovieSchedule.setDiscountPolicyAndRate("none", 0);
         }
 
         return status;
