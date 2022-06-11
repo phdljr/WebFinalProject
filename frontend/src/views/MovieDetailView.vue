@@ -143,7 +143,7 @@ export default {
           "로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?"
         );
         if (result == true) {
-          this.$router.push("/login");
+          this.$router.push("/loginview");
         }
       } else {
         // 내가 작성한 후기에 좋아요를 누를 경우
@@ -212,7 +212,7 @@ export default {
           "로그인이 필요한 서비스입니다.\n로그인 페이지로 이동하시겠습니까?"
         );
         if (result == true) {
-          this.$router.push("/login");
+          this.$router.push("/loginview");
         }
         return;
       }
@@ -294,7 +294,7 @@ export default {
 
     goTicket(title) {
       if (title == "범죄도시 2") {
-        this.$router.push("/ticket?movie=" + title);
+        this.$router.push("/ticketview?movie=" + title);
       } else {
         alert("구미 CGV에서 상영중인 영화가 아닙니다.");
       }

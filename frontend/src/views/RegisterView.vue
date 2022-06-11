@@ -145,7 +145,7 @@ export default {
         .then(() => {
           alert("회원가입이 정상적으로 이루어졌습니다!");
           //로그인 창으로 라우팅
-          this.$router.push("login");
+          this.$router.push("/loginview");
         })
         .catch((err) => {
           alert(err);

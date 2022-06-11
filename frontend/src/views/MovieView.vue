@@ -5,10 +5,9 @@
       <div class="searchInput">
         <b-form-input
           v-model="searchInput"
-          placeholder="배우 또는 감독으로 검색하기"
-          @click="searchMovie"
+          placeholder="배우 또는 감독"
         ></b-form-input>
-        <b-button @click="sortMovie">Go</b-button>
+        <b-button @click="searchMovie">Go</b-button>
       </div>
       <div class="sortSelect">
         <b-form-select
@@ -20,14 +19,14 @@
       <b-row :key="key" v-for="(movieRow, key) in chunkMovies" cols="4">
         <b-col :key="index" v-for="(movie, index) in movieRow">
           <div class="movieListRank">No. {{ index + 1 + key * 4 }}</div>
-          <router-link :to="'/movie/' + movie.title"
+          <router-link :to="'/moviedetailview/' + movie.title"
             ><img :src="'../movies/' + movie.title + '.jpg'"
           /></router-link>
           <div class="movieListDetail">
             <p>{{ movie.title }}</p>
-            <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ movie.rate }}★</p>
-            <!-- <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
-            <p v-else>평점: {{ movie.rate }}★</p> -->
+            <!-- <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ movie.rate }}★</p> -->
+            <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
+            <p v-else>평점: {{ movie.rate }}★</p>
             <b-button variant="outline-danger" @click="goTicket(movie.title)"
               >예매하기</b-button
             >
@@ -49,9 +48,9 @@ export default {
     return {
       movies: [
         // {
+        //   mediaRating: "",
         //   title: "",
         //   rate: "",
-        //   grade: "",
         // },
       ],
       sortShow: "book", // 텍스트 표기용
@@ -64,7 +63,7 @@ export default {
     };
   },
   methods: {
-    searchMovue() {},
+    searchMovie() {},
     sortMovie() {
       if (this.sortSelected == "book") {
         this.sortBySale();
@@ -88,7 +87,7 @@ export default {
     },
     goTicket(title) {
       if (title == "범죄도시 2") {
-        this.$router.push("/ticket?movie=" + title);
+        this.$router.push("/ticketview?movie=" + title);
       } else {
         alert("구미 CGV에서 상영중인 영화가 아닙니다.");
       }
@@ -103,11 +102,6 @@ export default {
       return chunk(this.movies, 4); // 한 줄당 4개씩 출력
     },
   },
-  // watch: {
-  //   sortSelected: function (val) {
-  //     this.$router.push("movie?sort=" + val);
-  //   },
-  // },
 };
 </script>
 
@@ -140,7 +134,10 @@ export default {
   width: 7em;
 }
 .searchInput {
-  width: 250px;
+  margin-bottom: 30px;
+  margin-top: 15px;
+  display: flex;
+  justify-content: right;
   float: left;
 }
 </style>

@@ -32,7 +32,7 @@
             :disabled="time.remainingNumOfSeats <= 0"
             @click="
               $router.push(
-                '/ticket?movie=' +
+                '/ticketview?movie=' +
                   movieDetail.movieName +
                   '&theater=' +
                   theater.theaterScreen +

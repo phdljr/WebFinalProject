@@ -17,7 +17,7 @@
     </b-form>
     <div class="signIn">
       계정이 없으신가요?
-      <a @click="$router.push('register')">회원가입</a>
+      <a @click="$router.push('registerview')">회원가입</a>
     </div>
   </div>
 </template>
@@ -48,7 +48,7 @@ export default {
                   gender: null,
                   isAdmin: true
                 });
-        this.$router.push('/admin');
+        this.$router.push('/adminview');
         return;
       }
 
@@ -77,7 +77,7 @@ export default {
 
                 // 이전 페이지로 이동시키게 설정
                 if(this.$route.params.state == "wasBooking"){
-                  this.$router.push('/ticket?movie='+this.$route.params.title+'&theater=' + this.$route.params.theater + '&time=' + this.$route.params.time)
+                  this.$router.push('/ticketview?movie='+this.$route.params.title+'&theater=' + this.$route.params.theater + '&time=' + this.$route.params.time)
                 }
                 else{
                   this.$router.push("/");

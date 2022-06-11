@@ -9,17 +9,21 @@
     <div class="movieSelect">
       <div class="movieTitle">
         <div style="float: left">
-          ({{ movieDetail.age }}) {{ movieDetail.title }}
+          ({{ movieDetail.mediaRating }}) {{ movieDetail.movieName }}
         </div>
         <div style="float: left; margin-left: 1em; color: #a0a0a0">
-          {{ movieDetail.genre }} / {{ movieDetail.openingDate }}
+          {{ movieDetail.genre }} / {{ movieDetail.runtime }} /
+          {{ movieDetail.releaseDate }} 개봉
         </div>
         <div
           class="timeSelect"
           v-for="(theater, key) in movieDetail.theater"
           :key="key"
         >
-          <div>▶ 2D | {{ theater.name }} | 총 {{ theater.totalSeat }}석</div>
+          <div>
+            ▶ 2D | {{ theater.theaterScreen + " " + theater.theaterFloor }} | 총
+            {{ theater.numOfSeats }}석
+          </div>
           <div
             class="saleButtons"
             v-for="(time, index) in theater.time"
@@ -30,8 +34,12 @@
               class="timeButton"
               variant="outline-secondary"
             >
-              {{ time.time }}<br />
-              {{ time.seat }}석<br />
+              {{ time.screenTime }}<br />
+              {{
+                time.remainingNumOfSeats > 0
+                  ? time.remainingNumOfSeats + "석"
+                  : "마감"
+              }}<br />
             </b-button>
             <b-collapse :id="'collapse-' + key + '-' + index" class="mt-2">
               <b-card id="collapseCard">
@@ -63,37 +71,41 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
       movieDetail: {
-        title: "쥬라기 월드-도미니언",
-        genre: "범죄, 액션",
-        age: "15세 이상",
-        openingDate: "2022.05.18",
+        // 고정
+        genre: "",
+        mediaRating: "",
+        movieName: "",
+        releaseDate: "",
+        runtime: "",
+
+        // 유동
         theater: [
           {
-            name: "1관",
-            totalSeat: 80,
+            theaterScreen: "1관",
+            numOfSeats: 0,
+            theaterFloor: "1층",
             time: [
-              {
-                time: "12:00",
-                seat: 30,
-              },
-              {
-                time: "20:30",
-                seat: 40,
-              },
+              // {
+              //     screenTime: "",
+              //     remainingNumOfSeats: 0
+              // }
             ],
           },
           {
-            name: "2관",
-            totalSeat: 80,
+            theaterScreen: "2관",
+            numOfSeats: 0,
+            theaterFloor: "2층",
             time: [
-              {
-                time: "18:30",
-                seat: 50,
-              },
+              // {
+              //     screenTime: "",
+              //     remainingNumOfSeats: 0
+              // }
             ],
           },
         ],
@@ -102,26 +114,57 @@ export default {
         { text: "정률할인", value: "rate" },
         { text: "정액할인", value: "amount" },
       ],
-      saleData: [],
+       // [행][열] = { discount: "정률할인", number: 20 }
+      saleData: [
+        // [ //[0]
+        //   { discount: "정률할인", number: 20 }, { discount: "정률할인", number: 20 }
+        // ],
+        // [ //[1]
+        //   { discount: "정률할인", number: 20 }, { discount: "정률할인", number: 20 }
+        // ]
+      ],
     };
   },
   methods: {
     makeSaleData() {
-      //이거 axios로 값 가져온뒤에 실행해야함
-      for (var key in this.movieDetail.theater) {
-        var arr = [];
-        for (var index in this.movieDetail.theater[key].time) {
-          this.movieDetail.theater[key].time[index];
-          var sale = { discount: "", number: 0 };
-          arr.push(sale);
+      axios
+      .get(this.HOST + "/schedules/구미 CGV")
+      .then((res) => {
+        console.log(res.data);
+        this.movieDetail.genre = res.data[0].genre;
+        this.movieDetail.mediaRating = res.data[0].mediaRating;
+        this.movieDetail.movieName = res.data[0].movieName;
+        this.movieDetail.releaseDate = res.data[0].releaseDate;
+        this.movieDetail.runtime = res.data[0].runtime;
+
+        for (let i = 0; i < res.data.length; i++) {
+          this.movieDetail.theater[res.data[i].theaterFloor - 1].numOfSeats =
+            res.data[i].numOfSeats;
+          this.movieDetail.theater[res.data[i].theaterFloor - 1].time.push({
+            screenTime: res.data[i].screenTime,
+            remainingNumOfSeats: res.data[i].remainingNumOfSeats,
+          });
         }
-        this.saleData.push(arr);
-      }
+
+          //이거 axios로 값 가져온뒤에 실행해야함
+        for (var key in this.movieDetail.theater) {
+          var arr = [];
+          for (var index in this.movieDetail.theater[key].time) {
+            this.movieDetail.theater[key].time[index];
+            var sale = { discount: "", number: 0 };
+            arr.push(sale);
+          }
+          this.saleData.push(arr);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     },
     applySale(a, b) {
       console.log(this.saleData[a][b]);
-      console.log(this.movieDetail.theater[a].name); //관 이름
-      console.log(this.movieDetail.theater[a].time[b].time); //시간
+      console.log(this.movieDetail.theater[a].theaterScreen); //관 이름
+      console.log(this.movieDetail.theater[a].time[b].screenTime); //시간
     },
   },
   computed: {
