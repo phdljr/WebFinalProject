@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
                 userBookDetailsDTO.setMovieName(movie.getMovie().getTitle());
                 userBookDetailsDTO.setFloor(movie.getTheater().getFloor());
                 userBookDetailsDTO.setScreen(movie.getTheater().getScreen());
+                userBookDetailsDTO.setTheaterName(movie.getTheater().getTheaterName());
                 userBookDetailsDTO.setScreenDate(movie.getScreenDate());
                 userBookDetailsDTO.setScreenTime(movie.getScreenTime());
                 userBookDetailsDTO.setPrice(book.getPrice());

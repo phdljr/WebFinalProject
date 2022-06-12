@@ -1,6 +1,5 @@
 package kr.ac.kumoh.backend.dto;
 
-import kr.ac.kumoh.backend.domain.Seat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +14,7 @@ public class UserBookDetailsDTO {
 
     private String movieName;
     private int floor;
+    private String theaterName;
     private String screen;
     private String screenDate;
     private String screenTime;

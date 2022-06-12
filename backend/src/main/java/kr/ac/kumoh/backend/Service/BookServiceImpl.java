@@ -33,6 +33,7 @@ public class BookServiceImpl implements BookService {
         String theaterName = reserveMovieDTO.getTheaterName();
         String screenName = reserveMovieDTO.getScreenName();
         String screenTime = reserveMovieDTO.getScreenTime();
+        String movieName = reserveMovieDTO.getMovieName();
         //
         int numOfPeople = reserveMovieDTO.getNumOfPeople();
         int price = reserveMovieDTO.getPrice();
@@ -46,7 +47,7 @@ public class BookServiceImpl implements BookService {
             return NonExistUser;
 
         // find MovieSchedule
-        MovieSchedule movieSchedule = movieScheduleRepository.getCertainMovieSchedule(theaterName, screenName, screenTime);
+        MovieSchedule movieSchedule = movieScheduleRepository.getMovieSchedule(movieName, theaterName, screenName, screenTime);
         if (isNull(movieSchedule))
             return NonExistMovie;
 
