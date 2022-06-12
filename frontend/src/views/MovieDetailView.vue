@@ -337,7 +337,7 @@ export default {
       }
       console.log(result)
       return result;
-    }
+    },
   },
   created() {
     console.log("접속 시: " + this.$route.params.movie);
@@ -419,6 +419,7 @@ export default {
   height: 200px;
   clear: both;
   margin-bottom: 6px;
+  white-space: pre-wrap;
 }
 .commentBox {
   border-bottom: 1px solid #333333;
