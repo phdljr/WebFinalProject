@@ -43,12 +43,6 @@ export default {
                             display: true,
                             text: '성별 예매 분포(%)'
                         },
-                        // 이거 왜 안됨? %표시하는건데////////////////////////////////////////////////////
-                        datalabels: {
-                            formatter: (value) => {
-                                return value + '%';
-                            }
-                        },
                     },
                 }
             })
@@ -60,7 +54,7 @@ export default {
             const sex = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ["10대", "20대", "30대", "40대", "50대"],
+                    labels: ["10대 미만", "10대", "20대", "30대", "40대", "50대", "60대 이상"],
                     datasets: [{
                         backgroundColor: this.setColor(this.ageData),
                         data: this.dataPercent(this.ageData),
@@ -93,10 +87,10 @@ export default {
             return arr;
         },
         setColor(data){
-            let ageArr = [ "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e"]
+            let ageArr = [ "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e"]
             let maxIndex = data.indexOf(Math.max(...data))
             ageArr[maxIndex] = "#ee7f00"
-            
+
             return ageArr;
         }
     },
