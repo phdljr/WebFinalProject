@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LikeService {
 
-    List<String> getCommentsThatUserHitLikeButton(String userId);
+    List<String> getCommentsThatUserHitLikeButton(String userId, String movieName);
 }

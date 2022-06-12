@@ -11,10 +11,14 @@ import java.util.List;
 
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
+//
+//    @EntityGraph(value = "like.comment.user", type = EntityGraph.EntityGraphType.LOAD)
+//    @Query("select l from Like l where l.userId = :userId")
+//    List<Like> getUserLikes(@Param("userId") String userId);
 
-    @EntityGraph(value = "like.comment.user", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("select l from Like l where l.userId = :userId")
-    List<Like> getUserLikes(@Param("userId") String userId);
+    @EntityGraph(value = "like.comment.movie", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select l from Like l where l.userId = :userId and l.comment.movie.title = :movieName")
+    List<Like> getUserLikes(@Param("userId") String userId, @Param("movieName") String movieName);
 
     Like findByUserIdAndComment(String userId, Comment comment);
 

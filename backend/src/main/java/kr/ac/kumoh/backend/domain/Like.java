@@ -7,15 +7,30 @@ import lombok.ToString;
 import javax.persistence.*;
 
 
+//@NamedEntityGraph(
+//        name = "like.comment.user",
+//        attributeNodes = {
+//                @NamedAttributeNode(value = "comment", subgraph = "comment.user")
+//        },
+//        subgraphs = {
+//                @NamedSubgraph(
+//                        name = "comment.user",
+//                        attributeNodes = {
+//                                @NamedAttributeNode("user")
+//                        }
+//                )
+//        }
+//)
 @NamedEntityGraph(
-        name = "like.comment.user",
+        name = "like.comment.movie",
         attributeNodes = {
-                @NamedAttributeNode(value = "comment", subgraph = "comment.user")
+                @NamedAttributeNode(value = "comment", subgraph = "comment.movie")
         },
         subgraphs = {
                 @NamedSubgraph(
-                        name = "comment.user",
+                        name = "comment.movie",
                         attributeNodes = {
+                                @NamedAttributeNode("movie"),
                                 @NamedAttributeNode("user")
                         }
                 )

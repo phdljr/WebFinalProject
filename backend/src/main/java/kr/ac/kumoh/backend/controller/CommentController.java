@@ -42,8 +42,8 @@ public class CommentController {
         return commentService.removeLike(removeLikeDTO);
     }
 
-    @GetMapping("/{userId}/likes")
-    public List<String> usersLike(@PathVariable("userId") String userId) {
-        return likeService.getCommentsThatUserHitLikeButton(userId);
+    @GetMapping("/{movieName}/{userId}/likes")
+    public List<String> usersLike(@PathVariable("userId") String userId, @PathVariable("movieName") String movieName) {
+        return likeService.getCommentsThatUserHitLikeButton(userId, movieName);
     }
 }

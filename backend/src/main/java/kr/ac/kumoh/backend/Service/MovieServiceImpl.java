@@ -137,6 +137,7 @@ public class MovieServiceImpl implements MovieService {
 
         List<BookDetails> numOfAgeMovieTickets = bookDetailsRepository.getNumOfAgeMovieTickets(movieName);
 
+        int underTeens = 0;
         int teenage = 0;
         int twenties = 0;
         int thirties = 0;
@@ -148,6 +149,9 @@ public class MovieServiceImpl implements MovieService {
             int age = numOfAgeMovieTicket.getUser().getAge();
 
             switch (age / 10) {
+                case 0:
+                    underTeens += 1;
+                    break;
                 case 1:
                     teenage += 1;
                     break;
@@ -169,6 +173,7 @@ public class MovieServiceImpl implements MovieService {
         }
 
         List<Integer> rates = new ArrayList<>();
+        rates.add(underTeens);
         rates.add(teenage);
         rates.add(twenties);
         rates.add(thirties);
@@ -245,7 +250,7 @@ public class MovieServiceImpl implements MovieService {
             }
 
             ticketSales = (double) totalNumOfReservedSeat / totalNumOfTotalSeat;
-            ticketSales = Math.round(ticketSales * 100) / 100.0;
+            ticketSales = Math.round(ticketSales * 10000) / 10000.0;
         } else {
             ticketSales = -1;
         }
