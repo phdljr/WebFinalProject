@@ -17,14 +17,17 @@ public class LikeServiceImpl implements LikeService {
 
     private final LikeRepository likeRepository;
 
-    public List<String> getCommentsThatUserHitLikeButton(String userId) {
-        List<Like> userLikes = likeRepository.getUserLikes(userId);
+    public List<String> getCommentsThatUserHitLikeButton(String userId, String movieName) {
+        List<Like> userLikes = likeRepository.getUserLikes(userId, movieName);
 
         List<String> likes = new ArrayList<>();
         userLikes.forEach(like -> {
             Comment comment = like.getComment();
             String commentUserId = comment.getUser().getUserId();
             likes.add(commentUserId);
+//
+//            String comment = like.getComment().getComment();
+//            likes.add(comment);
         });
 
         return likes;

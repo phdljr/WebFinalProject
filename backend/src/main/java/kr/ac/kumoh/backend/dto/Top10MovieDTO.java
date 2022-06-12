@@ -22,9 +22,9 @@ public class Top10MovieDTO implements Comparable<Top10MovieDTO> {
 
     @Override
     public int compareTo(Top10MovieDTO dto) {
-        if (this.rate < dto.getRate())
+        if (this.grade < dto.getGrade())
             return 1;
-        else if (this.rate > dto.getRate())
+        else if (this.grade > dto.getGrade())
             return -1;
 
         return 0;
