@@ -47,6 +47,10 @@
                 ? time.remainingNumOfSeats + "석"
                 : "마감"
             }}</span>
+            <br>
+            <span v-if="time.discountPolicy!='none'">
+              {{time.discountRate + (time.discountPolicy=='rate' ? "% 할인" : "원 할인")}}
+            </span>
           </b-button>
         </div>
       </div>
@@ -86,11 +90,12 @@ export default {
             numOfSeats: 0,
             theaterFloor: "2층",
             time: [
-              // {
-              //     screenTime: "",
-              //     remainingNumOfSeats: 0
-              //     discountPolicy: "", // rate(정률), fix(정액), none
-              // }
+/*                {
+                   screenTime: "1200",
+                   remainingNumOfSeats: 0,
+                   discountPolicy: "none", // rate(정률), fix(정액), none
+                   discountRate: "3000",
+               } */
             ],
           },
         ],
@@ -172,6 +177,10 @@ export default {
   width: 100%;
   float: left;
   padding: 3em;
+}
+.timeSelect button{
+  width: 130px;
+  height: 6em;
 }
 .timeButton {
   float: left;
