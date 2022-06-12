@@ -41,7 +41,7 @@ export default {
                         },
                         title: {
                             display: true,
-                            text: '성별 예매 분포'
+                            text: '성별 예매 분포(%)'
                         },
                         // 이거 왜 안됨? %표시하는건데////////////////////////////////////////////////////
                         datalabels: {
@@ -71,6 +71,10 @@ export default {
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        title: {
+                            display: true,
+                            text: '연령별 예매 분포(%)'
                         },
                     }                    
                 }
