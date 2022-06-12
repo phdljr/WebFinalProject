@@ -35,7 +35,7 @@
                 >관리자 페이지</a
               >
             </li>
-            <li v-if="$store.state.userData.isAdmin==false" class="nav-item">
+            <li v-else class="nav-item">
               <a class="nav-link" @click="$router.push('/mypageview')"
                 >마이페이지</a
               >

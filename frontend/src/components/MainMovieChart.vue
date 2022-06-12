@@ -23,44 +23,42 @@
             </button>
           </div>
         </b-list-group-item>
-        <b-list-group-item :key="key" v-for="(movie, key) in listMovieChart">
-          <b-overlay :show="showOverlayList[key]" rounded="sm">
-            <b-card
-              :img-src="'../movies/' + movie.title + '.jpg'"
-              :img-alt="movie.title"
-              img-top
-              tag="article"
-              style="width: 200px;height: 450px;"
-              class="mb-2 title"
-              :aria-hidden="showOverlayList[key] ? 'true' : null"
-              @mouseover="showOverlayList[key] = true"
-            >
-              <b-card-title class="title">{{movie.title}}</b-card-title>
-              <span :class="setMediaRateImg(movie.mediaRating)"></span>
-              <p>예매율: {{ movie.rate * 100 }}%</p>
-              <p>평점: {{movie.grade.toFixed(2)}}★</p>
-            </b-card>
-            <template #overlay>
-              <div class="text-center" @mouseout="showOverlayList[key] = false">
-                <b-button
-                  variant="outline-danger"
-                  size="sm"
-                  aria-describedby="cancel-label"
-                  @click="$router.push('/moviedetailview/' + movie.title)"
-                >
-                  상세보기
-                </b-button>
-                <b-button
-                  variant="outline-danger"
-                  size="sm"
-                  aria-describedby="cancel-label"
-                  @click="goTicket(movie.title)"
-                >
-                  예매하기
-                </b-button>
-              </div>
-            </template>
-          </b-overlay>
+        <b-list-group-item class="container" :key="key" v-for="(movie, key) in listMovieChart">
+          <b-card
+            :img-src="'../movies/' + movie.title + '.jpg'"
+            :img-alt="movie.title"
+            img-top
+            tag="article"
+            style="width: 200px;height: 450px;"
+            class="mb-2 title"
+            :aria-hidden="showOverlayList[key] ? 'true' : null"
+            @mouseover="showOverlayList[key] = true"
+          >
+            <b-card-title class="title">{{movie.title}}</b-card-title>
+            <span :class="setMediaRateImg(movie.mediaRating)"></span>
+            <p>예매율: {{ movie.rate * 100 }}%</p>
+            <p>평점: {{Math.round(movie.grade * 100) / 100}}★</p>
+          </b-card>
+          <div class="overlay">
+            <div class="text-center" @mouseover="showOverlayList[key] = false">
+              <b-button
+                variant="outline-danger"
+                size="sm"
+                aria-describedby="cancel-label"
+                @click="$router.push('/moviedetailview/' + movie.title)"
+              >
+                상세보기
+              </b-button>
+              <b-button
+                variant="outline-danger"
+                size="sm"
+                aria-describedby="cancel-label"
+                @click="goTicket(movie.title)"
+              >
+                예매하기
+              </b-button>
+            </div>
+          </div>
         </b-list-group-item>
         <b-list-group-item
           class="d-flex justify-content-between align-items-center"
@@ -91,15 +89,19 @@ export default {
       page: 0,
       show: false,
       movieChart: [
-        // {
-        //   title: "",
-        //   rate: "",
-        //   grade: "",
-        //   mediaRating: "",
-        // },
+        {
+          title: "테스트",
+          rate: "3",
+          grade: "5",
+          mediaRating: "15세",
+        },{
+          title: "테스트",
+          rate: "3",
+          grade: "5",
+          mediaRating: "15세",
+        },
       ],
       showOverlayList: [false, false, false, false, false],
-      shape: { blank: true, blankColor: '#777', width: 30, height: 30, class: 'm1' }
     };
   },
   methods: {
@@ -130,6 +132,11 @@ export default {
       console.log(result)
       return result;
     },
+    overlayOut(key){
+      if(this.showOverlayList[key] == true){
+        this.showOverlayList[key] = false
+      }
+    }
   },
   computed: {
     listMovieChart() {
@@ -179,6 +186,21 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: rgba(255, 255, 255, 1);
+}
+.container:hover .overlay {
+  opacity: 0.9;
 }
 .ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
 .ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
