@@ -27,7 +27,7 @@
           </router-link>
           <div class="movieListDetail">
             <strong class="title">{{movie.title}}</strong>
-            <p>예매율: {{ movie.rate * 100 }}% | 평점: {{ Math.round(movie.grade * 100) / 100 }}★</p>
+            <p>예매율: {{ Math.round(movie.rate * 1000) / 10 }}% | 평점: {{ Math.round(movie.grade * 100) / 100 }}★</p>
             <!-- <p v-if="sortShow == 'book'">예매율: {{ movie.rate * 100 }}%</p>
             <p v-else>평점: {{ movie.rate }}★</p> -->
             <b-button variant="outline-danger" @click="goTicket(movie.title)"

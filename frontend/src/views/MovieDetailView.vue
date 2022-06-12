@@ -7,7 +7,7 @@
       <div class="movieContent">
         <h1>{{ movieDetail.title }}</h1>
         <div class="score">
-          예매율: {{ Math.ceil(movieDetail.ticketSales * 100) }}% | 평점:
+          예매율: {{ Math.round(movieDetail.ticketSales * 1000) / 10 }}% | 평점:
           {{ Math.round(movieDetail.avgOfGrade * 100) / 100 }}
         </div>
 
