@@ -40,7 +40,7 @@
             <p>평점: {{Math.round(movie.grade * 100) / 100}}★</p>
           </b-card>
           <div class="overlay">
-            <div class="text-center" @mouseover="showOverlayList[key] = false">
+            <div class="overlayButton" @mouseover="showOverlayList[key] = false">
               <b-button
                 variant="outline-danger"
                 size="sm"
@@ -49,6 +49,7 @@
               >
                 상세보기
               </b-button>
+              <br>
               <b-button
                 variant="outline-danger"
                 size="sm"
@@ -198,6 +199,12 @@ export default {
   opacity: 0;
   transition: .5s ease;
   background-color: rgba(255, 255, 255, 1);
+  display: inline-block;
+  vertical-align: middle;
+}
+.overlayButton{
+  position: absolute;left: 50%;top: 50%;
+  transform: translate(-50%,-50%)
 }
 .container:hover .overlay {
   opacity: 0.9;
