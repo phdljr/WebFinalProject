@@ -82,6 +82,7 @@ export default {
               //     screenTime: "",
               //     remainingNumOfSeats: 0
               //     discountPolicy: "", // rate(정률), fix(정액), none
+              //     discountRate: ""
               // }
             ],
           },
@@ -140,7 +141,8 @@ export default {
           this.movieDetail.theater[res.data[i].theaterFloor - 1].time.push({
             screenTime: res.data[i].screenTime,
             remainingNumOfSeats: res.data[i].remainingNumOfSeats,
-            discountPolicy: res.data[i].discountPolicy
+            discountPolicy: res.data[i].discountPolicy,
+            discountRate: res.data[i].discountRate
           });
         }
       })
