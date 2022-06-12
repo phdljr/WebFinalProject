@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dateSelect">
-      <b-button variant="outline-secondary" class="date">
+      <b-button variant="outline-secondary" :pressed="true" class="date">
         <div class="month">06월<br />화</div>
         <div class="day">14</div>
       </b-button>
