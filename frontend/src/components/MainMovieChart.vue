@@ -38,27 +38,24 @@
             <p>평점: {{Math.round(movie.grade * 100) / 100}}★</p>
           </b-card>
           <div class="overlay">
-            <div class="text-center">
-              <div>
-                <b-button
-                  variant="outline-danger"
-                  size="sm"
-                  aria-describedby="cancel-label"
-                  @click="$router.push('/moviedetailview/' + movie.title)"
-                >
-                  상세보기
-                </b-button>
-              </div>
-              <div>
-                <b-button
-                  variant="outline-danger"
-                  size="sm"
-                  aria-describedby="cancel-label"
-                  @click="goTicket(movie.title)"
-                >
-                  예매하기
-                </b-button>
-              </div>
+            <div class="overlayButton">
+              <b-button
+                variant="outline-danger"
+                size="sm"
+                aria-describedby="cancel-label"
+                @click="$router.push('/moviedetailview/' + movie.title)"
+              >
+                상세보기
+              </b-button>
+              <br>
+              <b-button
+                variant="outline-danger"
+                size="sm"
+                aria-describedby="cancel-label"
+                @click="goTicket(movie.title)"
+              >
+                예매하기
+              </b-button>
             </div>
           </div>
         </b-list-group-item>
@@ -91,19 +88,18 @@ export default {
       page: 0,
       show: false,
       movieChart: [
-        {
-          title: "테스트",
-          rate: "3",
-          grade: "5",
-          mediaRating: "15세",
-        },{
-          title: "테스트",
-          rate: "3",
-          grade: "5",
-          mediaRating: "15세",
-        },
+        // {
+        //   title: "테스트",
+        //   rate: "3",
+        //   grade: "5",
+        //   mediaRating: "15세",
+        // },{
+        //   title: "테스트",
+        //   rate: "3",
+        //   grade: "5",
+        //   mediaRating: "15세",
+        // },
       ],
-      showOverlayList: [false, false, false, false, false],
     };
   },
   methods: {
@@ -134,11 +130,6 @@ export default {
       console.log(result)
       return result;
     },
-    overlayOut(key){
-      if(this.showOverlayList[key] == true){
-        this.showOverlayList[key] = false
-      }
-    }
   },
   computed: {
     listMovieChart() {
@@ -200,16 +191,16 @@ export default {
   opacity: 0;
   transition: .5s ease;
   background-color: rgba(255, 255, 255, 1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
+  vertical-align: middle;
+}
+.overlayButton{
+  position: absolute;left: 50%;top: 50%;
+  transform: translate(-50%,-50%)
 }
 .container:hover .overlay {
   opacity: 0.9;
 }
-/* .text-center{
-  margin: auto;
-} */
 .ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
 .ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
 .ico-grade.grade-12{ background-position:-51px 0;}/* 12세 */
