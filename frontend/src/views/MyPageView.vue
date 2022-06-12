@@ -32,7 +32,7 @@
             </b-tr>
             <b-tr>
               <b-td>관람극장</b-td>
-              <b-td colspan="2" class="text-left">구미 CGV</b-td>
+              <b-td colspan="2" class="text-left">{{book.theaterName}}</b-td>
               <b-td>관람인원</b-td>
               <b-td colspan="4" class="text-left"
                 >일반 {{ book.numOfPeople }}</b-td
@@ -94,6 +94,7 @@ export default {
         //   "screen": "string",
         //   "screenDate": "string",
         //   "screenTime": "string"
+        //    "theaterName": "string"
         // }
       ],
     };

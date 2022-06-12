@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dateSelect">
-      <b-button variant="outline-secondary" class="date">
+      <b-button variant="outline-secondary" :pressed="true" class="date">
         <div class="month">06월<br />화</div>
         <div class="day">14</div>
       </b-button>
@@ -40,6 +40,9 @@
                   ? time.remainingNumOfSeats + "석"
                   : "마감"
               }}<br />
+              <span v-if="time.discountPolicy!='none'">
+                {{time.discountRate + (time.discountPolicy=='rate' ? "% 할인" : "원 할인")}}
+              </span>
             </b-button>
             <b-collapse :id="'collapse-' + key + '-' + index" class="mt-2">
               <b-card id="collapseCard">

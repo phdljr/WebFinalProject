@@ -34,7 +34,7 @@
           >
             <b-card-title class="title">{{movie.title}}</b-card-title>
             <span :class="setMediaRateImg(movie.mediaRating)"></span>
-            <p>예매율: {{ movie.rate * 100 }}%</p>
+            <p>예매율: {{ Math.round(movie.rate * 1000) / 10 }}%</p>
             <p>평점: {{Math.round(movie.grade * 100) / 100}}★</p>
           </b-card>
           <div class="overlay">
