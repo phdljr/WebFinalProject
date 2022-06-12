@@ -31,8 +31,6 @@
             tag="article"
             style="width: 200px;height: 450px;"
             class="mb-2 title"
-            :aria-hidden="showOverlayList[key] ? 'true' : null"
-            @mouseover="showOverlayList[key] = true"
           >
             <b-card-title class="title">{{movie.title}}</b-card-title>
             <span :class="setMediaRateImg(movie.mediaRating)"></span>
@@ -40,7 +38,7 @@
             <p>평점: {{Math.round(movie.grade * 100) / 100}}★</p>
           </b-card>
           <div class="overlay">
-            <div class="overlayButton" @mouseover="showOverlayList[key] = false">
+            <div class="overlayButton">
               <b-button
                 variant="outline-danger"
                 size="sm"
@@ -90,19 +88,18 @@ export default {
       page: 0,
       show: false,
       movieChart: [
-        {
-          title: "테스트",
-          rate: "3",
-          grade: "5",
-          mediaRating: "15세",
-        },{
-          title: "테스트",
-          rate: "3",
-          grade: "5",
-          mediaRating: "15세",
-        },
+        // {
+        //   title: "테스트",
+        //   rate: "3",
+        //   grade: "5",
+        //   mediaRating: "15세",
+        // },{
+        //   title: "테스트",
+        //   rate: "3",
+        //   grade: "5",
+        //   mediaRating: "15세",
+        // },
       ],
-      showOverlayList: [false, false, false, false, false],
     };
   },
   methods: {
@@ -133,11 +130,6 @@ export default {
       console.log(result)
       return result;
     },
-    overlayOut(key){
-      if(this.showOverlayList[key] == true){
-        this.showOverlayList[key] = false
-      }
-    }
   },
   computed: {
     listMovieChart() {
