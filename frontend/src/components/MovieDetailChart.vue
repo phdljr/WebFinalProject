@@ -29,8 +29,8 @@ export default {
                     labels: ["남성", "여성"],
                     datasets: [{
                         label: "Population (millions)",
-                        backgroundColor: ["#8e8e8e ", "#c6567c"],
-                        data: this.sexData,
+                        backgroundColor: ["#00bfcd ", "#c6567c"],
+                        data: this.dataPercent(this.sexData),
                     }]
                 },
                 options: {
@@ -63,7 +63,7 @@ export default {
                     labels: ["10대", "20대", "30대", "40대", "50대"],
                     datasets: [{
                         backgroundColor: "#8e8e8e ",
-                        data: this.ageData
+                        data: this.dataPercent(this.ageData),
                     }]
                 },
                 options: {
@@ -76,6 +76,17 @@ export default {
                 }
             })
             sex
+        },
+        dataPercent(data){
+            var sum = 0;
+            var arr = [];
+            for(var key in data){
+                sum += data[key]
+            }
+            for(var index in data){
+                arr.push(data[index]*100/sum)
+            }
+            return arr;
         }
     },
     watch:{
