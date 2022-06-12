@@ -354,7 +354,7 @@ export default {
       ];
     });
     axios
-      .get(this.HOST + "/" + this.$store.state.userData.id + "/likes")
+      .get(this.HOST +"/" + this.$route.params.movie + "/" + this.$store.state.userData.id + "/likes")
       .then((res) => {
         console.log(res.data);
         this.selectedLikeArr = res.data;
