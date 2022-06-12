@@ -31,8 +31,6 @@
             tag="article"
             style="width: 200px;height: 450px;"
             class="mb-2 title"
-            :aria-hidden="showOverlayList[key] ? 'true' : null"
-            @mouseover="showOverlayList[key] = true"
           >
             <b-card-title class="title">{{movie.title}}</b-card-title>
             <span :class="setMediaRateImg(movie.mediaRating)"></span>
@@ -40,23 +38,27 @@
             <p>평점: {{Math.round(movie.grade * 100) / 100}}★</p>
           </b-card>
           <div class="overlay">
-            <div class="text-center" @mouseover="showOverlayList[key] = false">
-              <b-button
-                variant="outline-danger"
-                size="sm"
-                aria-describedby="cancel-label"
-                @click="$router.push('/moviedetailview/' + movie.title)"
-              >
-                상세보기
-              </b-button>
-              <b-button
-                variant="outline-danger"
-                size="sm"
-                aria-describedby="cancel-label"
-                @click="goTicket(movie.title)"
-              >
-                예매하기
-              </b-button>
+            <div class="text-center">
+              <div>
+                <b-button
+                  variant="outline-danger"
+                  size="sm"
+                  aria-describedby="cancel-label"
+                  @click="$router.push('/moviedetailview/' + movie.title)"
+                >
+                  상세보기
+                </b-button>
+              </div>
+              <div>
+                <b-button
+                  variant="outline-danger"
+                  size="sm"
+                  aria-describedby="cancel-label"
+                  @click="goTicket(movie.title)"
+                >
+                  예매하기
+                </b-button>
+              </div>
             </div>
           </div>
         </b-list-group-item>
@@ -198,10 +200,16 @@ export default {
   opacity: 0;
   transition: .5s ease;
   background-color: rgba(255, 255, 255, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .container:hover .overlay {
   opacity: 0.9;
 }
+/* .text-center{
+  margin: auto;
+} */
 .ico-grade{ display:block; position:absolute; left:5px; top:5px; width:21px; height:21px; background:url('/public/media-rate-img.png') no-repeat;font:0/0 a;zoom:1;}
 .ico-grade.grade-all{ background-position:-30px 0;}/* 전체 */
 .ico-grade.grade-12{ background-position:-51px 0;}/* 12세 */
