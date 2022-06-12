@@ -62,7 +62,7 @@ export default {
                 data: {
                     labels: ["10대", "20대", "30대", "40대", "50대"],
                     datasets: [{
-                        backgroundColor: "#8e8e8e ",
+                        backgroundColor: this.setColor(this.ageData),
                         data: this.dataPercent(this.ageData),
                     }]
                 },
@@ -91,6 +91,13 @@ export default {
                 arr.push(data[index]*100/sum)
             }
             return arr;
+        },
+        setColor(data){
+            let ageArr = [ "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e", "#8e8e8e"]
+            let maxIndex = data.indexOf(Math.max(...data))
+            ageArr[maxIndex] = "#ee7f00"
+            
+            return ageArr;
         }
     },
     watch:{
