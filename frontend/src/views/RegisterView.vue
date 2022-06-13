@@ -140,6 +140,11 @@ export default {
         return;
       }
 
+      if(!this.idChecked){ 
+        alert("아이디를 재입력해 주세요") 
+        return 
+      }
+
       if(!this.checkPw){
         alert("비밀번호를 재입력해 주세요")
         return
